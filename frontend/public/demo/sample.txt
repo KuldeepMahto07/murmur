@@ -1,0 +1,14 @@
+[00:00:00] Host:
+Good morning, and welcome to the weekly planning meeting. Today we need to decide on the launch date for the new mobile app.
+
+[00:00:08] QA Lead:
+Thanks. I reviewed the test results yesterday. The crash rate dropped to under 1%, so I think we are nearly ready.
+
+[00:00:18] Host:
+That is great news. What about the translation work for the Spanish and French versions?
+
+[00:00:25] QA Lead:
+The Spanish UI strings are finished. French should be done by Thursday, assuming the agency delivers on time.
+
+[00:00:34] Host:
+Perfect. Then let's aim for a launch on the 15th of next month and review progress again on Friday.

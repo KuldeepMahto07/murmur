@@ -1,0 +1,8 @@
+﻿start,end,speaker,text
+00:00:00.000,00:00:02.960,Host,"Good morning, and welcome to the weekly planning meeting."
+00:00:04.020,00:00:07.060,Host,Today we need to decide on the launch date for the new mobile app.
+00:00:08.660,00:00:11.940,QA Lead,Thanks. I reviewed the test results yesterday.
+00:00:12.980,00:00:17.240,QA Lead,"The crash rate dropped to under 1%, so I think we are nearly ready."
+00:00:18.540,00:00:24.080,Host,That is great news. What about the translation work for the Spanish and French versions?
+00:00:25.500,00:00:32.680,QA Lead,"The Spanish UI strings are finished. French should be done by Thursday, assuming the agency delivers on time."
+00:00:34.080,00:00:40.380,Host,Perfect. Then let's aim for a launch on the 15th of next month and review progress again on Friday.

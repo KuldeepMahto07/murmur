@@ -1,0 +1,641 @@
+{
+ "language": "en",
+ "source_language": "en",
+ "duration": 42.0761875,
+ "segments": [
+  {
+   "start": 0.0,
+   "end": 2.96,
+   "text": "Good morning, and welcome to the weekly planning meeting.",
+   "speaker": "SPEAKER_00",
+   "words": [
+    {
+     "start": 0.0,
+     "end": 0.28,
+     "word": " Good",
+     "speaker": "SPEAKER_00"
+    },
+    {
+     "start": 0.28,
+     "end": 0.58,
+     "word": " morning,",
+     "speaker": "SPEAKER_00"
+    },
+    {
+     "start": 1.1,
+     "end": 1.32,
+     "word": " and",
+     "speaker": "SPEAKER_00"
+    },
+    {
+     "start": 1.32,
+     "end": 1.62,
+     "word": " welcome",
+     "speaker": "SPEAKER_00"
+    },
+    {
+     "start": 1.62,
+     "end": 1.86,
+     "word": " to",
+     "speaker": "SPEAKER_00"
+    },
+    {
+     "start": 1.86,
+     "end": 1.98,
+     "word": " the",
+     "speaker": "SPEAKER_00"
+    },
+    {
+     "start": 1.98,
+     "end": 2.24,
+     "word": " weekly",
+     "speaker": "SPEAKER_00"
+    },
+    {
+     "start": 2.24,
+     "end": 2.66,
+     "word": " planning",
+     "speaker": "SPEAKER_00"
+    },
+    {
+     "start": 2.66,
+     "end": 2.96,
+     "word": " meeting.",
+     "speaker": "SPEAKER_00"
+    }
+   ],
+   "id": 0
+  },
+  {
+   "start": 4.02,
+   "end": 7.06,
+   "text": "Today we need to decide on the launch date for the new mobile app.",
+   "speaker": "SPEAKER_00",
+   "words": [
+    {
+     "start": 4.02,
+     "end": 4.26,
+     "word": " Today",
+     "speaker": "SPEAKER_00"
+    },
+    {
+     "start": 4.26,
+     "end": 4.48,
+     "word": " we",
+     "speaker": "SPEAKER_00"
+    },
+    {
+     "start": 4.48,
+     "end": 4.66,
+     "word": " need",
+     "speaker": "SPEAKER_00"
+    },
+    {
+     "start": 4.66,
+     "end": 4.84,
+     "word": " to",
+     "speaker": "SPEAKER_00"
+    },
+    {
+     "start": 4.84,
+     "end": 5.16,
+     "word": " decide",
+     "speaker": "SPEAKER_00"
+    },
+    {
+     "start": 5.16,
+     "end": 5.4,
+     "word": " on",
+     "speaker": "SPEAKER_00"
+    },
+    {
+     "start": 5.4,
+     "end": 5.52,
+     "word": " the",
+     "speaker": "SPEAKER_00"
+    },
+    {
+     "start": 5.52,
+     "end": 5.8,
+     "word": " launch",
+     "speaker": "SPEAKER_00"
+    },
+    {
+     "start": 5.8,
+     "end": 6.04,
+     "word": " date",
+     "speaker": "SPEAKER_00"
+    },
+    {
+     "start": 6.04,
+     "end": 6.22,
+     "word": " for",
+     "speaker": "SPEAKER_00"
+    },
+    {
+     "start": 6.22,
+     "end": 6.36,
+     "word": " the",
+     "speaker": "SPEAKER_00"
+    },
+    {
+     "start": 6.36,
+     "end": 6.5,
+     "word": " new",
+     "speaker": "SPEAKER_00"
+    },
+    {
+     "start": 6.5,
+     "end": 6.76,
+     "word": " mobile",
+     "speaker": "SPEAKER_00"
+    },
+    {
+     "start": 6.76,
+     "end": 7.06,
+     "word": " app.",
+     "speaker": "SPEAKER_00"
+    }
+   ],
+   "id": 1
+  },
+  {
+   "start": 8.66,
+   "end": 11.94,
+   "text": "Thanks. I reviewed the test results yesterday.",
+   "speaker": "SPEAKER_01",
+   "words": [
+    {
+     "start": 8.66,
+     "end": 9.12,
+     "word": " Thanks.",
+     "speaker": "SPEAKER_01"
+    },
+    {
+     "start": 10.1,
+     "end": 10.38,
+     "word": " I",
+     "speaker": "SPEAKER_01"
+    },
+    {
+     "start": 10.38,
+     "end": 10.66,
+     "word": " reviewed",
+     "speaker": "SPEAKER_01"
+    },
+    {
+     "start": 10.66,
+     "end": 10.88,
+     "word": " the",
+     "speaker": "SPEAKER_01"
+    },
+    {
+     "start": 10.88,
+     "end": 11.14,
+     "word": " test",
+     "speaker": "SPEAKER_01"
+    },
+    {
+     "start": 11.14,
+     "end": 11.52,
+     "word": " results",
+     "speaker": "SPEAKER_01"
+    },
+    {
+     "start": 11.52,
+     "end": 11.94,
+     "word": " yesterday.",
+     "speaker": "SPEAKER_01"
+    }
+   ],
+   "id": 2
+  },
+  {
+   "start": 12.98,
+   "end": 17.24,
+   "text": "The crash rate dropped to under 1%, so I think we are nearly ready.",
+   "speaker": "SPEAKER_01",
+   "words": [
+    {
+     "start": 12.98,
+     "end": 13.14,
+     "word": " The",
+     "speaker": "SPEAKER_01"
+    },
+    {
+     "start": 13.14,
+     "end": 13.46,
+     "word": " crash",
+     "speaker": "SPEAKER_01"
+    },
+    {
+     "start": 13.46,
+     "end": 13.68,
+     "word": " rate",
+     "speaker": "SPEAKER_01"
+    },
+    {
+     "start": 13.68,
+     "end": 14.02,
+     "word": " dropped",
+     "speaker": "SPEAKER_01"
+    },
+    {
+     "start": 14.02,
+     "end": 14.22,
+     "word": " to",
+     "speaker": "SPEAKER_01"
+    },
+    {
+     "start": 14.22,
+     "end": 14.46,
+     "word": " under",
+     "speaker": "SPEAKER_01"
+    },
+    {
+     "start": 14.46,
+     "end": 15.16,
+     "word": " 1%,",
+     "speaker": "SPEAKER_01"
+    },
+    {
+     "start": 15.16,
+     "end": 15.92,
+     "word": " so",
+     "speaker": "SPEAKER_01"
+    },
+    {
+     "start": 15.92,
+     "end": 16.12,
+     "word": " I",
+     "speaker": "SPEAKER_01"
+    },
+    {
+     "start": 16.12,
+     "end": 16.28,
+     "word": " think",
+     "speaker": "SPEAKER_01"
+    },
+    {
+     "start": 16.28,
+     "end": 16.52,
+     "word": " we",
+     "speaker": "SPEAKER_01"
+    },
+    {
+     "start": 16.52,
+     "end": 16.66,
+     "word": " are",
+     "speaker": "SPEAKER_01"
+    },
+    {
+     "start": 16.66,
+     "end": 16.9,
+     "word": " nearly",
+     "speaker": "SPEAKER_01"
+    },
+    {
+     "start": 16.9,
+     "end": 17.24,
+     "word": " ready.",
+     "speaker": "SPEAKER_01"
+    }
+   ],
+   "id": 3
+  },
+  {
+   "start": 18.54,
+   "end": 24.08,
+   "text": "That is great news. What about the translation work for the Spanish and French versions?",
+   "speaker": "SPEAKER_00",
+   "words": [
+    {
+     "start": 18.54,
+     "end": 19.1,
+     "word": " That",
+     "speaker": "SPEAKER_00"
+    },
+    {
+     "start": 19.1,
+     "end": 19.24,
+     "word": " is",
+     "speaker": "SPEAKER_00"
+    },
+    {
+     "start": 19.24,
+     "end": 19.5,
+     "word": " great",
+     "speaker": "SPEAKER_00"
+    },
+    {
+     "start": 19.5,
+     "end": 19.78,
+     "word": " news.",
+     "speaker": "SPEAKER_00"
+    },
+    {
+     "start": 20.76,
+     "end": 21.04,
+     "word": " What",
+     "speaker": "SPEAKER_00"
+    },
+    {
+     "start": 21.04,
+     "end": 21.26,
+     "word": " about",
+     "speaker": "SPEAKER_00"
+    },
+    {
+     "start": 21.26,
+     "end": 21.48,
+     "word": " the",
+     "speaker": "SPEAKER_00"
+    },
+    {
+     "start": 21.48,
+     "end": 21.94,
+     "word": " translation",
+     "speaker": "SPEAKER_00"
+    },
+    {
+     "start": 21.94,
+     "end": 22.38,
+     "word": " work",
+     "speaker": "SPEAKER_00"
+    },
+    {
+     "start": 22.38,
+     "end": 22.6,
+     "word": " for",
+     "speaker": "SPEAKER_00"
+    },
+    {
+     "start": 22.6,
+     "end": 22.74,
+     "word": " the",
+     "speaker": "SPEAKER_00"
+    },
+    {
+     "start": 22.74,
+     "end": 23.06,
+     "word": " Spanish",
+     "speaker": "SPEAKER_00"
+    },
+    {
+     "start": 23.06,
+     "end": 23.36,
+     "word": " and",
+     "speaker": "SPEAKER_00"
+    },
+    {
+     "start": 23.36,
+     "end": 23.7,
+     "word": " French",
+     "speaker": "SPEAKER_00"
+    },
+    {
+     "start": 23.7,
+     "end": 24.08,
+     "word": " versions?",
+     "speaker": "SPEAKER_00"
+    }
+   ],
+   "id": 4
+  },
+  {
+   "start": 25.5,
+   "end": 32.68,
+   "text": "The Spanish UI strings are finished. French should be done by Thursday, assuming the agency delivers on time.",
+   "speaker": "SPEAKER_01",
+   "words": [
+    {
+     "start": 25.5,
+     "end": 26.06,
+     "word": " The",
+     "speaker": "SPEAKER_01"
+    },
+    {
+     "start": 26.06,
+     "end": 26.36,
+     "word": " Spanish",
+     "speaker": "SPEAKER_01"
+    },
+    {
+     "start": 26.36,
+     "end": 26.74,
+     "word": " strings",
+     "speaker": "SPEAKER_01"
+    },
+    {
+     "start": 26.74,
+     "end": 27.04,
+     "word": " are",
+     "speaker": "SPEAKER_01"
+    },
+    {
+     "start": 27.04,
+     "end": 27.38,
+     "word": " finished.",
+     "speaker": "SPEAKER_01"
+    },
+    {
+     "start": 28.1,
+     "end": 28.74,
+     "word": " French",
+     "speaker": "SPEAKER_01"
+    },
+    {
+     "start": 28.74,
+     "end": 29.06,
+     "word": " should",
+     "speaker": "SPEAKER_01"
+    },
+    {
+     "start": 29.06,
+     "end": 29.2,
+     "word": " be",
+     "speaker": "SPEAKER_01"
+    },
+    {
+     "start": 29.2,
+     "end": 29.44,
+     "word": " done",
+     "speaker": "SPEAKER_01"
+    },
+    {
+     "start": 29.44,
+     "end": 29.62,
+     "word": " by",
+     "speaker": "SPEAKER_01"
+    },
+    {
+     "start": 29.62,
+     "end": 30.02,
+     "word": " Thursday,",
+     "speaker": "SPEAKER_01"
+    },
+    {
+     "start": 30.54,
+     "end": 30.92,
+     "word": " assuming",
+     "speaker": "SPEAKER_01"
+    },
+    {
+     "start": 30.92,
+     "end": 31.16,
+     "word": " the",
+     "speaker": "SPEAKER_01"
+    },
+    {
+     "start": 31.16,
+     "end": 31.6,
+     "word": " agency",
+     "speaker": "SPEAKER_01"
+    },
+    {
+     "start": 31.6,
+     "end": 32.04,
+     "word": " delivers",
+     "speaker": "SPEAKER_01"
+    },
+    {
+     "start": 32.04,
+     "end": 32.34,
+     "word": " on",
+     "speaker": "SPEAKER_01"
+    },
+    {
+     "start": 32.34,
+     "end": 32.68,
+     "word": " time.",
+     "speaker": "SPEAKER_01"
+    }
+   ],
+   "id": 5,
+   "edited": true
+  },
+  {
+   "start": 34.08,
+   "end": 40.38,
+   "text": "Perfect. Then let's aim for a launch on the 15th of next month and review progress again on Friday.",
+   "speaker": "SPEAKER_00",
+   "words": [
+    {
+     "start": 34.08,
+     "end": 34.72,
+     "word": " Perfect.",
+     "speaker": "SPEAKER_00"
+    },
+    {
+     "start": 35.68,
+     "end": 36.0,
+     "word": " Then",
+     "speaker": "SPEAKER_00"
+    },
+    {
+     "start": 36.0,
+     "end": 36.34,
+     "word": " let's",
+     "speaker": "SPEAKER_00"
+    },
+    {
+     "start": 36.34,
+     "end": 36.46,
+     "word": " aim",
+     "speaker": "SPEAKER_00"
+    },
+    {
+     "start": 36.46,
+     "end": 36.66,
+     "word": " for",
+     "speaker": "SPEAKER_00"
+    },
+    {
+     "start": 36.66,
+     "end": 36.8,
+     "word": " a",
+     "speaker": "SPEAKER_00"
+    },
+    {
+     "start": 36.8,
+     "end": 37.06,
+     "word": " launch",
+     "speaker": "SPEAKER_00"
+    },
+    {
+     "start": 37.06,
+     "end": 37.24,
+     "word": " on",
+     "speaker": "SPEAKER_00"
+    },
+    {
+     "start": 37.24,
+     "end": 37.32,
+     "word": " the",
+     "speaker": "SPEAKER_00"
+    },
+    {
+     "start": 37.32,
+     "end": 37.86,
+     "word": " 15th",
+     "speaker": "SPEAKER_00"
+    },
+    {
+     "start": 37.86,
+     "end": 37.96,
+     "word": " of",
+     "speaker": "SPEAKER_00"
+    },
+    {
+     "start": 37.96,
+     "end": 38.18,
+     "word": " next",
+     "speaker": "SPEAKER_00"
+    },
+    {
+     "start": 38.18,
+     "end": 38.52,
+     "word": " month",
+     "speaker": "SPEAKER_00"
+    },
+    {
+     "start": 38.52,
+     "end": 38.78,
+     "word": " and",
+     "speaker": "SPEAKER_00"
+    },
+    {
+     "start": 38.78,
+     "end": 39.06,
+     "word": " review",
+     "speaker": "SPEAKER_00"
+    },
+    {
+     "start": 39.06,
+     "end": 39.44,
+     "word": " progress",
+     "speaker": "SPEAKER_00"
+    },
+    {
+     "start": 39.44,
+     "end": 39.86,
+     "word": " again",
+     "speaker": "SPEAKER_00"
+    },
+    {
+     "start": 39.86,
+     "end": 40.1,
+     "word": " on",
+     "speaker": "SPEAKER_00"
+    },
+    {
+     "start": 40.1,
+     "end": 40.38,
+     "word": " Friday.",
+     "speaker": "SPEAKER_00"
+    }
+   ],
+   "id": 6
+  }
+ ]
+}

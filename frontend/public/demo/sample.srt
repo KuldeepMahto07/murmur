@@ -1,0 +1,46 @@
+1
+00:00:00,000 --> 00:00:02,960
+[Host] Good morning, and welcome to the
+weekly planning meeting.
+
+2
+00:00:04,020 --> 00:00:07,060
+[Host] Today we need to decide on the launch
+date for the new mobile app.
+
+3
+00:00:08,660 --> 00:00:11,940
+[QA Lead] Thanks. I reviewed the test
+results yesterday.
+
+4
+00:00:12,980 --> 00:00:17,240
+[QA Lead] The crash rate dropped to under 1%,
+so I think we are nearly ready.
+
+5
+00:00:18,540 --> 00:00:23,700
+[Host] That is great news. What about the
+translation work for the Spanish and French
+
+6
+00:00:23,700 --> 00:00:24,080
+[Host] versions?
+
+7
+00:00:25,500 --> 00:00:31,160
+[QA Lead] The Spanish strings are finished. French
+should be done by Thursday, assuming the
+
+8
+00:00:31,160 --> 00:00:32,680
+[QA Lead] agency delivers on time.
+
+9
+00:00:34,080 --> 00:00:39,440
+[Host] Perfect. Then let's aim for a launch on the
+15th of next month and review progress
+
+10
+00:00:39,440 --> 00:00:40,380
+[Host] again on Friday.

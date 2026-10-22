@@ -1,0 +1,64 @@
+{
+ "language": "es",
+ "source_language": "en",
+ "duration": 42.0761875,
+ "segments": [
+  {
+   "start": 0.0,
+   "end": 2.96,
+   "text": "Buenos días, y bienvenido a la reunión de planificación semanal.",
+   "speaker": "SPEAKER_00",
+   "words": [],
+   "id": 0
+  },
+  {
+   "start": 4.02,
+   "end": 7.06,
+   "text": "Hoy tenemos que decidir la fecha de lanzamiento para la nueva aplicación móvil.",
+   "speaker": "SPEAKER_00",
+   "words": [],
+   "id": 1
+  },
+  {
+   "start": 8.66,
+   "end": 11.94,
+   "text": "Gracias. Revisé los resultados de la prueba ayer.",
+   "speaker": "SPEAKER_01",
+   "words": [],
+   "id": 2
+  },
+  {
+   "start": 12.98,
+   "end": 17.24,
+   "text": "La tasa de choque cayó a menos del 1%, así que creo que estamos casi listos.",
+   "speaker": "SPEAKER_01",
+   "words": [],
+   "id": 3
+  },
+  {
+   "start": 18.54,
+   "end": 24.08,
+   "text": "Es una gran noticia. ¿Qué hay del trabajo de traducción para las versiones española y francesa?",
+   "speaker": "SPEAKER_00",
+   "words": [],
+   "id": 4
+  },
+  {
+   "start": 25.5,
+   "end": 32.68,
+   "text": "Las cuerdas españolas están terminadas. El francés debe hacerse para el jueves, asumiendo que la agencia entrega a tiempo.",
+   "speaker": "SPEAKER_01",
+   "words": [],
+   "id": 5
+  },
+  {
+   "start": 34.08,
+   "end": 40.38,
+   "text": "Perfecto. Entonces vamos a apuntar a un lanzamiento el 15 del próximo mes y revisar el progreso de nuevo el viernes.",
+   "speaker": "SPEAKER_00",
+   "words": [],
+   "id": 6
+  }
+ ],
+ "translated_from": "en"
+}

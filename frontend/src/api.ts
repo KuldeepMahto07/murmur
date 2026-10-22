@@ -1,3 +1,5 @@
+import { DEMO_ID, demoConfig, demoJob, demoTranscripts } from "./demo";
+
 export type Job = {
   id: string;
   title: string;
@@ -44,6 +46,7 @@ export type Config = {
   diarization_method: "pyannote" | "ecapa";
   export_formats: string[];
   max_upload_mb: number;
+  demo?: boolean;
 };
 
 export type Options = {
@@ -55,8 +58,17 @@ export type Options = {
   clean_audio: boolean;
 };
 
+// Where the Murmur server lives. Empty = same origin (local install). Set VITE_API_URL at build time
+// to point a hosted front end at a server elsewhere.
+export const API_BASE = ((import.meta.env.VITE_API_URL as string | undefined) || "").replace(/\/$/, "");
+
+// Demo mode: no server reachable, so the UI serves the bundled sample read-only.
+export let demoMode = false;
+const DEMO_MSG = "This is a demo without a transcription server. Run Murmur locally to transcribe your own files.";
+const demoOnly = <T>(): Promise<T> => Promise.reject(new Error(DEMO_MSG));
+
 async function req<T>(url: string, init?: RequestInit): Promise<T> {
-  const r = await fetch(url, init);
+  const r = await fetch(API_BASE + url, init);
   if (!r.ok) {
     let msg = r.statusText;
     try {
@@ -75,16 +87,27 @@ const json = (method: string, body: unknown): RequestInit => ({
 });
 
 export const api = {
-  config: () => req<Config>("/api/config"),
-  jobs: () => req<Job[]>("/api/jobs"),
-  job: (id: string) => req<Job>(`/api/jobs/${id}`),
+  async config(): Promise<Config> {
+    try {
+      const r = await fetch(API_BASE + "/api/config");
+      if (!r.ok || !(r.headers.get("content-type") || "").includes("json")) throw new Error();
+      return await r.json();
+    } catch {
+      demoMode = true;
+      return demoConfig;
+    }
+  },
+  jobs: () => (demoMode ? Promise.resolve([demoJob]) : req<Job[]>("/api/jobs")),
+  job: (id: string) => (id === DEMO_ID ? Promise.resolve(demoJob) : req<Job>(`/api/jobs/${id}`)),
+  mediaUrl: (id: string) => (id === DEMO_ID ? "/demo/sample.mp3" : `${API_BASE}/api/jobs/${id}/media`),
   upload(files: File[], o: Options, onProgress: (f: number) => void): Promise<Job[]> {
+    if (demoMode) return demoOnly();
     const fd = new FormData();
     files.forEach((f) => fd.append("files", f));
     Object.entries(o).forEach(([k, v]) => fd.append(k, String(v)));
     return new Promise((resolve, reject) => {
       const x = new XMLHttpRequest();
-      x.open("POST", "/api/jobs");
+      x.open("POST", API_BASE + "/api/jobs");
       x.upload.onprogress = (e) => e.lengthComputable && onProgress(e.loaded / e.total);
       x.onload = () => {
         if (x.status < 300) resolve(JSON.parse(x.responseText));
@@ -100,22 +123,23 @@ export const api = {
       x.send(fd);
     });
   },
-  fromUrl: (url: string, o: Options) => req<Job>("/api/jobs/url", json("POST", { url, ...o })),
+  fromUrl: (url: string, o: Options) => demoMode ? demoOnly<Job>() : req<Job>("/api/jobs/url", json("POST", { url, ...o })),
   patch: (id: string, body: { title?: string; speakers?: Record<string, string> }) =>
-    req<Job>(`/api/jobs/${id}`, json("PATCH", body)),
+    id === DEMO_ID ? demoOnly<Job>() : req<Job>(`/api/jobs/${id}`, json("PATCH", body)),
   retry: (id: string) => req<Job>(`/api/jobs/${id}/retry`, { method: "POST" }),
-  remove: (id: string) => req(`/api/jobs/${id}`, { method: "DELETE" }),
-  removeMany: (ids: string[]) => req("/api/jobs/bulk-delete", json("POST", { ids })),
+  remove: (id: string) => id === DEMO_ID ? demoOnly() : req(`/api/jobs/${id}`, { method: "DELETE" }),
+  removeMany: (ids: string[]) => demoMode ? demoOnly() : req("/api/jobs/bulk-delete", json("POST", { ids })),
   transcript: (id: string, lang?: string) =>
-    req<Transcript>(`/api/jobs/${id}/transcript${lang ? `?lang=${lang}` : ""}`),
+    id === DEMO_ID ? Promise.resolve(demoTranscripts[lang || ""]) : req<Transcript>(`/api/jobs/${id}/transcript${lang ? `?lang=${lang}` : ""}`),
   editSegments: (id: string, segments: { id: number; text?: string; speaker?: string }[]) =>
-    req<Transcript>(`/api/jobs/${id}/transcript`, json("PUT", { segments })),
-  translationLanguages: () => req<{ code: string; name: string }[]>("/api/translate/languages"),
-  translate: (id: string, target: string) => req<Transcript>(`/api/jobs/${id}/translate`, json("POST", { target })),
+    id === DEMO_ID ? demoOnly<Transcript>() : req<Transcript>(`/api/jobs/${id}/transcript`, json("PUT", { segments })),
+  translationLanguages: () => demoMode ? demoOnly<{ code: string; name: string }[]>() : req<{ code: string; name: string }[]>("/api/translate/languages"),
+  translate: (id: string, target: string) => id === DEMO_ID ? demoOnly<Transcript>() : req<Transcript>(`/api/jobs/${id}/translate`, json("POST", { target })),
   exportUrl: (id: string, format: string, timestamps: boolean, speakers: boolean, lang?: string) =>
-    `/api/jobs/${id}/export?format=${format}&timestamps=${timestamps}&speakers=${speakers}${lang ? `&lang=${lang}` : ""}`,
+    id === DEMO_ID ? `/demo/sample.${format}` : `${API_BASE}/api/jobs/${id}/export?format=${format}&timestamps=${timestamps}&speakers=${speakers}${lang ? `&lang=${lang}` : ""}`,
   async bulkExport(ids: string[], format: string, timestamps: boolean, speakers: boolean) {
-    const r = await fetch("/api/export/bulk", json("POST", { ids, format, timestamps, speakers }));
+    if (demoMode) throw new Error(DEMO_MSG);
+    const r = await fetch(API_BASE + "/api/export/bulk", json("POST", { ids, format, timestamps, speakers }));
     if (!r.ok) throw new Error((await r.json()).detail);
     const blob = await r.blob();
     const a = document.createElement("a");

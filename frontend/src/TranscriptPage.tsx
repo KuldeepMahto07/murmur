@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { api, clock, Config, Job, Segment, speakerColor, speakerName, Transcript } from "./api";
+import { DEMO_ID } from "./demo";
 
 const VIDEO_EXT = /\.(mp4|mov|mkv|webm|avi|wmv|m4v|3gp|mts|ts|vob)$/i;
 const FORMAT_LABELS: Record<string, string> = {
@@ -85,6 +86,7 @@ export default function TranscriptPage({ id, config }: { id: string; config: Con
   if (err && !t) return <div className="banner error">{err}</div>;
   if (!job || !t) return <div className="loading">Loading transcript…</div>;
   const isVideo = VIDEO_EXT.test(job.media_file || "");
+  const demo = id === DEMO_ID;
   const words = t.segments.reduce((n, s) => n + s.text.split(/\s+/).filter(Boolean).length, 0);
 
   return (
@@ -93,6 +95,7 @@ export default function TranscriptPage({ id, config }: { id: string; config: Con
         <a href="#/library" className="back">← Library</a>
         <input
           className="title-edit"
+          readOnly={demo}
           defaultValue={job.title}
           onBlur={(e) => e.target.value !== job.title && api.patch(id, { title: e.target.value }).then(setJob)}
           onKeyDown={(e) => e.key === "Enter" && (e.target as HTMLInputElement).blur()}
@@ -108,9 +111,9 @@ export default function TranscriptPage({ id, config }: { id: string; config: Con
           <div className={`player card ${isVideo ? "video" : ""}`}>
             {job.has_media &&
               (isVideo ? (
-                <video ref={(el) => (media.current = el)} src={`/api/jobs/${id}/media`} controls onTimeUpdate={(e) => setNow(e.currentTarget.currentTime)} />
+                <video ref={(el) => (media.current = el)} src={api.mediaUrl(id)} controls onTimeUpdate={(e) => setNow(e.currentTarget.currentTime)} />
               ) : (
-                <audio ref={(el) => (media.current = el)} src={`/api/jobs/${id}/media`} controls onTimeUpdate={(e) => setNow(e.currentTarget.currentTime)} />
+                <audio ref={(el) => (media.current = el)} src={api.mediaUrl(id)} controls onTimeUpdate={(e) => setNow(e.currentTarget.currentTime)} />
               ))}
             <div className="speed">
               {[0.75, 1, 1.25, 1.5, 2].map((r) => (
@@ -124,11 +127,11 @@ export default function TranscriptPage({ id, config }: { id: string; config: Con
             {q && <small className="muted">{matches} matching passage{matches === 1 ? "" : "s"}</small>}
             <label className="check"><input type="checkbox" checked={showTimes} onChange={(e) => setShowTimes(e.target.checked)} /> Show timestamps</label>
             <label className="check"><input type="checkbox" checked={follow} onChange={(e) => setFollow(e.target.checked)} /> Follow playback</label>
-            <label className="check"><input type="checkbox" checked={editing} disabled={!!lang} onChange={(e) => setEditing(e.target.checked)} /> Edit text</label>
+            {!demo && <label className="check"><input type="checkbox" checked={editing} disabled={!!lang} onChange={(e) => setEditing(e.target.checked)} /> Edit text</label>}
             <div className="btnrow">
               <button className="primary" onClick={() => setPanel(panel === "export" ? "" : "export")}>Download</button>
-              {speakers.length > 0 && <button onClick={() => setPanel(panel === "speakers" ? "" : "speakers")}>Speakers</button>}
-              <button onClick={() => setPanel(panel === "translate" ? "" : "translate")}>Translate</button>
+              {speakers.length > 0 && !demo && <button onClick={() => setPanel(panel === "speakers" ? "" : "speakers")}>Speakers</button>}
+              {!demo && <button onClick={() => setPanel(panel === "translate" ? "" : "translate")}>Translate</button>}
             </div>
             {(job.translations.length > 0 || lang) && (
               <div className="langtabs">

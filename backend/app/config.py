@@ -15,6 +15,7 @@ FRONTEND_DIST = ROOT / "frontend" / "dist"
 HF_TOKEN = os.environ.get("HF_TOKEN") or None
 # "auto" picks CUDA when available, else CPU. Set MURMUR_DEVICE=cpu to force CPU.
 DEVICE = os.environ.get("MURMUR_DEVICE", "auto")
+CORS_ORIGINS = [o.strip() for o in os.environ.get("MURMUR_CORS_ORIGINS", "").split(",") if o.strip()]
 # 0 = no limit. Mirrors the "upload size" idea without accounts.
 MAX_UPLOAD_MB = int(os.environ.get("MURMUR_MAX_UPLOAD_MB", "5120"))
 

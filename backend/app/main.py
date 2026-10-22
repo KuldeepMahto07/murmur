@@ -15,13 +15,18 @@ from pydantic import BaseModel
 from sqlmodel import Session, select
 
 from . import diarize, translate, worker
-from .config import DEFAULT_MODE, FRONTEND_DIST, LANGUAGES, MAX_UPLOAD_MB, MODES
+from .config import CORS_ORIGINS, DEFAULT_MODE, FRONTEND_DIST, LANGUAGES, MAX_UPLOAD_MB, MODES
 from .db import Job, engine, init_db
 from .exports import FORMATS, ExportOptions, render
 from .pipeline import load_json, save_json
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
 app = FastAPI(title="Murmur")
+
+# Allow a separately hosted front end (e.g. on Vercel) to call this server.
+if CORS_ORIGINS:
+    from fastapi.middleware.cors import CORSMiddleware
+    app.add_middleware(CORSMiddleware, allow_origins=CORS_ORIGINS, allow_methods=["*"], allow_headers=["*"])
 
 
 @app.on_event("startup")

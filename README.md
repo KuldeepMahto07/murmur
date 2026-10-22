@@ -41,6 +41,21 @@ Then open http://127.0.0.1:8000. Models download into `data/models` the first ti
 
 For front-end development, run `npm run dev` in `frontend/`. It serves on :5173 and proxies `/api` to :8000.
 
+## Hosted demo (Vercel)
+`frontend/` deploys to Vercel as a static site: https://murmur-alpha-three.vercel.app
+
+With no server reachable, the UI switches to **demo mode**. Uploads are off, and it shows a bundled sample transcript (`frontend/src/demo-transcript*.json`, with audio and exports under `frontend/public/demo/`).
+
+To make the hosted UI transcribe for real, run the backend somewhere reachable over HTTPS:
+1. Set `VITE_API_URL` in the Vercel project to that server's URL, then redeploy.
+2. On the server, set `MURMUR_CORS_ORIGINS` to the Vercel URL.
+
+Uploads go straight from the browser to that server, so Vercel's request-size limit doesn't apply.
+
+```bash
+cd frontend && npx vercel deploy --prod
+```
+
 ## Test
 ```bash
 powershell -ExecutionPolicy Bypass -File scripts/make_sample.ps1

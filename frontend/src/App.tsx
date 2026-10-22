@@ -43,11 +43,18 @@ export default function App() {
       </header>
       <main>
         {err && <div className="banner error">Can't reach the Murmur server: {err}</div>}
+        {config?.demo && (
+          <div className="banner info">
+            <b>Demo:</b> no transcription server is connected, so uploads are switched off. Open the{" "}
+            <a href="#/t/demo">sample transcript</a> to try the player, search and downloads, or run Murmur on your own
+            machine to transcribe files.
+          </div>
+        )}
         {config && page === "upload" && <UploadPage config={config} />}
         {config && page === "library" && <LibraryPage config={config} />}
         {config && page === "transcript" && m && <TranscriptPage id={m[1]} config={config} />}
       </main>
-      <footer className="foot">Runs entirely on this computer · faster-whisper · {config?.diarization_method === "pyannote" ? "pyannote" : "ECAPA"} speaker labels</footer>
+      <footer className="foot">{config?.demo ? "Demo build · " : "Runs entirely on this computer · "}faster-whisper · {config?.diarization_method === "pyannote" ? "pyannote" : "ECAPA"} speaker labels</footer>
     </div>
   );
 }
