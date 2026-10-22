@@ -1,0 +1,19 @@
+# torch/torchaudio are pinned to 2.8.0: speechbrain needs >=2.7.1, pyannote 3.3 needs the pre-2.9 torchaudio I/O API.
+# Install torch first from the CUDA index (see README):
+#   pip install torch==2.8.0 torchaudio==2.8.0 --index-url https://download.pytorch.org/whl/cu128
+torch==2.8.0
+torchaudio==2.8.0
+numpy<2
+faster-whisper
+fastapi
+uvicorn[standard]
+python-multipart
+sqlmodel
+python-docx
+reportlab
+yt-dlp
+argostranslate
+pyannote.audio==3.3.2
+speechbrain
+scikit-learn
+python-dotenv
