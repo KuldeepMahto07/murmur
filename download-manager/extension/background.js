@@ -10,7 +10,7 @@
 // Scope is deliberate: no DRM handling, no site-specific extractors. Chunks of
 // adaptive streams (range= URLs, .ts/.m4s segments, blob: sources) are ignored.
 
-const DEFAULTS = { target: 'fetchline', port: 8765, abdmPort: 15151, abdmKey: '', takeover: false };
+const DEFAULTS = { target: 'fetchline', port: 8765, abdmPort: 15151, abdmKey: '', takeover: false, ytdlp: true };
 const TARGET_NAMES = { fetchline: 'Fetchline', abdm: 'AB Download Manager' };
 const cfg = async () => ({ ...DEFAULTS, ...(await chrome.storage.local.get(Object.keys(DEFAULTS))) });
 
@@ -258,6 +258,74 @@ function nameFromTitle(title, ext) {
   return t ? `${t}.${ext}` : undefined;
 }
 
+// ------------------------------------------------------------------ yt-dlp
+// Sites where the player streams protected chunks (YouTube, Instagram, ...) are handed to
+// yt-dlp, which runs inside the Fetchline engine. Added at the project owner's request;
+// it needs Fetchline running with yt-dlp installed, whichever download target is selected.
+
+const YTDLP_SITES = /(^|\.)(youtube\.com|youtu\.be|youtube-nocookie\.com|instagram\.com|facebook\.com|fb\.watch|x\.com|twitter\.com|tiktok\.com|vimeo\.com|dailymotion\.com|reddit\.com|twitch\.tv|soundcloud\.com|bilibili\.com|streamable\.com|threads\.net|pinterest\.com|linkedin\.com)$/i;
+const ytdlpCache = new Map(); // page URL -> { at, result }
+
+async function engineInfo() {
+  try {
+    return await engine('GET', '/ping', undefined, 1500);
+  } catch {
+    return null;
+  }
+}
+
+async function pageCookies(pageUrl) {
+  try {
+    return (await chrome.cookies.getAll({ url: pageUrl })).map((c) => ({
+      domain: c.domain, hostOnly: c.hostOnly, path: c.path, secure: c.secure, expirationDate: c.expirationDate, name: c.name, value: c.value,
+    }));
+  } catch {
+    return [];
+  }
+}
+
+/** Should the menu ask yt-dlp about this page? Known sites always; elsewhere only when nothing else was found. */
+async function ytdlpWanted(pageUrl, haveUsable) {
+  const c = await cfg();
+  if (!c.ytdlp || !/^https?:/i.test(pageUrl || '')) return false;
+  return YTDLP_SITES.test(new URL(pageUrl).hostname) || !haveUsable;
+}
+
+async function ytdlpEntries(pageUrl) {
+  const hit = ytdlpCache.get(pageUrl);
+  if (hit && Date.now() - hit.at < 10 * 60_000) return hit.result;
+  const info = await engineInfo();
+  if (!info) return { error: 'yt-dlp downloads need Fetchline running. Start it, then try again.' };
+  if (!info.ytdlp) return { error: 'yt-dlp is not installed. Run: winget install yt-dlp.yt-dlp' };
+  const known = YTDLP_SITES.test(new URL(pageUrl).hostname);
+  let p;
+  try {
+    p = await engine('POST', '/ytdlp/probe', { url: pageUrl, cookies: await pageCookies(pageUrl) }, 95_000);
+  } catch (e) {
+    const msg = String(e.message || e);
+    // On unknown sites a failed probe just means "nothing for yt-dlp here".
+    return { error: known ? `yt-dlp: ${msg}` : null };
+  }
+  if (p.drm) return { error: 'This video is DRM-protected; it cannot be downloaded.' };
+  const result = {
+    title: p.title,
+    entries: p.choices.map((c) => ({
+      kind: 'ytdlp', url: pageUrl, label: c.label, sub: [c.approxSize ? '~' + fmtSize(c.approxSize) : '', `via yt-dlp (${p.extractor})`].filter(Boolean).join(' · '),
+      format: c.format, audioOnly: c.audioOnly, approxSize: c.approxSize, title: p.title,
+    })),
+  };
+  ytdlpCache.set(pageUrl, { at: Date.now(), result });
+  if (ytdlpCache.size > 50) ytdlpCache.delete(ytdlpCache.keys().next().value);
+  return result;
+}
+
+async function sendToYtdlp({ url, format, label, audioOnly, approxSize, title }) {
+  return engine('POST', '/downloads', {
+    url, kind: 'ytdlp', pageUrl: url, start: 'now', fileName: title,
+    ytdlp: { format, label, audioOnly, approxSize, cookies: await pageCookies(url) },
+  });
+}
+
 async function sendToEngine({ url, kind, variant, title, pageUrl, referer, fileName }) {
   if (kind === 'blocked') throw new Error('This stream is protected and cannot be downloaded.');
   const { target } = await cfg();
@@ -289,17 +357,22 @@ chrome.runtime.onMessage.addListener((msg, sender, reply) => {
         // Playlists whose quality list could not be read yet get another try.
         const st = await tabState(tabId);
         await Promise.all([...st.items.values()].filter((i) => i.kind === 'hls' && !i.probe).map((i) => probe(tabId, i)));
-        return { engine: up, targetName: TARGET_NAMES[target], entries: await entries(tabId) };
+        const list = await entries(tabId);
+        const usable = list.some((e) => e.kind !== 'blocked');
+        return { engine: up, targetName: TARGET_NAMES[target], entries: list, ytdlp: await ytdlpWanted(msg.pageUrl, usable || msg.hasSrc) };
       }
+      case 'ytdlp-list':
+        return ytdlpEntries(msg.pageUrl);
       case 'download': {
         const st = await tabState(tabId);
         const it = st.items.get(msg.url);
-        const rec = await sendToEngine({ ...msg, referer: it?.referer });
+        const rec = msg.kind === 'ytdlp' ? await sendToYtdlp(msg) : await sendToEngine({ ...msg, referer: it?.referer });
         return { ok: true, id: rec.id, fileName: rec.fileName };
       }
       case 'status': {
         const c = await cfg();
-        return { engine: await targetUp(), targetName: TARGET_NAMES[c.target], ...c };
+        const info = await engineInfo();
+        return { engine: await targetUp(), targetName: TARGET_NAMES[c.target], ytdlpVersion: info?.ytdlp ?? null, fetchlineUp: !!info, ...c };
       }
       default:
         return { error: 'unknown message' };

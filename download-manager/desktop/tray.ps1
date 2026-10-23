@@ -39,7 +39,12 @@ if ($Action -eq 'disable-startup') { Set-Startup $false; return }
 # ---- one tray per user
 $created = $false
 $mutex = New-Object System.Threading.Mutex($true, "Local\FetchlineTray-$Port", [ref] $created)
-if (-not $created) { Write-Log 'tray already running; opening UI'; Start-Process $Base; return }
+if (-not $created) {
+  # A tray that is shutting down still holds the lock for a moment; wait for it before giving up.
+  $acquired = $false
+  try { $acquired = $mutex.WaitOne(8000) } catch [System.Threading.AbandonedMutexException] { $acquired = $true }
+  if (-not $acquired) { Write-Log 'tray already running; opening UI'; Start-Process $Base; return }
+}
 
 Add-Type -AssemblyName System.Windows.Forms, System.Drawing
 

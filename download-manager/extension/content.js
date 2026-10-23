@@ -180,12 +180,13 @@
 
     let res;
     try {
-      res = await chrome.runtime.sendMessage({ type: 'list' });
+      const hasSrc = /^https?:/i.test(target?.currentSrc || target?.src || '');
+      res = await chrome.runtime.sendMessage({ type: 'list', pageUrl: location.href, hasSrc });
     } catch {
       return note('The extension was updated — reload this page.', true);
     }
     if (res?.error) return note(res.error, true);
-    if (!res.engine) {
+    if (!res.engine && !res.ytdlp) {
       return note(
         res.targetName === 'AB Download Manager'
           ? 'AB Download Manager is not running (or its browser integration is off). Start it, then try again.'
@@ -200,22 +201,45 @@
     if (/^https?:/i.test(src) && !rows.some((r) => r.url === src)) {
       rows.unshift({ url: src, kind: /\.m3u8?(\?|$)/i.test(src) ? 'hls' : 'file', label: 'This video', sub: decodeURIComponent(new URL(src).pathname.split('/').pop() || src) });
     }
-    if (!rows.length) {
-      return note(
-        src.startsWith('blob:')
-          ? 'No downloadable stream seen yet. Play the video for a few seconds and try again. Some sites stream in a protected way Fetchline does not support.'
-          : 'No downloadable media seen on this page yet. Start playback and try again.',
-      );
-    }
+    const emptyText = src.startsWith('blob:')
+      ? 'No downloadable stream seen yet. Play the video for a few seconds and try again.'
+      : 'No downloadable media seen on this page yet. Start playback and try again.';
+    if (!res.engine) rows.length = 0; // target app down: only yt-dlp (via Fetchline) can help
+    if (!rows.length && !res.ytdlp) return note(emptyText);
 
-    menu.querySelector('.note').remove();
-    for (const r of rows) {
-      const b = document.createElement('button');
-      b.className = `row ${r.kind === 'blocked' ? 'blocked' : ''}`;
-      b.innerHTML = `<div class="l">${esc(r.label)}</div><div class="s">${esc(r.sub || '')}</div>`;
-      if (r.kind !== 'blocked') b.onclick = () => send(r, b);
-      menu.appendChild(b);
+    const noteEl = menu.querySelector('.note');
+    if (rows.length) noteEl.remove();
+    rows.forEach(addRow);
+    if (!res.ytdlp) return;
+
+    // Ask yt-dlp (through Fetchline) for this page's qualities; this can take a few seconds.
+    const wait = document.createElement('div');
+    wait.className = 'note';
+    wait.textContent = 'Checking with yt-dlp…';
+    menu.appendChild(wait);
+    const forUrl = location.href;
+    const y = await chrome.runtime.sendMessage({ type: 'ytdlp-list', pageUrl: forUrl }).catch((e) => ({ error: String(e) }));
+    if (menu.hidden || location.href !== forUrl) return;
+    if (y?.entries?.length) {
+      wait.remove();
+      noteEl.isConnected && noteEl.remove();
+      y.entries.forEach(addRow);
+    } else if (y?.error) {
+      wait.textContent = y.error;
+      wait.classList.add('warn');
+      noteEl.isConnected && noteEl.remove();
+    } else {
+      wait.remove();
+      if (!rows.length) note(emptyText);
     }
+  }
+
+  function addRow(r) {
+    const b = document.createElement('button');
+    b.className = `row ${r.kind === 'blocked' ? 'blocked' : ''}`;
+    b.innerHTML = `<div class="l">${esc(r.label)}</div><div class="s">${esc(r.sub || '')}</div>`;
+    if (r.kind !== 'blocked') b.onclick = () => send(r, b);
+    menu.appendChild(b);
   }
 
   function note(text, warn = false) {
@@ -227,7 +251,7 @@
   async function send(row, button) {
     button.disabled = true;
     const res = await chrome.runtime
-      .sendMessage({ type: 'download', url: row.url, kind: row.kind, variant: row.variant, title: document.title, pageUrl: location.href })
+      .sendMessage({ type: 'download', url: row.url, kind: row.kind, variant: row.variant, format: row.format, label: row.label, audioOnly: row.audioOnly, approxSize: row.approxSize, title: row.title || document.title, pageUrl: location.href })
       .catch((e) => ({ error: String(e) }));
     button.disabled = false;
     if (res?.error) return toast(res.error);

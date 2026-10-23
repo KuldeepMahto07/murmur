@@ -29,6 +29,9 @@ const argBrowser = process.argv.indexOf('--browser');
 /** --real-abdm: relay the extension's calls to the installed AB Download Manager (port 15151) and download through it. */
 const REAL_ABDM = process.argv.includes('--real-abdm');
 const ABDM_REAL_PORT = 15151;
+/** --youtube: also test the yt-dlp path on a real YouTube page (needs yt-dlp installed and network). */
+const YOUTUBE = process.argv.includes('--youtube');
+const YT_URL = 'https://www.youtube.com/watch?v=aqz-KE-bpKQ';
 const BROWSER =
   argBrowser > 0
     ? process.argv[argBrowser + 1]
@@ -250,7 +253,12 @@ try {
 
   // Open the test page.
   const contexts: any[] = [];
-  cdp.on((m) => m.method === 'Runtime.executionContextCreated' && contexts.push(m.params.context));
+  cdp.on((m) => {
+    if (m.method === 'Runtime.executionContextCreated') contexts.push(m.params.context);
+    // Navigation destroys the old page's contexts; forget them so lookups find the new content script.
+    if (m.method === 'Runtime.executionContextDestroyed') contexts.splice(0, contexts.length, ...contexts.filter((c) => c.id !== m.params.executionContextId));
+    if (m.method === 'Runtime.executionContextsCleared') contexts.length = 0;
+  });
   const { targetId } = await cdp.send('Target.createTarget', { url: 'about:blank' });
   const s = (await cdp.send('Target.attachToTarget', { targetId, flatten: true })).sessionId;
   await cdp.send('Page.enable', {}, s);
@@ -435,6 +443,66 @@ try {
     console.log('        files:', (await fs.readdir(folder)).join(', '));
     check(mp4ok, 'AB DM downloaded the MP4 byte-identical to the source');
     check(!!hls && hls.video?.height === 360 && hls.audio, `AB DM downloaded the 360p HLS stream (${hls ? `${hls.video?.height}p, audio ${hls.audio}, ${hls.duration.toFixed(1)} s` : 'not finished'})`);
+  }
+
+  // ---- yt-dlp on a real YouTube page (--youtube). Uses Blender's "Big Buck Bunny",
+  //      which is Creative Commons Attribution (reuse allowed).
+  if (YOUTUBE) {
+    console.log('\n  yt-dlp on YouTube (CC-BY test video)');
+    await cdp.send('Runtime.evaluate', { expression: `chrome.storage.local.set({ target: 'fetchline', port: ${ENGINE_PORT}, ytdlp: true })`, awaitPromise: true }, swSession);
+    const ping = await engineApi('GET', '/ping');
+    check(!!ping.ytdlp, `engine found yt-dlp ${ping.ytdlp ?? '(missing)'}`);
+    await cdp.send('Page.navigate', { url: YT_URL }, s);
+    let vr: any = null;
+    for (let i = 0; i < 40 && !vr; i++) {
+      await sleep(500);
+      vr = await inPage(`(() => { const v = [...document.querySelectorAll('video')].find(v => { const r = v.getBoundingClientRect(); return r.width > 200 && r.height > 120; }); if (!v) return null; const r = v.getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2 }; })()`);
+    }
+    check(!!vr, 'YouTube player found on the page');
+    for (let i = 0; i < 20 && !iso(); i++) await sleep(250);
+    if (vr) {
+      await sleep(2000);
+      await mouse('mouseMoved', 5, 5);
+      await sleep(300);
+      await mouse('mouseMoved', vr.x, vr.y);
+      await sleep(500);
+      const yf = await inExt(`(() => { const f = __fetchlineRoot.querySelector('.fab'); const r = f.getBoundingClientRect(); return { on: f.classList.contains('on'), x: r.left + r.width / 2, y: r.top + r.height / 2 }; })()`);
+      check(yf.on, 'Download button appears over the YouTube player');
+      await mouse('mouseMoved', yf.x, yf.y);
+      await mouse('mousePressed', yf.x, yf.y);
+      await mouse('mouseReleased', yf.x, yf.y);
+      await sleep(400);
+      const dbg = await inExt(`(() => ({ menuHidden: __fetchlineRoot.querySelector('.menu').hidden, top: (() => { const r = __fetchlineRoot.querySelector('.fab').getBoundingClientRect(); const el = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2); return el ? el.tagName : null; })() }))()`);
+      console.log('        after click:', JSON.stringify(dbg));
+      let yrows: { l: string; s: string }[] = [];
+      for (let i = 0; i < 120; i++) {
+        await sleep(500);
+        yrows = await inExt(`[...__fetchlineRoot.querySelectorAll('.menu .row')].map(b => ({ l: b.querySelector('.l').textContent, s: b.querySelector('.s').textContent }))`);
+        const waiting = await inExt(`[...__fetchlineRoot.querySelectorAll('.menu .note')].map(n => n.textContent).join(' | ')`);
+        if (yrows.some((r) => r.s.includes('yt-dlp')) || (waiting && !waiting.includes('Checking') && !waiting.includes('Looking'))) {
+          if (!yrows.length) console.log('        menu note:', waiting);
+          break;
+        }
+      }
+      console.log('        menu:', yrows.map((r) => `${r.l} [${r.s}]`).join(' | '));
+      await shot('youtube-menu.png');
+      check(yrows.some((r) => r.l === '360p MP4' && r.s.includes('yt-dlp')), 'menu lists yt-dlp qualities for the YouTube video');
+      const clicked = await inExt(`(() => { const b = [...__fetchlineRoot.querySelectorAll('.menu .row')].find(b => b.querySelector('.l').textContent === '360p MP4'); if (!b) return false; b.click(); return true; })()`);
+      check(clicked, 'clicked 360p MP4');
+      let yd: any = null;
+      for (let i = 0; i < 360; i++) {
+        await sleep(500);
+        yd = (await engineApi('GET', '/state')).downloads.find((d: any) => d.kind === 'ytdlp');
+        if (yd && (yd.status === 'completed' || yd.status === 'error')) break;
+      }
+      console.log(`        ${yd?.status} → ${yd?.fileName}${yd?.error ? ' (' + yd.error + ')' : ''}`);
+      check(yd?.status === 'completed', 'yt-dlp download completed in Fetchline');
+      if (yd?.status === 'completed') {
+        const info = ffprobe(path.join(yd.dir, yd.fileName));
+        check(info.video?.height === 360 && info.audio && info.duration > 600, `file is 360p with audio, ${info.duration.toFixed(0)} s`);
+        check(yd.category === 'Video' && !!yd.checksum?.sha256, 'filed under Video with a SHA-256');
+      }
+    }
   }
 
   await cdp.send('Browser.close').catch(() => {});

@@ -4,6 +4,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { Manager } from './manager.ts';
 import { probeMedia } from './hls.ts';
+import { probeYtdlp, ytdlpInfo } from './ytdlp.ts';
 
 const UI_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'ui');
 const MIME: Record<string, string> = {
@@ -59,7 +60,9 @@ export function createServer(mgr: Manager, port: number) {
           await mgr.remove(id, url.searchParams.get('deleteFile') === '1');
           return send(res, 200, { ok: true });
         case route === 'GET /ping':
-          return send(res, 200, { app: 'fetchline', version: 1 });
+          return send(res, 200, { app: 'fetchline', version: 1, ytdlp: (await ytdlpInfo())?.version ?? null });
+        case route === 'POST /ytdlp/probe':
+          return send(res, 200, await probeYtdlp(String(body.url), body.cookies, mgr.dataDir));
         case route === 'POST /media/probe':
           return send(res, 200, await probeMedia(String(body.url), body.headers));
         case route === 'POST /pause-all':

@@ -5,6 +5,7 @@ import { spawn } from 'node:child_process';
 import type { Category, DownloadRecord, Settings } from './types.ts';
 import { Download } from './download.ts';
 import { HlsDownload } from './hls.ts';
+import { YtdlpDownload, type BrowserCookie } from './ytdlp.ts';
 import { TokenBucket } from './limiter.ts';
 import { fileNameFromUrl, sanitizeFileName } from './net.ts';
 
@@ -21,8 +22,10 @@ export interface AddRequest {
   checksum?: string;
   description?: string;
   headers?: Record<string, string>;
-  /** 'hls' for an .m3u8 stream; detected from the URL when omitted. */
-  kind?: 'file' | 'hls';
+  /** 'hls' for an .m3u8 stream (detected from the URL when omitted); 'ytdlp' hands the page URL to yt-dlp. */
+  kind?: 'file' | 'hls' | 'ytdlp';
+  /** For kind 'ytdlp': the chosen yt-dlp format selector and its menu label. */
+  ytdlp?: { format: string; label?: string; audioOnly?: boolean; approxSize?: number | null; cookies?: BrowserCookie[] };
   /** For a master playlist: which variant (media playlist URL) to fetch. */
   variant?: string;
   pageUrl?: string;
@@ -53,7 +56,7 @@ export class Manager {
   readonly dataDir: string;
   settings!: Settings;
   records = new Map<string, DownloadRecord>();
-  active = new Map<string, Download | HlsDownload>();
+  active = new Map<string, Download | HlsDownload | YtdlpDownload>();
   queueRunning = false;
   /** True when the scheduler (not the user) started the queue; only then do completion actions run. */
   private queueAuto = false;
@@ -109,11 +112,11 @@ export class Manager {
     this.dirty = true;
   };
 
-  private handle(rec: DownloadRecord): Download | HlsDownload {
+  private handle(rec: DownloadRecord): Download | HlsDownload | YtdlpDownload {
     let d = this.active.get(rec.id);
     if (!d) {
       const hooks = { global: this.global, changed: this.changed, placeFile: (r: DownloadRecord) => this.placeFile(r) };
-      d = rec.kind === 'hls' ? new HlsDownload(rec, hooks) : new Download(rec, hooks);
+      d = rec.kind === 'hls' ? new HlsDownload(rec, hooks) : rec.kind === 'ytdlp' ? new YtdlpDownload(rec, hooks) : new Download(rec, hooks);
       this.active.set(rec.id, d);
     }
     return d;
@@ -142,7 +145,10 @@ export class Manager {
     const url = new URL(req.url.trim()); // throws on garbage
     if (url.protocol !== 'http:' && url.protocol !== 'https:') throw new Error('Only http and https URLs are supported');
     const kind = req.kind ?? (/\.m3u8?$/i.test(url.pathname) ? 'hls' : 'file');
-    const fileName = req.fileName ? sanitizeFileName(req.fileName) : fileNameFromUrl(url.toString());
+    if (kind === 'ytdlp' && !req.ytdlp?.format) throw new Error('ytdlp.format is required');
+    let fileName = req.fileName ? sanitizeFileName(req.fileName) : fileNameFromUrl(url.toString());
+    // yt-dlp picks the real name; this placeholder (with the right extension) just files it under Video/Music.
+    if (kind === 'ytdlp') fileName = fileName.replace(/\.[a-z0-9]{2,4}$/i, '') + (req.ytdlp!.audioOnly ? '.m4a' : '.mp4');
     const headers = req.headers
       ? Object.fromEntries(Object.entries(req.headers).filter(([k, v]) => typeof v === 'string' && ALLOWED_HEADERS.has(k.toLowerCase())).map(([k, v]) => [k.toLowerCase(), v]))
       : undefined;
@@ -153,10 +159,22 @@ export class Manager {
       id: crypto.randomBytes(6).toString('hex'),
       kind,
       hls: kind === 'hls' ? { variant: req.variant, total: 0, done: 0, bytes: 0 } : undefined,
+      ytdlp:
+        kind === 'ytdlp'
+          ? {
+              format: String(req.ytdlp!.format),
+              label: String(req.ytdlp!.label ?? req.ytdlp!.format),
+              audioOnly: !!req.ytdlp!.audioOnly,
+              approxSize: req.ytdlp!.approxSize ?? null,
+              cookies: Array.isArray(req.ytdlp!.cookies) ? req.ytdlp!.cookies : undefined,
+              downloaded: 0,
+              total: 0,
+            }
+          : undefined,
       pageUrl: req.pageUrl,
       url: url.toString(),
       fileName,
-      fileNameLocked: !!req.fileName,
+      fileNameLocked: !!req.fileName && kind !== 'ytdlp',
       dir: req.dir || cat?.dir || path.join(this.settings.baseDir, 'General'),
       category: cat?.name ?? (req.dir ? 'Custom' : 'General'),
       size: null,
@@ -380,9 +398,16 @@ export class Manager {
           segments: r.segments.map((s) => ({ ...s, end: s.end === Number.MAX_SAFE_INTEGER ? null : s.end })),
           log: undefined,
           headers: undefined,
-          downloaded: live?.downloaded ?? (r.kind === 'hls' ? r.hls?.bytes ?? 0 : r.segments.reduce((n, s) => n + (s.pos - s.start), 0)),
+          ytdlp: r.ytdlp ? { ...r.ytdlp, cookies: undefined } : undefined,
+          downloaded:
+            live?.downloaded ??
+            (r.kind === 'hls' ? r.hls?.bytes ?? 0 : r.kind === 'ytdlp' ? r.ytdlp?.downloaded ?? 0 : r.segments.reduce((n, s) => n + (s.pos - s.start), 0)),
           progress:
-            r.status === 'completed' ? 1 : r.kind === 'hls' ? (r.hls?.total ? r.hls.done / r.hls.total : 0) : r.size ? r.segments.reduce((n, s) => n + (s.pos - s.start), 0) / r.size : 0,
+            r.status === 'completed'
+              ? 1
+              : r.kind === 'ytdlp'
+                ? r.ytdlp?.total ? Math.min(0.99, r.ytdlp.downloaded / r.ytdlp.total) : 0
+                : r.kind === 'hls' ? (r.hls?.total ? r.hls.done / r.hls.total : 0) : r.size ? r.segments.reduce((n, s) => n + (s.pos - s.start), 0) / r.size : 0,
           speed: live?.speed ?? 0,
           activeConnections: live?.connections ?? [],
         };

@@ -61,10 +61,19 @@ Then open http://127.0.0.1:8765. Downloads go to `download-manager/data/Download
 - **Browser details passed on:** the cookies, referer and user agent go with the download, so sites that check them still work.
 - **Other ways in:** right-click → *Download link / media with Fetchline*. The toolbar popup lists the tab's media and has an option to **take over normal browser downloads** (off by default).
 
+**YouTube, Instagram and other sites, via yt-dlp:** added at the owner's request on 2026-10-23.
+- **How it works:** on sites like YouTube (including Shorts), Instagram, Facebook, X, TikTok, Vimeo and Reddit, or on any page where nothing else is found, the menu asks [yt-dlp](https://github.com/yt-dlp/yt-dlp) through the Fetchline engine. It lists qualities (for example 2160p to 360p MP4, and audio only) with size estimates.
+- **The download:** runs in Fetchline with progress, pause and resume (yt-dlp continues its partial files), and gets a SHA-256 when it finishes. The page's cookies are passed in a temporary cookies file, which is deleted after each run.
+- **Requirements:**
+  - Fetchline must be running, even when AB DM is the selected destination.
+  - yt-dlp must be installed: `winget install yt-dlp.yt-dlp`, which also installs Deno (needed for YouTube) and FFmpeg.
+- **Switching it off:** use the popup option "Use yt-dlp for YouTube, Instagram and similar sites".
+- **Your responsibility:** downloading from these platforms can break their terms of service. Use it for your own uploads, Creative Commons content, or with the creator's permission.
+- **Store builds:** the Chrome Web Store and Edge Add-ons don't allow this. A store build must ship with this feature removed. See [saas-marketplaces](saas/10-distribution/saas-marketplaces/README.md).
+
 **What it won't do:**
-- **DRM-protected video** (Netflix, Disney+, Prime Video and the like). The menu says it is protected.
-- **Encrypted or live HLS.** These are listed as blocked.
-- **Platforms that serve video in protected chunks** (for example YouTube's adaptive streams). There are no site-specific extractors, by design.
+- **DRM-protected video** (Netflix, Disney+, Prime Video and the like). The menu says it is protected; yt-dlp refuses DRM too.
+- **Encrypted or live HLS** in the built-in HLS downloader. These are listed as blocked.
 
 **Install (unpacked):**
 1. Start Fetchline (`start.bat`). If it was already running, restart it so the engine has the new routes.
@@ -86,7 +95,7 @@ Choosing an entry calls AB DM's own integration API, `POST /add`, so AB DM opens
 - **Files** are sent as `http` items. **HLS qualities** are sent as `hls` items with the chosen quality's playlist.
 - The page's cookies, referer and user agent go with each item.
 
-AB DM doesn't download YouTube either: its YouTube and yt-dlp support requests are still open issues.
+AB DM itself doesn't download YouTube (its YouTube and yt-dlp support requests are still open issues). yt-dlp menu entries therefore always go to Fetchline, even when AB DM is selected.
 
 ## Verify
 
@@ -117,6 +126,14 @@ A second phase switches the extension to AB Download Manager and checks the exac
 - Given the same items through `/start-headless-download`, it downloaded the MP4 byte-identical and the 360p HLS stream as a 20 s 360p video with audio.
 
 It passed 3 runs out of 3 on 2026-10-23 (Fetchline phase); the AB DM phase passed on its first run.
+
+With `--youtube`, a further phase opens a real YouTube page: Blender's *Big Buck Bunny*, which is CC-BY. It checks four things:
+- the Download button appears over YouTube's player
+- the menu lists yt-dlp's qualities (2160p to 360p, plus audio only)
+- clicking **360p MP4** downloads it through Fetchline
+- the file is 360p H.264 with audio, 635 s long, filed under Video with a SHA-256
+
+This phase passed 2 runs out of 2. An engine-level check also passed: pausing a 720p yt-dlp download stopped every yt-dlp process within 217 ms, and resuming continued from the partial file.
 
 Engine test, last run (2026-10-23), all checks passed:
 

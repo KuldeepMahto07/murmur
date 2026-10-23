@@ -32,11 +32,25 @@ export interface HlsState {
   bytes: number;
 }
 
+export interface YtdlpState {
+  /** yt-dlp -f selector, e.g. "bv*[height<=720]+ba/b[height<=720]/b". */
+  format: string;
+  label: string;
+  audioOnly: boolean;
+  approxSize?: number | null;
+  /** Page cookies from the browser (Netscape file written per run, then deleted). */
+  cookies?: import('./ytdlp.ts').BrowserCookie[];
+  downloaded: number;
+  total: number;
+  phase?: 'downloading' | 'merging' | 'done';
+}
+
 export interface DownloadRecord {
   id: string;
-  /** 'file' = one HTTP resource (default); 'hls' = an unencrypted HLS stream. */
-  kind?: 'file' | 'hls';
+  /** 'file' = one HTTP resource (default); 'hls' = an unencrypted HLS stream; 'ytdlp' = handed to yt-dlp. */
+  kind?: 'file' | 'hls' | 'ytdlp';
   hls?: HlsState;
+  ytdlp?: YtdlpState;
   /** Page the download came from (browser extension). */
   pageUrl?: string;
   url: string;

@@ -10,7 +10,7 @@
 | Segmented and dynamic splitting | Yes | Yes | Yes | Yes (verified 8 connections) |
 | Crash-safe resume | Yes | Yes | Yes | Yes, plus a re-check of 16 KB of overlap |
 | Checksum verification | Not documented | Partial | Yes | SHA-256 and MD5 on every file |
-| Video button on pages | Yes (includes YouTube) | Media capture | Yes | Yes, for files and clear HLS; DRM refused |
+| Video button on pages | Yes (includes YouTube) | Media capture | Yes | Yes: files, clear HLS and, via yt-dlp, YouTube, Instagram and more; DRM refused |
 | Platforms | Windows | Windows, macOS, Linux, Android | Windows, macOS, Linux | Windows-first (Node) |
 | Code signing and trust | Signed | Signed | Signed | **Unsigned (gap)** |
 

@@ -16,6 +16,12 @@ const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<
   showStatus(status);
   showTarget(status.target);
   $('#takeover').checked = status.takeover;
+  $('#ytdlp').checked = status.ytdlp;
+  $('#ytdlpStatus').textContent = !status.fetchlineUp
+    ? 'Needs Fetchline running.'
+    : status.ytdlpVersion
+      ? `yt-dlp ${status.ytdlpVersion} found. Downloads always go to Fetchline.`
+      : 'yt-dlp not found: winget install yt-dlp.yt-dlp';
   $('#port').value = status.port;
   $('#abdmPort').value = status.abdmPort;
   $('#abdmKey').value = status.abdmKey;
@@ -26,6 +32,7 @@ const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<
   };
   document.querySelectorAll('input[name=target]').forEach((r) => (r.onchange = () => (showTarget(r.value), save({ target: r.value }))));
   $('#takeover').onchange = (e) => save({ takeover: e.target.checked });
+  $('#ytdlp').onchange = (e) => save({ ytdlp: e.target.checked });
   $('#port').onchange = (e) => save({ port: Number(e.target.value) || 8765 });
   $('#abdmPort').onchange = (e) => save({ abdmPort: Number(e.target.value) || 15151 });
   $('#abdmKey').onchange = (e) => save({ abdmKey: e.target.value.trim() });

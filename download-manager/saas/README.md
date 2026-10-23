@@ -7,7 +7,13 @@
 - **Pro:** $19 lifetime or $9/year, for automation and power features.
 - **Price anchor:** IDM costs $24.95 lifetime.
 
-**Distribution:** Chrome Web Store, Edge Add-ons, winget, the Microsoft Store and GitHub Releases. No YouTube or DRM downloading, by design and to comply with store policy.
+**Distribution:** Chrome Web Store, Edge Add-ons, winget, the Microsoft Store and GitHub Releases. Never DRM.
+
+**Decision, 2026-10-23 (owner):** YouTube, Instagram and similar sites are supported through yt-dlp, run by the desktop engine. There are therefore **two extension builds**:
+- **Store build:** yt-dlp entries removed, for the Chrome Web Store and Edge Add-ons, whose policies forbid enabling such downloads.
+- **Direct build:** yt-dlp on, distributed through GitHub Releases and winget.
+
+Pages below that say "no YouTube" describe the store build and its marketing, which still must not advertise YouTube downloading. See [feature-prioritization](03-planning/feature-prioritization/).
 
 | # | Stage | Status | Next action |
 |---|---|---|---|

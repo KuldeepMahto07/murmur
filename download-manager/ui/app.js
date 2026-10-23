@@ -100,7 +100,7 @@ function renderTable() {
     .map((d) => {
       const p = progress(d);
       const ext = (d.fileName.match(/\.([a-z0-9]{1,5})$/i) || [])[1] || '';
-      const kindTag = d.kind === 'hls' ? ' · HLS' : '';
+      const kindTag = d.kind === 'hls' ? ' · HLS' : d.kind === 'ytdlp' ? ' · yt-dlp' : '';
       const status = d.status === 'error' ? `Error: ${d.error}` : d.status === 'downloading' ? `${STATUS[d.status]} · ${d.activeConnections.length} conn` : STATUS[d.status];
       return `<tr data-id="${d.id}" class="${state.selected.has(d.id) ? 'sel' : ''}">
         <td class="name" title="${esc(d.url)}"><span class="ext">${esc(ext)}</span>${esc(d.fileName)}</td>
@@ -148,7 +148,9 @@ function renderDetails() {
     ['Saved to', esc(d.dir)],
     ['Category', esc(d.category)],
     ['Resumable', d.size == null && !d.resumable ? 'unknown' : d.resumable ? 'Yes' : 'No — restarts from zero'],
-    d.kind === 'hls'
+    d.kind === 'ytdlp'
+      ? ['Source', `yt-dlp · ${esc(d.ytdlp?.label ?? '')}${d.ytdlp?.phase === 'merging' ? ' · merging audio and video' : ''}`]
+      : d.kind === 'hls'
       ? ['Stream', `HLS ${esc(d.hls?.label ?? '')} · ${d.hls?.done ?? 0} / ${d.hls?.total || '?'} segments`]
       : ['Segments', d.segments.length],
     ...(d.pageUrl ? [['From page', esc(d.pageUrl)]] : []),
@@ -196,7 +198,7 @@ function drawSegments(d) {
   grad.addColorStop(1, css.getPropertyValue('--accent-2'));
   ctx.fillStyle = grad;
   if (d.status === 'completed') ctx.fillRect(0, 0, w, h);
-  if (d.kind === 'hls') return void ctx.fillRect(0, 0, w * progress(d), h);
+  if (d.kind === 'hls' || d.kind === 'ytdlp') return void ctx.fillRect(0, 0, w * progress(d), h);
   for (const s of d.segments) {
     const end = s.end ?? total;
     ctx.fillRect((s.start / total) * w, 0, ((s.pos - s.start) / total) * w, h);
