@@ -18,41 +18,59 @@
   root.innerHTML = `
     <style>
       :host { all: initial; }
-      * { box-sizing: border-box; font: 13px/1.35 system-ui, 'Segoe UI', sans-serif; }
-      .fab {
-        position: fixed; display: flex; align-items: center; gap: 6px; height: 30px; padding: 0 12px 0 9px;
-        border: 0; border-radius: 15px; cursor: pointer; color: #fff; font-weight: 600; letter-spacing: .2px;
-        background: linear-gradient(135deg, #14b8a6, #6366f1); box-shadow: 0 4px 14px rgba(0,0,0,.35);
-        opacity: 0; transform: translateY(-4px); transition: opacity .15s, transform .15s; pointer-events: none;
+      * { box-sizing: border-box; font: 13px/1.35 -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI Variable Text', 'Segoe UI', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+      .wrap {
+        --tint: #007aff; --green: #34c759; --orange: #ff9500; --label: #000; --label-2: rgba(60,60,67,.62); --sep: rgba(60,60,67,.16);
+        --material: rgba(246,246,248,.78); --hover: rgba(0,0,0,.05); --shadow: 0 18px 50px rgba(0,0,0,.25), 0 0 0 .5px rgba(0,0,0,.12);
       }
-      .fab.on { opacity: .96; transform: none; pointer-events: auto; }
-      .fab:hover { opacity: 1; }
+      @media (prefers-color-scheme: dark) {
+        .wrap { --tint: #0a84ff; --green: #30d158; --orange: #ff9f0a; --label: #fff; --label-2: rgba(235,235,245,.62); --sep: rgba(84,84,88,.65);
+          --material: rgba(40,40,42,.78); --hover: rgba(255,255,255,.07); --shadow: 0 18px 50px rgba(0,0,0,.6), 0 0 0 .5px rgba(255,255,255,.14); }
+      }
+      .fab {
+        position: fixed; display: flex; align-items: center; gap: 6px; height: 30px; padding: 0 13px 0 10px;
+        border: 0; border-radius: 99px; cursor: pointer; color: #fff; font-weight: 600; letter-spacing: -.1px;
+        background: var(--tint); box-shadow: 0 6px 18px rgba(0,122,255,.38), 0 1px 2px rgba(0,0,0,.2);
+        opacity: 0; transform: translateY(-4px) scale(.96); transition: opacity .18s, transform .3s cubic-bezier(.3,1.35,.6,1); pointer-events: none;
+      }
+      .fab.on { opacity: 1; transform: none; pointer-events: auto; }
+      .fab:hover { filter: brightness(1.08); }
+      .fab:active { transform: scale(.95); }
       .fab svg { width: 15px; height: 15px; }
       .menu {
-        position: fixed; width: 330px; max-height: 360px; overflow: auto; padding: 6px; border-radius: 12px;
-        background: #151a23; color: #e6eaf2; border: 1px solid #2a3344; box-shadow: 0 12px 34px rgba(0,0,0,.45);
+        position: fixed; width: 320px; max-height: 380px; overflow: auto; padding: 6px 0; border-radius: 14px; color: var(--label);
+        background: var(--material); backdrop-filter: blur(30px) saturate(180%); -webkit-backdrop-filter: blur(30px) saturate(180%);
+        box-shadow: var(--shadow); animation: pop .26s cubic-bezier(.2,.9,.25,1.1); transform-origin: top right;
       }
+      @keyframes pop { from { opacity: 0; transform: scale(.94); } }
       .menu[hidden], .fab[hidden] { display: none; }
-      .head { display: flex; justify-content: space-between; align-items: center; padding: 4px 8px 8px; color: #8a94a8; font-size: 12px; }
-      .head b { color: #e6eaf2; font-size: 13px; }
-      .x { background: none; border: 0; color: #8a94a8; cursor: pointer; font-size: 15px; }
-      .row { display: block; width: 100%; text-align: left; background: none; border: 0; color: inherit; padding: 8px 10px; border-radius: 8px; cursor: pointer; }
-      .row:hover { background: #222a39; }
-      .row .l { font-weight: 600; }
-      .row .s { color: #8a94a8; font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-      .row.blocked { cursor: default; opacity: .7; }
+      .head { display: flex; justify-content: space-between; align-items: center; padding: 4px 14px 8px; color: var(--label-2); font-size: 12px; }
+      .head b { color: var(--label-2); font-size: 12px; font-weight: 600; letter-spacing: .2px; }
+      .x { width: 22px; height: 22px; border-radius: 50%; border: 0; background: var(--hover); color: var(--label-2); cursor: pointer; font-size: 11px; display: grid; place-items: center; }
+      .row { display: block; width: 100%; text-align: left; background: none; border: 0; color: inherit; padding: 9px 14px; cursor: pointer; position: relative; }
+      .row + .row::before { content: ''; position: absolute; top: 0; left: 14px; right: 0; border-top: .5px solid var(--sep); }
+      .row:hover { background: var(--hover); }
+      .row:active { background: color-mix(in srgb, var(--tint) 18%, transparent); }
+      .row .l { font-weight: 500; font-size: 13.5px; }
+      .row .s { color: var(--label-2); font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-top: 1px; }
+      .row.blocked { cursor: default; opacity: .6; }
       .row.blocked:hover { background: none; }
-      .row.sent .l::after { content: '  ✓ sent'; color: #34d399; font-weight: 500; }
-      .note { padding: 10px; color: #c3cad8; }
-      .note.warn { color: #fbbf24; }
-      .toast { position: fixed; right: 16px; bottom: 16px; max-width: 360px; padding: 10px 14px; border-radius: 10px; background: #151a23; color: #e6eaf2; border: 1px solid #2a3344; box-shadow: 0 8px 24px rgba(0,0,0,.4); }
+      .row.sent .l::after { content: '  ✓ Sent'; color: var(--green); font-weight: 600; }
+      .note { padding: 10px 14px; color: var(--label-2); }
+      .note.warn { color: var(--orange); }
+      .toast {
+        position: fixed; left: 50%; top: 16px; transform: translateX(-50%); max-width: 380px; padding: 10px 16px; border-radius: 14px; color: var(--label); font-weight: 500;
+        background: var(--material); backdrop-filter: blur(30px) saturate(180%); -webkit-backdrop-filter: blur(30px) saturate(180%); box-shadow: var(--shadow);
+      }
     </style>
+    <div class="wrap">
     <button class="fab" part="fab" title="Download with Fetchline">
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v9M4 7.5 8 11.5l4-4M3 14h10"/></svg>
       <span>Download</span>
     </button>
     <div class="menu" hidden></div>
-    <div class="toast" hidden></div>`;
+    <div class="toast" hidden></div>
+    </div>`;
 
   const fab = root.querySelector('.fab');
   const menu = root.querySelector('.menu');

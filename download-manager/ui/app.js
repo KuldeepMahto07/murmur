@@ -54,6 +54,61 @@ const eta = (d) => {
 };
 const STATUS = { queued: 'Queued', downloading: 'Downloading', paused: 'Paused', verifying: 'Verifying', completed: 'Complete', error: 'Error' };
 
+// --------------------------------------------------------------- icons
+// Fetchline's own line icons (24-unit grid, drawn for this app; no third-party symbol sets).
+
+const P = (d) => `<path d="${d}"/>`;
+const C = (cx, cy, r, fill = false) => `<circle cx="${cx}" cy="${cy}" r="${r}"${fill ? ' fill="currentColor" stroke="none"' : ''}/>`;
+const svg = (inner) => `<svg class="i" viewBox="0 0 24 24" aria-hidden="true">${inner}</svg>`;
+const I = {
+  plus: svg(P('M12 5v14M5 12h14')),
+  play: svg(P('M8 5.5v13l10.5-6.5z')),
+  pause: svg(P('M9 5.5v13M15 5.5v13')),
+  pauseAll: svg(C(12, 12, 9) + P('M9.5 9.5h5v5h-5z')),
+  trash: svg(P('M4.5 7h15M10 11v6M14 11v6M6.5 7l.9 11.2A2 2 0 0 0 9.4 20h5.2a2 2 0 0 0 2-1.8L17.5 7M9.5 7V4.5h5V7')),
+  queue: svg(P('M4 6.5h11M4 12h7M4 17.5h7M15 13v6l5-3z')),
+  stopQueue: svg(P('M4 6.5h11M4 12h7M4 17.5h7M15.5 13.5h4.5v4.5h-4.5z')),
+  gear: svg(P('M4 7.5h9M17 7.5h3M4 16.5h3M11 16.5h9') + C(15, 7.5, 2) + C(9, 16.5, 2)),
+  themeAuto: svg(C(12, 12, 8) + '<path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor" stroke="none"/>'),
+  themeLight: svg(C(12, 12, 4) + P('M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4')),
+  themeDark: svg(P('M19.5 14.5A8 8 0 1 1 9.5 4.5a6.5 6.5 0 0 0 10 10z')),
+  search: svg(C(11, 11, 6.5) + P('M20 20l-4.3-4.3')),
+  xmark: svg(P('M7 7l10 10M17 7L7 17')),
+  arrowDownCircle: svg(C(12, 12, 9) + P('M12 7.5v9M8 12.5l4 4 4-4')),
+  arrowDown: svg(P('M12 4.5v14M6.5 13l5.5 5.5 5.5-5.5')),
+  bolt: svg(P('M13 3L5.5 13H11l-1 8 7.5-10H12z')),
+  clock: svg(C(12, 12, 8.5) + P('M12 7.5V12l3 2')),
+  check: svg(P('M5 12.5l4.5 4.5L19 7.5')),
+  list: svg(P('M9 6.5h11M9 12h11M9 17.5h11') + C(4.8, 6.5, 1.1, true) + C(4.8, 12, 1.1, true) + C(4.8, 17.5, 1.1, true)),
+  archive: svg(P('M3.5 5.5h17v4h-17zM5 9.5v9.5h14V9.5M10 13.5h4')),
+  doc: svg(P('M7 3h7l5 5v13H7zM14 3v5h5M9.5 13h7M9.5 16.5h5')),
+  music: svg(P('M9 17.5V6l10-2v11.5') + C(7, 17.5, 2) + C(17, 15.5, 2)),
+  app: svg(P('M5 5h5.5v5.5H5zM13.5 5H19v5.5h-5.5zM5 13.5h5.5V19H5zM13.5 13.5H19V19h-5.5z')),
+  film: svg(P('M4 5h16v14H4zM8 5v14M16 5v14M4 9.5h4M4 14.5h4M16 9.5h4M16 14.5h4')),
+  photo: svg(P('M4 5.5h16v13H4zM4 15.5l4.5-4.5 4 4 2.5-2.5 5 5') + C(15.5, 9.5, 1.5)),
+  folder: svg(P('M3.5 7.5a2 2 0 0 1 2-2h3.8l2 2h7.2a2 2 0 0 1 2 2v7.5a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2z')),
+  sparkle: svg(P('M12 3.5l1.9 5.1 5.1 1.9-5.1 1.9L12 17.5l-1.9-5.1-5.1-1.9 5.1-1.9zM18.5 16l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z')),
+};
+for (const el of document.querySelectorAll('[data-icon]')) el.insertAdjacentHTML('afterbegin', I[el.dataset.icon] ?? '');
+
+// Sidebar entries: icon + iOS system color per view and category.
+const LOOK = {
+  all: ['arrowDown', 'var(--tint)'],
+  active: ['bolt', 'var(--green)'],
+  unfinished: ['clock', 'var(--orange)'],
+  finished: ['check', 'var(--teal)'],
+  queue: ['list', 'var(--indigo)'],
+  Archives: ['archive', 'var(--brown)'],
+  Documents: ['doc', 'var(--tint)'],
+  Music: ['music', 'var(--pink)'],
+  Programs: ['app', 'var(--gray)'],
+  Video: ['film', 'var(--purple)'],
+  Images: ['photo', 'var(--green)'],
+  General: ['folder', 'var(--teal)'],
+  Custom: ['folder', 'var(--yellow)'],
+};
+const look = (key) => LOOK[key] ?? ['folder', 'var(--gray)'];
+
 // ------------------------------------------------------------- sidebar
 
 const VIEWS = [
@@ -73,12 +128,32 @@ function viewFilter() {
 
 function renderSidebar() {
   const ds = state.snap.downloads;
-  const link = (key, label, n) => `<a data-view="${esc(key)}" class="${state.view === key ? 'on' : ''}">${esc(label)}<span class="n">${n || ''}</span></a>`;
-  let html = VIEWS.map(([k, l, f]) => link(k, l, ds.filter(f).length)).join('');
+  const link = (key, lookKey, label, n) => {
+    const [icon, color] = look(lookKey);
+    return `<a data-view="${esc(key)}" class="${state.view === key ? 'on' : ''}"><span class="sq" style="--c:${color}">${I[icon]}</span><span class="lbl">${esc(label)}</span><span class="n">${n || ''}</span></a>`;
+  };
+  let html = '<h5>Library</h5>' + VIEWS.map(([k, l, f]) => link(k, k, l, ds.filter(f).length)).join('');
   const cats = [...state.snap.settings.categories.map((c) => c.name), 'General', 'Custom'];
-  html += '<h5>Categories</h5>' + cats.map((c) => link('cat:' + c, c, ds.filter((d) => d.category === c).length)).join('');
-  $('#sidebar').innerHTML = html;
+  html += '<h5>Categories</h5>' + cats.map((c) => link('cat:' + c, c, c, ds.filter((d) => d.category === c).length)).join('');
+  const sb = $('#sidebar');
+  if (sb.innerHTML !== html) sb.innerHTML = html; // avoid needless re-layout every tick
+
+  const title = state.view.startsWith('cat:') ? state.view.slice(4) : (VIEWS.find((v) => v[0] === state.view) ?? VIEWS[0])[1];
+  $('#view-title').textContent = title.replace(/^All downloads$/, 'All Downloads');
+
+  const lic = state.snap.license;
+  const chip = $('#side-pro');
+  if (lic) {
+    chip.classList.toggle('is-pro', !!lic.pro);
+    chip.innerHTML =
+      lic.tier === 'pro'
+        ? `<b>Fetchline Pro</b><span>${esc(lic.email ?? '')}</span>`
+        : lic.tier === 'trial'
+          ? `<b>Pro Trial</b><span>${lic.trialDaysLeft} day${lic.trialDaysLeft === 1 ? '' : 's'} left</span>`
+          : `<b>Fetchline Free</b><span>${lic.trialAvailable ? 'Try Pro free for 14 days' : 'Upgrade to Pro'}</span>`;
+  }
 }
+$('#side-pro').onclick = () => $('#btn-settings').click();
 
 // ---------------------------------------------------------------- table
 
@@ -103,7 +178,7 @@ function renderTable() {
       const kindTag = d.kind === 'hls' ? ' · HLS' : d.kind === 'ytdlp' ? ' · yt-dlp' : '';
       const status = d.status === 'error' ? `Error: ${d.error}` : d.status === 'downloading' ? `${STATUS[d.status]} · ${d.activeConnections.length} conn` : STATUS[d.status];
       return `<tr data-id="${d.id}" class="${state.selected.has(d.id) ? 'sel' : ''}">
-        <td class="name" title="${esc(d.url)}"><span class="ext">${esc(ext)}</span>${esc(d.fileName)}</td>
+        <td class="name" title="${esc(d.url)}"><span class="ficon" style="--c:${look(d.category)[1]}">${esc(ext.slice(0, 4))}</span>${esc(d.fileName)}</td>
         <td class="narrow">${d.inQueue ? '●' : ''}</td>
         <td class="num">${bytes(d.size)}</td>
         <td><span class="bar"><i style="width:${(p * 100).toFixed(1)}%"></i></span><span class="pct">${(p * 100).toFixed(1)}%</span></td>
@@ -129,7 +204,14 @@ function renderToolbar() {
   $('#btn-resume').disabled = !sel.some((d) => ['paused', 'error', 'queued'].includes(d.status));
   $('#btn-pause').disabled = !sel.some((d) => ['downloading', 'queued'].includes(d.status));
   $('#btn-delete').disabled = !sel.length;
-  $('#btn-queue').textContent = state.snap.queueRunning ? '⏹ Stop queue' : '⏵ Start queue';
+  const q = $('#btn-queue');
+  const running = !!state.snap.queueRunning;
+  if (q.dataset.running !== String(running)) {
+    q.dataset.running = String(running);
+    q.innerHTML = running ? I.stopQueue : I.queue;
+    q.title = q.ariaLabel = running ? 'Stop queue' : 'Start queue';
+    q.classList.toggle('on', running);
+  }
 }
 
 // -------------------------------------------------------------- details
@@ -354,13 +436,24 @@ $('#btn-delete').onclick = () => {
 };
 $('#btn-pause-all').onclick = () => api('POST', '/pause-all');
 $('#btn-queue').onclick = () => api('POST', state.snap.queueRunning ? '/queue/stop' : '/queue/start');
-$('#btn-theme').onclick = () => {
-  const t = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+const THEMES = { auto: ['themeAuto', 'Auto'], light: ['themeLight', 'Light'], dark: ['themeDark', 'Dark'] };
+function applyTheme(t) {
+  if (!THEMES[t]) t = 'auto';
   document.documentElement.dataset.theme = t;
+  const b = $('#btn-theme');
+  b.innerHTML = I[THEMES[t][0]];
+  b.title = b.ariaLabel = `Appearance: ${THEMES[t][1]}`;
+}
+$('#btn-theme').onclick = () => {
+  const order = ['auto', 'light', 'dark'];
+  const t = order[(order.indexOf(document.documentElement.dataset.theme) + 1) % order.length];
+  applyTheme(t);
   localStorage.setItem('theme', t);
+  toast(`Appearance: ${THEMES[t][1]}`);
   render();
 };
-document.documentElement.dataset.theme = localStorage.getItem('theme') || 'dark';
+applyTheme(localStorage.getItem('theme') || 'auto');
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => render()); // repaint canvas colors
 $('#d-close').onclick = () => {
   state.focus = null;
   render();
@@ -502,8 +595,8 @@ $('#btn-settings').onclick = () => {
   f.onDone.value = s.scheduler.onDone;
   renderPro(state.snap.license);
   $('#cat-list').innerHTML = s.categories
-    .map((c, i) => `<div class="cat"><b>${esc(c.name)}</b><input data-i="${i}" data-k="exts" value="${esc(c.exts.join(' '))}" title="Extensions"></div>
-                    <div class="cat"><span class="muted">folder</span><input data-i="${i}" data-k="dir" value="${esc(c.dir)}"></div>`)
+    .map((c, i) => `<div class="cell"><b>${esc(c.name)}</b><input data-i="${i}" data-k="exts" value="${esc(c.exts.join(' '))}" title="File extensions" aria-label="${esc(c.name)} extensions"></div>
+                    <div class="cell sub"><span>Folder</span><input data-i="${i}" data-k="dir" value="${esc(c.dir)}" aria-label="${esc(c.name)} folder"></div>`)
     .join('');
   $('#dlg-settings').showModal();
 };

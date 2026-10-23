@@ -1,37 +1,54 @@
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="auto">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
   <title>Fetchline</title>
   <link rel="icon" href="logo.svg" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header class="topbar">
-    <div class="brand"><img src="logo.svg" alt="" width="22" height="22" /> Fetchline</div>
-    <div class="actions">
-      <button class="primary" id="btn-add" title="Add a URL (N)">＋ New download</button>
-      <span class="sep"></span>
-      <button id="btn-resume" title="Resume selected">▶ Resume</button>
-      <button id="btn-pause" title="Pause selected">⏸ Pause</button>
-      <button id="btn-pause-all" title="Pause everything">⏹ Pause all</button>
-      <button id="btn-delete" title="Remove selected (Del)">🗑 Remove</button>
-      <span class="sep"></span>
-      <button id="btn-queue" title="Start or stop the queue">⏵ Start queue</button>
-      <button id="btn-settings" title="Settings">⚙ Settings</button>
-      <button id="btn-theme" title="Light / dark">◐</button>
-    </div>
-  </header>
+  <div class="backdrop" aria-hidden="true"><i></i><i></i><i></i></div>
 
-  <div class="layout">
-    <nav class="sidebar" id="sidebar"></nav>
+  <div class="window">
+    <aside class="sidebar">
+      <div class="side-head">
+        <img src="logo.svg" alt="" width="26" height="26" />
+        <span>Fetchline</span>
+      </div>
+      <nav id="sidebar" aria-label="Views"></nav>
+      <button type="button" class="side-pro" id="side-pro" title="Fetchline Pro"></button>
+    </aside>
 
     <main class="main">
-      <div class="filterbar">
-        <input id="search" type="search" placeholder="Filter by name or URL…" />
-        <span id="totals" class="muted"></span>
-      </div>
+      <header class="toolbar">
+        <div class="titles">
+          <h1 id="view-title">All Downloads</h1>
+          <span id="totals"></span>
+        </div>
+        <div class="tools">
+          <label class="search">
+            <span data-icon="search"></span>
+            <input id="search" type="search" placeholder="Search" aria-label="Search downloads" />
+          </label>
+          <div class="tb-group" role="group" aria-label="Selected downloads">
+            <button class="tb" id="btn-resume" data-icon="play" title="Resume" aria-label="Resume"></button>
+            <button class="tb" id="btn-pause" data-icon="pause" title="Pause" aria-label="Pause"></button>
+            <button class="tb" id="btn-delete" data-icon="trash" title="Remove (Del)" aria-label="Remove"></button>
+          </div>
+          <div class="tb-group" role="group" aria-label="All downloads">
+            <button class="tb" id="btn-pause-all" data-icon="pauseAll" title="Pause all" aria-label="Pause all"></button>
+            <button class="tb" id="btn-queue" data-icon="queue" title="Start queue" aria-label="Start queue"></button>
+          </div>
+          <div class="tb-group" role="group" aria-label="App">
+            <button class="tb" id="btn-theme" data-icon="themeAuto" title="Appearance: Auto" aria-label="Appearance"></button>
+            <button class="tb" id="btn-settings" data-icon="gear" title="Settings" aria-label="Settings"></button>
+          </div>
+          <button class="add" id="btn-add" data-icon="plus" title="New download (N)" aria-label="New download"></button>
+        </div>
+      </header>
+
       <div class="table-wrap">
         <table id="list">
           <thead>
@@ -49,33 +66,39 @@
           <tbody></tbody>
         </table>
         <div id="empty" class="empty hidden">
-          <p>No downloads here yet.</p>
-          <p class="muted">Paste a link with <kbd>Ctrl</kbd>+<kbd>V</kbd> or press <b>New download</b>.</p>
+          <div class="empty-icon" data-icon="arrowDownCircle"></div>
+          <p class="empty-title">No Downloads</p>
+          <p class="muted">Paste a link with <kbd>Ctrl</kbd> <kbd>V</kbd>, press <kbd>N</kbd>,<br />or use the Download button on any video.</p>
         </div>
       </div>
 
       <section class="details hidden" id="details">
         <div class="details-head">
-          <strong id="d-name"></strong>
-          <span class="muted" id="d-sub"></span>
-          <button class="ghost" id="d-close" title="Close">✕</button>
+          <div>
+            <strong id="d-name"></strong>
+            <span class="muted" id="d-sub"></span>
+          </div>
+          <button class="round ghost" id="d-close" data-icon="xmark" title="Close" aria-label="Close"></button>
         </div>
         <canvas id="segmap" height="26"></canvas>
         <div class="details-grid">
-          <div>
+          <div class="card">
+            <h4>Info</h4>
             <dl id="d-info"></dl>
           </div>
-          <div>
+          <div class="card">
             <h4>Connections</h4>
             <table class="mini" id="d-conns"><thead><tr><th>#</th><th>Range</th><th>Received</th><th class="num">Speed</th></tr></thead><tbody></tbody></table>
           </div>
-          <div>
-            <h4>Per-download settings</h4>
-            <label>Speed limit (KB/s, 0 = none) <input type="number" min="0" id="d-limit" /></label>
-            <label>Connections <input type="number" min="1" max="32" id="d-conn" /></label>
-            <label>Expected checksum <input id="d-expect" placeholder="sha256:… or md5:…" /></label>
-            <label>URL (refresh an expired link) <input id="d-url" /></label>
-            <div class="row"><button id="d-save">Apply</button><button id="d-redo" class="ghost">Download again</button></div>
+          <div class="card">
+            <h4>This Download</h4>
+            <div class="group">
+              <label class="cell"><span>Speed limit <small>KB/s · 0 = none</small></span><input type="number" min="0" id="d-limit" /></label>
+              <label class="cell"><span>Connections</span><input type="number" min="1" max="32" id="d-conn" /></label>
+              <label class="cell stack"><span>Expected checksum</span><input id="d-expect" placeholder="sha256:… or md5:…" /></label>
+              <label class="cell stack"><span>URL <small>refresh an expired link</small></span><input id="d-url" /></label>
+            </div>
+            <div class="row"><button class="primary" id="d-save">Apply</button><button id="d-redo">Download Again</button></div>
           </div>
         </div>
         <details><summary>Event log</summary><pre id="d-log"></pre></details>
@@ -83,123 +106,142 @@
     </main>
   </div>
 
-  <dialog id="dlg-add">
+  <dialog id="dlg-add" class="sheet">
     <form method="dialog" id="form-add">
-      <h3>New download</h3>
-      <label>URL <input name="url" required placeholder="https://…" autocomplete="off" /></label>
-      <div class="two">
-        <label>Save as <input name="fileName" placeholder="(from server)" /></label>
-        <label>Category <select name="category"></select></label>
+      <header class="sheet-head">
+        <button value="cancel" formnovalidate class="link">Cancel</button>
+        <h3>New Download</h3>
+        <button value="now" class="link strong">Start</button>
+      </header>
+      <div class="group">
+        <label class="cell stack"><span>URL</span><input name="url" required placeholder="https://…" autocomplete="off" /></label>
       </div>
-      <label>Folder <input name="dir" placeholder="(category folder)" /></label>
-      <div class="two">
-        <label>Connections <input name="connections" type="number" min="1" max="32" /></label>
-        <label>Speed limit KB/s <input name="speedLimit" type="number" min="0" value="0" /></label>
+      <div class="group">
+        <label class="cell"><span>Save as</span><input name="fileName" placeholder="From server" /></label>
+        <label class="cell"><span>Category</span><select name="category"></select></label>
+        <label class="cell"><span>Folder</span><input name="dir" placeholder="Category folder" /></label>
       </div>
-      <label>Expected checksum (optional) <input name="checksum" placeholder="sha256:… or md5:…" /></label>
-      <label>Description <input name="description" /></label>
-      <div class="row end">
-        <button value="cancel" formnovalidate class="ghost">Cancel</button>
-        <button value="paused" class="ghost">Add paused</button>
-        <button value="queue">Add to queue</button>
-        <button value="now" class="primary">Start now</button>
+      <div class="group">
+        <label class="cell"><span>Connections</span><input name="connections" type="number" min="1" max="32" /></label>
+        <label class="cell"><span>Speed limit <small>KB/s</small></span><input name="speedLimit" type="number" min="0" value="0" /></label>
+      </div>
+      <div class="group">
+        <label class="cell stack"><span>Expected checksum <small>optional</small></span><input name="checksum" placeholder="sha256:… or md5:…" /></label>
+        <label class="cell stack"><span>Description</span><input name="description" /></label>
+      </div>
+      <div class="sheet-actions">
+        <button value="paused">Add Paused</button>
+        <button value="queue">Add to Queue</button>
+        <button value="now" class="primary">Start Now</button>
       </div>
     </form>
   </dialog>
 
-  <dialog id="dlg-settings">
+  <dialog id="dlg-settings" class="sheet wide">
     <form method="dialog" id="form-settings">
-      <h3>Settings</h3>
-      <fieldset class="pro">
-        <legend>Fetchline Pro</legend>
-        <div id="pro-status" class="pro-status"></div>
-        <div id="pro-actions">
-          <div class="row" id="pro-key-row">
-            <input id="pro-key" placeholder="Paste your licence key (FL1-…)" autocomplete="off" spellcheck="false" />
-            <button type="button" id="pro-activate">Activate</button>
-          </div>
-          <div class="row">
-            <button type="button" id="pro-trial" class="ghost">Start 14-day free trial</button>
-            <a id="pro-buy" class="ghost-link" href="#" target="_blank" rel="noopener">Buy Pro, $19 lifetime</a>
-            <button type="button" id="pro-remove" class="ghost">Remove licence</button>
-          </div>
+      <header class="sheet-head">
+        <button value="cancel" formnovalidate class="link">Cancel</button>
+        <h3>Settings</h3>
+        <button value="save" class="link strong">Save</button>
+      </header>
+
+      <p class="group-title">Fetchline Pro</p>
+      <div class="group pro">
+        <div class="cell"><div id="pro-status" class="pro-status"></div></div>
+        <div class="cell" id="pro-key-row">
+          <input id="pro-key" placeholder="Paste your licence key (FL1-…)" autocomplete="off" spellcheck="false" />
+          <button type="button" class="primary" id="pro-activate">Activate</button>
         </div>
-        <p class="muted small">Pro adds up to 32 connections per download and actions when a scheduled queue finishes. Speed, resume and verification stay free.</p>
-      </fieldset>
-      <div class="two">
-        <label>Connections per download <span class="pro-hint" id="conn-hint"></span><input name="connections" type="number" min="1" max="32" /></label>
-        <label>Queue: downloads at once <input name="maxConcurrent" type="number" min="1" max="20" /></label>
+        <div class="cell actions">
+          <button type="button" id="pro-trial">Start 14-Day Free Trial</button>
+          <a id="pro-buy" class="link" href="#" target="_blank" rel="noopener">Buy Pro · $19 lifetime</a>
+          <button type="button" id="pro-remove" class="destructive">Remove Licence</button>
+        </div>
       </div>
-      <label>Global speed limit KB/s (0 = none) <input name="globalSpeedLimit" type="number" min="0" /></label>
-      <label>Base folder <input name="baseDir" /></label>
-      <fieldset>
-        <legend>Scheduler (daily, local time)</legend>
-        <label class="check"><input type="checkbox" name="schedEnabled" /> Start the queue automatically</label>
-        <div class="two">
-          <label>Start at <input type="time" name="startAt" /></label>
-          <label>Stop at <input type="time" name="stopAt" /></label>
-        </div>
-        <label>When a scheduled queue finishes
+      <p class="group-foot">Pro adds up to 32 connections per download and actions when a scheduled queue finishes. Speed, resume and verification stay free.</p>
+
+      <p class="group-title">Downloads</p>
+      <div class="group">
+        <label class="cell"><span>Connections per download <small id="conn-hint"></small></span><input name="connections" type="number" min="1" max="32" /></label>
+        <label class="cell"><span>Downloads at once <small>queue</small></span><input name="maxConcurrent" type="number" min="1" max="20" /></label>
+        <label class="cell"><span>Speed limit <small>KB/s · 0 = none</small></span><input name="globalSpeedLimit" type="number" min="0" /></label>
+        <label class="cell stack"><span>Download folder</span><input name="baseDir" /></label>
+      </div>
+
+      <p class="group-title">Scheduler</p>
+      <div class="group">
+        <label class="cell"><span>Start the queue automatically</span><input type="checkbox" class="switch" name="schedEnabled" /></label>
+        <label class="cell"><span>Start at</span><input type="time" name="startAt" /></label>
+        <label class="cell"><span>Stop at</span><input type="time" name="stopAt" /></label>
+        <label class="cell"><span>When finished</span>
           <select name="onDone">
-            <option value="none">Do nothing</option>
+            <option value="none">Do Nothing</option>
             <option value="exit" data-pro>Close Fetchline</option>
-            <option value="shutdown" data-pro>Shut down the PC (60 s warning)</option>
+            <option value="shutdown" data-pro>Shut Down the PC</option>
           </select>
         </label>
-      </fieldset>
-      <fieldset>
-        <legend>Categories</legend>
-        <div id="cat-list"></div>
-      </fieldset>
-      <div class="row end">
-        <button type="button" id="btn-welcome" class="ghost" style="margin-right:auto">Setup guide…</button>
-        <button value="cancel" formnovalidate class="ghost">Cancel</button>
+      </div>
+      <p class="group-foot">Daily, local time. Shutting down gives a 60-second warning.</p>
+
+      <p class="group-title">Categories</p>
+      <div class="group" id="cat-list"></div>
+
+      <div class="sheet-actions">
+        <button type="button" id="btn-welcome" class="link left">Setup Guide…</button>
+        <button value="cancel" formnovalidate>Cancel</button>
         <button value="save" class="primary">Save</button>
       </div>
     </form>
   </dialog>
 
-  <dialog id="dlg-welcome">
+  <dialog id="dlg-welcome" class="sheet wide">
     <form method="dialog" id="form-welcome">
-      <h3>Welcome to Fetchline</h3>
-      <p class="muted">Five quick steps. You can change all of this later in Settings.</p>
+      <div class="hello">
+        <img src="logo.svg" alt="" width="64" height="64" />
+        <h2>Welcome to Fetchline</h2>
+        <p class="muted">Five quick steps. You can change all of this later in Settings.</p>
+      </div>
       <ol class="steps">
         <li>
-          <b>Where should downloads go?</b>
-          <label>Download folder <input name="baseDir" /></label>
-          <span class="muted small">Files are sorted into category subfolders here (Video, Music, Archives…).</span>
+          <p class="group-title">Where should downloads go?</p>
+          <div class="group"><label class="cell stack"><span>Download folder</span><input name="baseDir" /></label></div>
+          <p class="group-foot">Files are sorted into category subfolders here: Video, Music, Archives…</p>
         </li>
         <li>
-          <b>Connect your browser</b>
+          <p class="group-title">Connect your browser</p>
           <div id="w-ext" class="ext-status">Waiting for the browser extension…</div>
-          <div class="muted small" id="w-ext-help">
+          <p class="group-foot" id="w-ext-help">
             In Chrome or Edge open <code>chrome://extensions</code> (or <code>edge://extensions</code>), turn on <i>Developer mode</i>, click <i>Load unpacked</i> and choose
             <code id="w-ext-path"></code>. This step ticks itself off when the extension connects.
+          </p>
+        </li>
+        <li>
+          <p class="group-title">Your connection</p>
+          <div class="group">
+            <label class="cell choice"><span>Fast and stable <small>8 connections per download</small></span><input type="radio" name="net" value="8" checked /></label>
+            <label class="cell choice"><span>Slow or unstable <small>4 connections, gentler on the line</small></span><input type="radio" name="net" value="4" /></label>
           </div>
         </li>
-        <li>
-          <b>Your connection</b>
-          <label class="check"><input type="radio" name="net" value="8" checked /> Fast and stable (8 connections per download)</label>
-          <label class="check"><input type="radio" name="net" value="4" /> Slow or unstable (4 connections, gentler on the line)</label>
-        </li>
         <li id="w-startup-step">
-          <b>Start with Windows</b>
-          <label class="check"><input type="checkbox" name="startup" /> Start Fetchline in the tray when I sign in</label>
+          <p class="group-title">Start with Windows</p>
+          <div class="group"><label class="cell"><span>Start Fetchline in the tray when I sign in</span><input type="checkbox" class="switch" name="startup" /></label></div>
         </li>
         <li>
-          <b>Try it</b>
-          <div class="row"><button type="button" id="w-test">Run a test download</button><span id="w-test-status" class="muted small"></span></div>
-          <span class="muted small">Downloads an 11 KB file from kernel.org and checks it against the SHA-256 kernel.org publishes.</span>
+          <p class="group-title">Try it</p>
+          <div class="group">
+            <div class="cell"><button type="button" id="w-test">Run a Test Download</button><span id="w-test-status" class="muted small"></span></div>
+          </div>
+          <p class="group-foot">Downloads an 11 KB file from kernel.org and checks it against the SHA-256 kernel.org publishes.</p>
         </li>
       </ol>
-      <div class="row end">
-        <button value="later" formnovalidate class="ghost">Skip for now</button>
+      <div class="sheet-actions">
+        <button value="later" formnovalidate>Skip for Now</button>
         <button value="done" class="primary">Finish</button>
       </div>
     </form>
   </dialog>
 
-  <div id="toast" class="toast hidden"></div>
+  <div id="toast" class="toast hidden" role="status"></div>
   <script src="app.js" type="module"></script>
 </body>
 </html>
