@@ -21,8 +21,8 @@ const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<
   $('#ytdlpStatus').textContent = !status.fetchlineUp
     ? 'Needs Fetchline running.'
     : status.ytdlpVersion
-      ? `yt-dlp ${status.ytdlpVersion} found. Downloads always go to Fetchline.`
-      : 'yt-dlp not found: winget install yt-dlp.yt-dlp';
+      ? 'Ready. These downloads always go to Fetchline.'
+      : "Video-site support isn't set up on this PC yet.";
   $('#ytdlp').onchange = (e) => save({ ytdlp: e.target.checked });
   // @ytdlp:end
   $('#port').value = status.port;

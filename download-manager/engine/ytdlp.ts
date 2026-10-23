@@ -73,12 +73,12 @@ async function withCookies<T>(dir: string, cookies: BrowserCookie[] | undefined,
 /** Asks yt-dlp what it can get from a page and turns it into a short quality menu. */
 export async function probeYtdlp(url: string, cookies: BrowserCookie[] | undefined, tmpDir: string) {
   const info = await ytdlpInfo();
-  if (!info) throw new Error('yt-dlp is not installed (winget install yt-dlp.yt-dlp)');
+  if (!info) throw new Error("Video-site support isn't set up on this PC yet.");
   if (!/^https?:\/\//i.test(url)) throw new Error('Only http(s) pages can be checked');
   const out = await withCookies(tmpDir, cookies, (cookieArgs) =>
     run(info.bin, ['-J', '--no-playlist', '--no-warnings', '--no-progress', ...cookieArgs, url], 90_000),
   );
-  if (out.code !== 0) throw new Error(lastError(out.stderr) || 'yt-dlp could not read this page');
+  if (out.code !== 0) throw new Error(lastError(out.stderr) || 'Could not read this page');
   const j = JSON.parse(out.stdout);
   if (j._type === 'playlist') throw new Error('This page is a playlist; open a single video');
   const formats: any[] = j.formats ?? [];
@@ -152,7 +152,7 @@ export class YtdlpDownload {
     this.hooks.changed();
     try {
       const info = await ytdlpInfo();
-      if (!info) throw new Error('yt-dlp is not installed (winget install yt-dlp.yt-dlp)');
+      if (!info) throw new Error("Video-site support isn't set up on this PC yet.");
       await fs.mkdir(rec.dir, { recursive: true });
       const args = [
         '--encoding', 'utf-8',
@@ -166,7 +166,7 @@ export class YtdlpDownload {
       ];
       if (!y.audioOnly) args.push('--merge-output-format', 'mp4');
       if (rec.speedLimit) args.push('-r', String(rec.speedLimit));
-      this.note(`yt-dlp ${info.version}: ${y.label} from ${rec.url}`);
+      this.note(`Video-site download: ${y.label} from ${rec.url}`);
       let finalPath = '';
       let lastErr = '';
       const code = await withCookies(rec.dir, y.cookies, (cookieArgs) =>
@@ -203,7 +203,7 @@ export class YtdlpDownload {
         rec.status = 'paused';
         return;
       }
-      if (code !== 0 || !finalPath) throw new Error(lastErr || `yt-dlp exited with code ${code}`);
+      if (code !== 0 || !finalPath) throw new Error(friendly(lastErr) || `The download stopped unexpectedly (code ${code})`);
       finalPath = await locate(finalPath);
       rec.dir = path.dirname(finalPath);
       rec.fileName = path.basename(finalPath);
@@ -297,7 +297,22 @@ export async function locate(reported: string) {
 
 function lastError(stderr: string) {
   const lines = stderr.split(/\r?\n/).filter((l) => l.startsWith('ERROR:'));
-  return lines.at(-1)?.slice(6).trim();
+  return friendly(lines.at(-1)?.slice(6).trim());
+}
+
+/**
+ * Error text shown in the app and extension: drop the helper's own name, its
+ * command-line hints and links, and the "[extractor] id:" prefix.
+ */
+export function friendly(msg: string | undefined) {
+  if (!msg) return msg;
+  return msg
+    .replace(/^\[[^\]]+\]\s*[^:]{1,40}:\s*/, '')
+    .replace(/\s*(See|Also see)\s+https?:\/\/\S+.*$/i, '')
+    .replace(/\s*Use --[\w-]+.*$/i, '')
+    .replace(/https?:\/\/github\.com\/yt-dlp\S*/gi, '')
+    .replace(/yt-dlp/gi, 'the downloader')
+    .trim();
 }
 
 function run(bin: string, args: string[], timeoutMs: number) {

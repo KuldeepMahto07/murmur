@@ -222,7 +222,7 @@
     const emptyText = src.startsWith('blob:')
       ? 'No downloadable stream seen yet. Play the video for a few seconds and try again.'
       : 'No downloadable media seen on this page yet. Start playback and try again.';
-    if (!res.engine) rows.length = 0; // target app down: only yt-dlp (via Fetchline) can help // @store-replace: if (!res.engine) rows.length = 0;
+    if (!res.engine) rows.length = 0; // target app down: only video-site support (via Fetchline) can help // @store-replace: if (!res.engine) rows.length = 0;
     if (!rows.length && !res.ytdlp) return note(emptyText); // @store-replace: if (!rows.length) return note(emptyText);
 
     const noteEl = menu.querySelector('.note');
@@ -234,7 +234,7 @@
     // Ask yt-dlp (through Fetchline) for this page's qualities; this can take a few seconds.
     const wait = document.createElement('div');
     wait.className = 'note';
-    wait.textContent = 'Checking with yt-dlp…';
+    wait.textContent = 'Looking for video qualities…';
     menu.appendChild(wait);
     const forUrl = location.href;
     const y = await chrome.runtime.sendMessage({ type: 'ytdlp-list', pageUrl: forUrl }).catch((e) => ({ error: String(e) }));

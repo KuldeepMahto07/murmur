@@ -175,7 +175,7 @@ function renderTable() {
     .map((d) => {
       const p = progress(d);
       const ext = (d.fileName.match(/\.([a-z0-9]{1,5})$/i) || [])[1] || '';
-      const kindTag = d.kind === 'hls' ? ' · HLS' : d.kind === 'ytdlp' ? ' · yt-dlp' : '';
+      const kindTag = d.kind === 'hls' ? ' · HLS' : d.kind === 'ytdlp' ? ' · video site' : '';
       const status = d.status === 'error' ? `Error: ${d.error}` : d.status === 'downloading' ? `${STATUS[d.status]} · ${d.activeConnections.length} conn` : STATUS[d.status];
       return `<tr data-id="${d.id}" class="${state.selected.has(d.id) ? 'sel' : ''}">
         <td class="name" title="${esc(d.url)}"><span class="ficon" style="--c:${look(d.category)[1]}">${esc(ext.slice(0, 4))}</span>${esc(d.fileName)}</td>
@@ -231,7 +231,7 @@ function renderDetails() {
     ['Category', esc(d.category)],
     ['Resumable', d.size == null && !d.resumable ? 'unknown' : d.resumable ? 'Yes' : 'No — restarts from zero'],
     d.kind === 'ytdlp'
-      ? ['Source', `yt-dlp · ${esc(d.ytdlp?.label ?? '')}${d.ytdlp?.phase === 'merging' ? ' · merging audio and video' : ''}`]
+      ? ['Source', `Video site · ${esc(d.ytdlp?.label ?? '')}${d.ytdlp?.phase === 'merging' ? ' · merging audio and video' : ''}`]
       : d.kind === 'hls'
       ? ['Stream', `HLS ${esc(d.hls?.label ?? '')} · ${d.hls?.done ?? 0} / ${d.hls?.total || '?'} segments`]
       : ['Segments', d.segments.length],

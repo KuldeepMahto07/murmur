@@ -269,8 +269,8 @@ try {
   await cdp.send('Page.navigate', { url: siteUrl }, s);
   await sleep(3500); // let the video play and the page fetch its playlists
 
-  const { frameTree } = await cdp.send('Page.getFrameTree', {}, s);
-  const iso = () => contexts.filter((c) => c.auxData?.type === 'isolated' && c.auxData.frameId === frameTree.frame.id && c.name === 'Fetchline Integration').pop();
+  let mainFrameId = (await cdp.send('Page.getFrameTree', {}, s)).frameTree.frame.id;
+  const iso = () => contexts.filter((c) => c.auxData?.type === 'isolated' && c.auxData.frameId === mainFrameId && c.name === 'Fetchline Integration').pop();
   const inExt = async (expr: string) => {
     const ctx = iso();
     if (!ctx) throw new Error('content script context not found');
@@ -464,7 +464,9 @@ try {
       vr = await inPage(`(() => { const v = [...document.querySelectorAll('video')].find(v => { const r = v.getBoundingClientRect(); return r.width > 200 && r.height > 120; }); if (!v) return null; const r = v.getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2 }; })()`);
     }
     check(!!vr, 'YouTube player found on the page');
-    for (let i = 0; i < 20 && !iso(); i++) await sleep(250);
+    // A cross-site navigation can give the main frame a new id; look it up again.
+    mainFrameId = (await cdp.send('Page.getFrameTree', {}, s)).frameTree.frame.id;
+    for (let i = 0; i < 80 && !iso(); i++) await sleep(250);
     if (vr) {
       await sleep(2000);
       await mouse('mouseMoved', 5, 5);
@@ -484,14 +486,15 @@ try {
         await sleep(500);
         yrows = await inExt(`[...__fetchlineRoot.querySelectorAll('.menu .row')].map(b => ({ l: b.querySelector('.l').textContent, s: b.querySelector('.s').textContent }))`);
         const waiting = await inExt(`[...__fetchlineRoot.querySelectorAll('.menu .note')].map(n => n.textContent).join(' | ')`);
-        if (yrows.some((r) => r.s.includes('yt-dlp')) || (waiting && !waiting.includes('Checking') && !waiting.includes('Looking'))) {
+        if (yrows.some((r) => r.l === '360p MP4') || (waiting && !waiting.includes('Looking'))) {
           if (!yrows.length) console.log('        menu note:', waiting);
           break;
         }
       }
       console.log('        menu:', yrows.map((r) => `${r.l} [${r.s}]`).join(' | '));
       await shot('youtube-menu.png');
-      check(yrows.some((r) => r.l === '360p MP4' && r.s.includes('yt-dlp')), 'menu lists yt-dlp qualities for the YouTube video');
+      check(yrows.some((r) => r.l === '360p MP4' && r.s.includes('Youtube')), 'menu lists video-site qualities for the YouTube video');
+      check(!(await inExt(`__fetchlineRoot.querySelector('.menu').textContent`)).toLowerCase().includes('yt-dlp'), 'the helper tool is not named anywhere in the menu');
       const clicked = await inExt(`(() => { const b = [...__fetchlineRoot.querySelectorAll('.menu .row')].find(b => b.querySelector('.l').textContent === '360p MP4'); if (!b) return false; b.click(); return true; })()`);
       check(clicked, 'clicked 360p MP4');
       let yd: any = null;

@@ -297,8 +297,8 @@ async function ytdlpEntries(pageUrl) {
   const hit = ytdlpCache.get(pageUrl);
   if (hit && Date.now() - hit.at < 10 * 60_000) return hit.result;
   const info = await engineInfo();
-  if (!info) return { error: 'yt-dlp downloads need Fetchline running. Start it, then try again.' };
-  if (!info.ytdlp) return { error: 'yt-dlp is not installed. Run: winget install yt-dlp.yt-dlp' };
+  if (!info) return { error: 'Downloads from this site need Fetchline running. Start it, then try again.' };
+  if (!info.ytdlp) return { error: "Video-site support isn't set up on this PC yet." };
   const known = YTDLP_SITES.test(new URL(pageUrl).hostname);
   let p;
   try {
@@ -306,13 +306,13 @@ async function ytdlpEntries(pageUrl) {
   } catch (e) {
     const msg = String(e.message || e);
     // On unknown sites a failed probe just means "nothing for yt-dlp here".
-    return { error: known ? `yt-dlp: ${msg}` : null };
+    return { error: known ? msg : null };
   }
   if (p.drm) return { error: 'This video is DRM-protected; it cannot be downloaded.' };
   const result = {
     title: p.title,
     entries: p.choices.map((c) => ({
-      kind: 'ytdlp', url: pageUrl, label: c.label, sub: [c.approxSize ? '~' + fmtSize(c.approxSize) : '', `via yt-dlp (${p.extractor})`].filter(Boolean).join(' · '),
+      kind: 'ytdlp', url: pageUrl, label: c.label, sub: [c.approxSize ? '~' + fmtSize(c.approxSize) : '', p.extractor].filter(Boolean).join(' · '),
       format: c.format, audioOnly: c.audioOnly, approxSize: c.approxSize, title: p.title,
     })),
   };
