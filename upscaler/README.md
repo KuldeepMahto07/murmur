@@ -1,6 +1,6 @@
 # Clarion: local AI image and video upscaler
 
-Clarion is an original app. Its feature set is modelled on the study in [docs/topaz-analysis.md](docs/topaz-analysis.md), and the approved stack is in [docs/plan.md](docs/plan.md). Everything runs on your own machine with open-source models.
+Clarion is an original app. Its feature set is modelled on the study in [saas/01-idea/competitor-analysis/topaz-analysis.md](saas/01-idea/competitor-analysis/topaz-analysis.md), and the approved stack is in [docs/plan.md](docs/plan.md). Everything runs on your own machine with open-source models.
 
 ## Run
 
@@ -39,3 +39,6 @@ backend\.venv\Scripts\python scripts\e2e.py
 
 ## Licences of bundled models
 Real-ESRGAN weights: BSD-3-Clause. GFPGAN v1.4: Apache-2.0. YuNet: Apache-2.0. spandrel: MIT.
+
+## Business plan
+The product is organised by the 16-stage SaaS lifecycle in [saas/](saas/README.md).
