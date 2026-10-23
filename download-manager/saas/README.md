@@ -13,9 +13,9 @@
 |---|---|---|---|
 | 01 | [Idea](01-idea/) | ✅ Done | — (IDM teardown and competitor grid in [competitor-analysis](01-idea/competitor-analysis/)) |
 | 02 | [Validation](02-validation/) | 🟡 In progress | Run 15 [customer interviews](02-validation/customer-interviews/) (IDM, AB DM and course users) and test $9 / $15 / $25 |
-| 03 | [Planning](03-planning/) | 🟡 In progress | Week 1 of the [development plan](03-planning/development-plan/): choose the desktop shell (Node SEA vs. Electron) |
+| 03 | [Planning](03-planning/) | 🟡 In progress | [Development plan](03-planning/development-plan/) week 3: installer and code signing. The interim tray shell is done; decide later whether Electron replaces it |
 | 04 | [Design](04-design/) | 🟡 In progress | Store screenshots and promo tile; first-run onboarding screens |
-| 05 | [Development](05-development/) | 🟡 In progress | Engine, UI, API and extension are done. Next: tray shell, extension pairing token, licence keys |
+| 05 | [Development](05-development/) | 🟡 In progress | Engine, UI, API, extension and the Windows tray app are done. Next: extension pairing token, licence keys |
 | 06 | [Infrastructure](06-infrastructure/) | 🟡 In progress | Code signing and a GitHub Actions workflow running `verify.ts --local` and `verify-extension.ts` |
 | 07 | [Testing](07-testing/) | 🟡 In progress | E2E suites pass. Add `node:test` unit tests; plan a 2-week beta |
 | 08 | [Launch](08-launch/) | ⚪ Not started | Landing page with honest limits; work through the [public-release](08-launch/public-release/) go/no-go list |

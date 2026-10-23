@@ -13,4 +13,9 @@
 
 The extension's UI (popup and video overlay) is in [`extension/`](../../../extension/). See [integrations](../integrations/README.md).
 
-**Missing:** the desktop shell (tray, notifications), a first-run screen, and localisation.
+**Desktop shell (interim, Windows):** [`desktop/tray.ps1`](../../../desktop/tray.ps1), started by [`desktop/Fetchline.vbs`](../../../desktop/Fetchline.vbs).
+- PowerShell and WinForms, with no extra installs.
+- Runs the engine hidden; a tray icon menu (open, queue, pause all, start with Windows, quit); notifications when downloads finish or fail; one tray per port.
+- Verified by [`scripts/verify-tray.ps1`](../../../scripts/verify-tray.ps1).
+
+**Missing:** a first-run screen, localisation, and a packaged shell (Electron or a Node single-executable build) for the installer.

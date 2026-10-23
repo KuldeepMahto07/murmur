@@ -5,8 +5,8 @@
 ## Next 6 weeks
 | Week | Work | Done when |
 |---|---|---|
-| 1 | Pick the shell: try a Node SEA build of the engine and Electron for the UI and tray | A one-file prototype starts on a clean VM |
-| 2 | Tray icon, notifications, start with Windows, single instance (port claim already done in `engine/main.ts`) | The engine runs with no console window |
+| 1 | Pick the shell. **Interim done:** a PowerShell tray app (`desktop/`). Still to do: try a Node SEA build or Electron for a packaged installer | A one-file prototype starts on a clean VM |
+| 2 | ✅ Tray icon, notifications, start with Windows, single instance (`desktop/tray.ps1`, verified by `scripts/verify-tray.ps1`) | ✅ The engine runs with no console window |
 | 3 | Installer (MSIX or Inno Setup) and a code-signing pipeline | Windows SmartScreen shows our publisher name |
 | 4 | Clipboard watcher; extension polish (options page, icons) | Store assets ready |
 | 5 | GitHub Actions CI running `scripts/verify.ts --local` and `verify-extension.ts` | Green on every PR |

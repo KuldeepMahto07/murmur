@@ -9,5 +9,5 @@
 4. **Integrity:** paste an expected `sha256:` value → the download turns red on a mismatch.
 
 ## Gaps
-- **No first-run guide.** It should cover how to install the extension and that the engine must be running. The "not running" message points users to `start.bat`, which is not friendly for non-developers. The desktop shell fixes this.
+- **No first-run guide.** It should cover how to install the extension and that the engine must be running. The tray app (`desktop/Fetchline.vbs`, with an optional Start with Windows) removes the need for `start.bat`. The "not running" message should point to it once there's an installer.
 - **YouTube expectations.** The menu explains, but the store listing must say so up front.

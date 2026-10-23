@@ -9,4 +9,4 @@
 4. Test download: a small public file showing the segment map and a ✓ verified SHA-256. This is the "aha" moment.
 5. Optional: telemetry opt-in, explained in plain words.
 
-**Fixes a known pain:** today a user has to know to run `start.bat`. The shell will start with Windows and sit in the tray.
+**Fixes a known pain:** the tray app (`desktop/`) already starts with Windows on request and sits in the tray. The remaining gap is an installer that sets it up and walks through these steps.

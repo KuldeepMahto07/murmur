@@ -9,6 +9,15 @@ A segmented download manager, built from a study of what Internet Download Manag
 
 ## Run
 
+**Recommended (Windows tray app):** double-click `download-manager\desktop\Fetchline.vbs`.
+- It starts the engine with no console window and puts a Fetchline icon in the system tray.
+- Double-click the icon to open the UI. Right-click it for **Start/Stop queue**, **Pause all**, **Start with Windows** and **Quit**.
+- A notification pops up when a download finishes (noting a verified checksum) or fails.
+- Only one tray runs at a time. If an engine is already running, the tray attaches to it.
+- Quitting the engine from anywhere closes the tray too.
+
+**Or run it in a console:**
+
 Requires Node.js 24 or newer. There are no npm packages to install.
 
 ```bash
