@@ -41,6 +41,7 @@ export function createServer(mgr: Manager, port: number) {
         case route === 'GET /events':
           return events(req, res, mgr);
         case route === 'POST /downloads':
+          console.log(`${new Date().toISOString()} add ${body.kind ?? "file"} ${body.url}`);
           return send(res, 201, mgr.add(body));
         case route === `GET /downloads/${id}`:
           return send(res, 200, mgr.get(id));
@@ -61,8 +62,17 @@ export function createServer(mgr: Manager, port: number) {
           return send(res, 200, { ok: true });
         case route === 'GET /ping':
           return send(res, 200, { app: 'fetchline', version: 1, ytdlp: (await ytdlpInfo())?.version ?? null });
-        case route === 'POST /ytdlp/probe':
-          return send(res, 200, await probeYtdlp(String(body.url), body.cookies, mgr.dataDir));
+        case route === 'POST /ytdlp/probe': {
+          const t0 = Date.now();
+          try {
+            const r = await probeYtdlp(String(body.url), body.cookies, mgr.dataDir);
+            console.log(`${new Date().toISOString()} yt-dlp probe ok ${Date.now() - t0}ms ${r.choices.length} choices: ${body.url}`);
+            return send(res, 200, r);
+          } catch (e) {
+            console.log(`${new Date().toISOString()} yt-dlp probe FAILED ${Date.now() - t0}ms (${(body.cookies ?? []).length} cookies): ${body.url}: ${(e as Error).message}`);
+            throw e;
+          }
+        }
         case route === 'POST /media/probe':
           return send(res, 200, await probeMedia(String(body.url), body.headers));
         case route === 'POST /pause-all':

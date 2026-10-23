@@ -155,7 +155,8 @@ export class YtdlpDownload {
       if (!info) throw new Error('yt-dlp is not installed (winget install yt-dlp.yt-dlp)');
       await fs.mkdir(rec.dir, { recursive: true });
       const args = [
-        '--no-playlist', '--newline', '--no-colors', '--progress', '--continue', '--windows-filenames', '--no-mtime',
+        '--encoding', 'utf-8',
+      '--no-playlist', '--newline', '--no-colors', '--progress', '--continue', '--windows-filenames', '--no-mtime',
         '-f', y.format,
         '-P', rec.dir,
         '-o', '%(title).150B [%(id)s].%(ext)s',
@@ -170,7 +171,7 @@ export class YtdlpDownload {
       let lastErr = '';
       const code = await withCookies(rec.dir, y.cookies, (cookieArgs) =>
         new Promise<number>((resolve, reject) => {
-          const child = spawn(info.bin, [...args, ...cookieArgs, rec.url], { windowsHide: true });
+          const child = spawn(info.bin, [...args, ...cookieArgs, rec.url], { windowsHide: true, env: UTF8_ENV });
           this.child = child;
           let buf = '';
           const onLine = (line: string) => {
@@ -182,16 +183,17 @@ export class YtdlpDownload {
               this.hooks.changed();
             }
           };
-          const feed = (d: Buffer) => {
-            buf += d.toString('utf8');
+          const feed = (d: string) => {
+            buf += d;
             let i;
             while ((i = buf.indexOf('\n')) >= 0) {
               onLine(buf.slice(0, i).replace(/\r$/, ''));
               buf = buf.slice(i + 1);
             }
           };
-          child.stdout!.on('data', feed);
-          child.stderr!.on('data', feed);
+          // setEncoding keeps multi-byte characters intact across chunk boundaries.
+          child.stdout!.setEncoding('utf8').on('data', feed);
+          child.stderr!.setEncoding('utf8').on('data', feed);
           child.on('error', reject);
           child.on('close', (c) => resolve(c ?? -1));
         }),
@@ -202,6 +204,7 @@ export class YtdlpDownload {
         return;
       }
       if (code !== 0 || !finalPath) throw new Error(lastErr || `yt-dlp exited with code ${code}`);
+      finalPath = await locate(finalPath);
       rec.dir = path.dirname(finalPath);
       rec.fileName = path.basename(finalPath);
       rec.size = (await fs.stat(finalPath)).size;
@@ -270,6 +273,28 @@ function killTree(child: ChildProcess) {
   } else child.kill('SIGTERM');
 }
 
+// yt-dlp is a Python program; on Windows its stdout otherwise uses the console code page,
+// which drops characters such as emoji from titles and so from the reported file path.
+const UTF8_ENV = { ...process.env, PYTHONIOENCODING: 'utf-8', PYTHONUTF8: '1' };
+
+/** The reported path, or (if decoding still mangled it) the file in that folder with the same "[video id]" tag. */
+async function locate(reported: string) {
+  try {
+    await fs.access(reported);
+    return reported;
+  } catch {}
+  const dir = path.dirname(reported);
+  const tag = /\[[^\]]+\]\.[a-z0-9]+$/i.exec(path.basename(reported))?.[0];
+  if (tag) {
+    const hits = (await fs.readdir(dir)).filter((f) => f.endsWith(tag) && !f.endsWith('.part'));
+    if (hits.length) {
+      const stats = await Promise.all(hits.map(async (f) => ({ f, t: (await fs.stat(path.join(dir, f))).mtimeMs })));
+      return path.join(dir, stats.sort((a, b) => b.t - a.t)[0].f);
+    }
+  }
+  return reported;
+}
+
 function lastError(stderr: string) {
   const lines = stderr.split(/\r?\n/).filter((l) => l.startsWith('ERROR:'));
   return lines.at(-1)?.slice(6).trim();
@@ -277,7 +302,7 @@ function lastError(stderr: string) {
 
 function run(bin: string, args: string[], timeoutMs: number) {
   return new Promise<{ code: number; stdout: string; stderr: string }>((resolve, reject) => {
-    const child = spawn(bin, args, { windowsHide: true });
+    const child = spawn(bin, args, { windowsHide: true, env: UTF8_ENV });
     let stdout = '';
     let stderr = '';
     child.stdout.on('data', (d) => (stdout += d));
