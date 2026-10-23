@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fetchline</title>
+  <link rel="icon" href="logo.svg" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><img src="logo.svg" alt="" width="22" height="22" /> Fetchline</div>
+    <div class="actions">
+      <button class="primary" id="btn-add" title="Add a URL (N)">＋ New download</button>
+      <span class="sep"></span>
+      <button id="btn-resume" title="Resume selected">▶ Resume</button>
+      <button id="btn-pause" title="Pause selected">⏸ Pause</button>
+      <button id="btn-pause-all" title="Pause everything">⏹ Pause all</button>
+      <button id="btn-delete" title="Remove selected (Del)">🗑 Remove</button>
+      <span class="sep"></span>
+      <button id="btn-queue" title="Start or stop the queue">⏵ Start queue</button>
+      <button id="btn-settings" title="Settings">⚙ Settings</button>
+      <button id="btn-theme" title="Light / dark">◐</button>
+    </div>
+  </header>
+
+  <div class="layout">
+    <nav class="sidebar" id="sidebar"></nav>
+
+    <main class="main">
+      <div class="filterbar">
+        <input id="search" type="search" placeholder="Filter by name or URL…" />
+        <span id="totals" class="muted"></span>
+      </div>
+      <div class="table-wrap">
+        <table id="list">
+          <thead>
+            <tr>
+              <th data-sort="fileName">Name</th>
+              <th data-sort="inQueue" class="narrow" title="In queue">Q</th>
+              <th data-sort="size" class="num">Size</th>
+              <th data-sort="progress">Progress</th>
+              <th data-sort="speed" class="num">Speed</th>
+              <th data-sort="eta" class="num">Time left</th>
+              <th data-sort="status">Status</th>
+              <th data-sort="addedAt">Added</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <div id="empty" class="empty hidden">
+          <p>No downloads here yet.</p>
+          <p class="muted">Paste a link with <kbd>Ctrl</kbd>+<kbd>V</kbd> or press <b>New download</b>.</p>
+        </div>
+      </div>
+
+      <section class="details hidden" id="details">
+        <div class="details-head">
+          <strong id="d-name"></strong>
+          <span class="muted" id="d-sub"></span>
+          <button class="ghost" id="d-close" title="Close">✕</button>
+        </div>
+        <canvas id="segmap" height="26"></canvas>
+        <div class="details-grid">
+          <div>
+            <dl id="d-info"></dl>
+          </div>
+          <div>
+            <h4>Connections</h4>
+            <table class="mini" id="d-conns"><thead><tr><th>#</th><th>Range</th><th>Received</th><th class="num">Speed</th></tr></thead><tbody></tbody></table>
+          </div>
+          <div>
+            <h4>Per-download settings</h4>
+            <label>Speed limit (KB/s, 0 = none) <input type="number" min="0" id="d-limit" /></label>
+            <label>Connections <input type="number" min="1" max="32" id="d-conn" /></label>
+            <label>Expected checksum <input id="d-expect" placeholder="sha256:… or md5:…" /></label>
+            <label>URL (refresh an expired link) <input id="d-url" /></label>
+            <div class="row"><button id="d-save">Apply</button><button id="d-redo" class="ghost">Download again</button></div>
+          </div>
+        </div>
+        <details><summary>Event log</summary><pre id="d-log"></pre></details>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="dlg-add">
+    <form method="dialog" id="form-add">
+      <h3>New download</h3>
+      <label>URL <input name="url" required placeholder="https://…" autocomplete="off" /></label>
+      <div class="two">
+        <label>Save as <input name="fileName" placeholder="(from server)" /></label>
+        <label>Category <select name="category"></select></label>
+      </div>
+      <label>Folder <input name="dir" placeholder="(category folder)" /></label>
+      <div class="two">
+        <label>Connections <input name="connections" type="number" min="1" max="32" /></label>
+        <label>Speed limit KB/s <input name="speedLimit" type="number" min="0" value="0" /></label>
+      </div>
+      <label>Expected checksum (optional) <input name="checksum" placeholder="sha256:… or md5:…" /></label>
+      <label>Description <input name="description" /></label>
+      <div class="row end">
+        <button value="cancel" formnovalidate class="ghost">Cancel</button>
+        <button value="paused" class="ghost">Add paused</button>
+        <button value="queue">Add to queue</button>
+        <button value="now" class="primary">Start now</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="dlg-settings">
+    <form method="dialog" id="form-settings">
+      <h3>Settings</h3>
+      <div class="two">
+        <label>Connections per download <input name="connections" type="number" min="1" max="32" /></label>
+        <label>Queue: downloads at once <input name="maxConcurrent" type="number" min="1" max="20" /></label>
+      </div>
+      <label>Global speed limit KB/s (0 = none) <input name="globalSpeedLimit" type="number" min="0" /></label>
+      <label>Base folder <input name="baseDir" /></label>
+      <fieldset>
+        <legend>Scheduler (daily, local time)</legend>
+        <label class="check"><input type="checkbox" name="schedEnabled" /> Start the queue automatically</label>
+        <div class="two">
+          <label>Start at <input type="time" name="startAt" /></label>
+          <label>Stop at <input type="time" name="stopAt" /></label>
+        </div>
+        <label>When a scheduled queue finishes
+          <select name="onDone">
+            <option value="none">Do nothing</option>
+            <option value="exit">Close Fetchline</option>
+            <option value="shutdown">Shut down the PC (60 s warning)</option>
+          </select>
+        </label>
+      </fieldset>
+      <fieldset>
+        <legend>Categories</legend>
+        <div id="cat-list"></div>
+      </fieldset>
+      <div class="row end">
+        <button value="cancel" formnovalidate class="ghost">Cancel</button>
+        <button value="save" class="primary">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast hidden"></div>
+  <script src="app.js" type="module"></script>
+</body>
+</html>

@@ -1,0 +1,123 @@
+import http from 'node:http';
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { Manager } from './manager.ts';
+import { probeMedia } from './hls.ts';
+
+const UI_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'ui');
+const MIME: Record<string, string> = {
+  '.html': 'text/html; charset=utf-8',
+  '.js': 'text/javascript; charset=utf-8',
+  '.css': 'text/css; charset=utf-8',
+  '.svg': 'image/svg+xml',
+};
+
+/**
+ * Local control API. Bound to loopback only; mutating calls need the custom
+ * X-Fetchline header (forces a CORS preflight we never grant) and a loopback
+ * Host header (blocks DNS rebinding), so web pages cannot drive it.
+ */
+export function createServer(mgr: Manager, port: number) {
+  const allowedHosts = new Set([`127.0.0.1:${port}`, `localhost:${port}`]);
+
+  return http.createServer(async (req, res) => {
+    try {
+      if (!allowedHosts.has(req.headers.host ?? '')) return send(res, 403, { error: 'Bad host' });
+      const url = new URL(req.url ?? '/', `http://${req.headers.host}`);
+      const parts = url.pathname.split('/').filter(Boolean);
+
+      if (parts[0] !== 'api') return serveStatic(res, url.pathname);
+      if (req.method !== 'GET' && req.headers['x-fetchline'] !== '1') return send(res, 403, { error: 'Missing X-Fetchline header' });
+
+      const body = req.method === 'POST' || req.method === 'PUT' ? await readJson(req) : {};
+      const route = `${req.method} /${parts.slice(1).join('/')}`;
+      const id = parts[2];
+
+      switch (true) {
+        case route === 'GET /state':
+          return send(res, 200, mgr.snapshot());
+        case route === 'GET /events':
+          return events(req, res, mgr);
+        case route === 'POST /downloads':
+          return send(res, 201, mgr.add(body));
+        case route === `GET /downloads/${id}`:
+          return send(res, 200, mgr.get(id));
+        case route === `POST /downloads/${id}/resume`:
+          mgr.resume(id);
+          return send(res, 200, { ok: true });
+        case route === `POST /downloads/${id}/pause`:
+          await mgr.pause(id);
+          return send(res, 200, { ok: true });
+        case route === `POST /downloads/${id}/redownload`:
+          await mgr.redownload(id);
+          return send(res, 200, { ok: true });
+        case route === `PUT /downloads/${id}`:
+          mgr.update(id, body);
+          return send(res, 200, mgr.get(id));
+        case route === `DELETE /downloads/${id}`:
+          await mgr.remove(id, url.searchParams.get('deleteFile') === '1');
+          return send(res, 200, { ok: true });
+        case route === 'GET /ping':
+          return send(res, 200, { app: 'fetchline', version: 1 });
+        case route === 'POST /media/probe':
+          return send(res, 200, await probeMedia(String(body.url), body.headers));
+        case route === 'POST /pause-all':
+          await mgr.pauseAll();
+          return send(res, 200, { ok: true });
+        case route === 'POST /queue/start':
+          mgr.startQueue(false);
+          return send(res, 200, { ok: true });
+        case route === 'POST /queue/stop':
+          await mgr.stopQueue();
+          return send(res, 200, { ok: true });
+        case route === 'PUT /settings':
+          mgr.updateSettings(body);
+          return send(res, 200, mgr.settings);
+        case route === 'POST /shutdown':
+          send(res, 200, { ok: true });
+          return mgr.onExit();
+        default:
+          return send(res, 404, { error: 'Not found' });
+      }
+    } catch (e) {
+      send(res, 400, { error: (e as Error).message });
+    }
+  });
+}
+
+function events(req: http.IncomingMessage, res: http.ServerResponse, mgr: Manager) {
+  res.writeHead(200, { 'content-type': 'text/event-stream', 'cache-control': 'no-store', connection: 'keep-alive' });
+  const push = () => res.write(`data: ${JSON.stringify(mgr.snapshot())}\n\n`);
+  push();
+  const off = mgr.subscribe(push);
+  req.on('close', off);
+}
+
+async function serveStatic(res: http.ServerResponse, pathname: string) {
+  const rel = pathname === '/' ? 'index.html' : pathname.slice(1);
+  const file = path.normalize(path.join(UI_DIR, rel));
+  if (!file.startsWith(UI_DIR)) return send(res, 404, { error: 'Not found' });
+  try {
+    const data = await fs.readFile(file);
+    res.writeHead(200, { 'content-type': MIME[path.extname(file)] ?? 'application/octet-stream', 'cache-control': 'no-store' });
+    res.end(data);
+  } catch {
+    send(res, 404, { error: 'Not found' });
+  }
+}
+
+function send(res: http.ServerResponse, status: number, data: unknown) {
+  if (res.headersSent) return;
+  res.writeHead(status, { 'content-type': 'application/json' });
+  res.end(JSON.stringify(data, (_k, v) => (v === Number.MAX_SAFE_INTEGER ? null : v)));
+}
+
+async function readJson(req: http.IncomingMessage) {
+  let raw = '';
+  for await (const chunk of req) {
+    raw += chunk;
+    if (raw.length > 1_000_000) throw new Error('Body too large');
+  }
+  return raw ? JSON.parse(raw) : {};
+}

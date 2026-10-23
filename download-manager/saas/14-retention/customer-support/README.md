@@ -1,0 +1,15 @@
+# Customer support
+
+**Status: Not started.** Part of [14 · Retention](../README.md) in the [Fetchline SaaS plan](../../README.md).
+
+- **Channels:**
+  - GitHub Issues for bugs, with templates for "download fails on a site", "extension not connecting" and "crash".
+  - GitHub Discussions for questions.
+  - A support email for licence and payment issues.
+- **Self-serve:** an in-app "Copy diagnostics" button (version, OS, settings, log tail with **URLs redacted**).
+- **Top FAQ, written before launch:**
+  1. Why doesn't YouTube, Netflix or a DRM site work? (Policy and law; suggest legitimate options.)
+  2. The extension says "not running". (Start the app or check the port; covers the old-instance case fixed in `engine/main.ts`.)
+  3. Windows SmartScreen warning. (Only until signing is done.)
+  4. How do I send downloads to AB Download Manager instead?
+- **Response target:** 48 h free, 24 h Pro.
