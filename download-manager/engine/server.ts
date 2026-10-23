@@ -64,6 +64,14 @@ export function createServer(mgr: Manager, port: number) {
         case route === `DELETE /downloads/${id}`:
           await mgr.remove(id, url.searchParams.get('deleteFile') === '1');
           return send(res, 200, { ok: true });
+        case route === 'GET /license':
+          return send(res, 200, mgr.licensing.status());
+        case route === 'PUT /license':
+          return send(res, 200, await mgr.activateLicense(String(body.key ?? '')));
+        case route === 'DELETE /license':
+          return send(res, 200, await mgr.deactivateLicense());
+        case route === 'POST /license/trial':
+          return send(res, 200, await mgr.startTrial());
         case route === 'GET /startup':
           return send(res, 200, { supported: process.platform === 'win32', on: existsSync(STARTUP_LINK) });
         case route === 'PUT /startup':

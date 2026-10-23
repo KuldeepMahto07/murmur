@@ -7,6 +7,7 @@ import type { Category, DownloadRecord, Settings } from './types.ts';
 import { Download } from './download.ts';
 import { HlsDownload } from './hls.ts';
 import { YtdlpDownload, type BrowserCookie } from './ytdlp.ts';
+import { Licensing } from './license.ts';
 import { TokenBucket } from './limiter.ts';
 import { fileNameFromUrl, sanitizeFileName } from './net.ts';
 
@@ -68,11 +69,13 @@ export class Manager {
   private listeners = new Set<() => void>();
   private timers: NodeJS.Timeout[] = [];
   onExit: () => void = () => {};
+  readonly licensing: Licensing;
   /** Last time the browser extension talked to the engine (it sends X-Fetchline-Client). */
   extensionSeen: { at: number; client: string } | null = null;
 
   constructor(dataDir: string) {
     this.dataDir = dataDir;
+    this.licensing = new Licensing(dataDir);
   }
 
   private get stateFile() {
@@ -81,12 +84,14 @@ export class Manager {
 
   async load() {
     await fs.mkdir(this.dataDir, { recursive: true });
+    await this.licensing.load();
     let saved: { settings?: Settings; downloads?: DownloadRecord[]; queueRunning?: boolean } = {};
     try {
       saved = JSON.parse(await fs.readFile(this.stateFile, 'utf8'));
     } catch {}
     this.settings = { ...defaultSettings(path.join(this.dataDir, 'Downloads')), ...saved.settings };
     this.global.setRate(this.settings.globalSpeedLimit);
+    this.enforceLimits();
     for (const r of saved.downloads ?? []) {
       for (const s of r.segments) if (s.end === null) s.end = Number.MAX_SAFE_INTEGER; // JSON has no Infinity
       this.records.set(r.id, r);
@@ -115,7 +120,40 @@ export class Manager {
     this.dirty = true;
   };
 
+  // ---------------------------------------------------------------- Pro
+
+  /** Connections per download allowed by the current licence (8 free, 32 Pro). */
+  maxConnections() {
+    return this.licensing.status().maxConnections;
+  }
+
+  /** Brings settings back inside the free limits (e.g. after a trial or yearly licence ends). */
+  private enforceLimits() {
+    this.settings.connections = Math.min(this.settings.connections, this.maxConnections());
+    this.dirty = true;
+  }
+
+  async activateLicense(key: string) {
+    const st = await this.licensing.activate(key);
+    this.dirty = true;
+    return st;
+  }
+
+  async deactivateLicense() {
+    const st = await this.licensing.deactivate();
+    this.enforceLimits();
+    return st;
+  }
+
+  async startTrial() {
+    const st = await this.licensing.startTrial();
+    this.dirty = true;
+    return st;
+  }
+
   private handle(rec: DownloadRecord): Download | HlsDownload | YtdlpDownload {
+    // A download created under Pro keeps working after Pro ends, just with the free connection limit.
+    rec.connections = Math.min(rec.connections, this.maxConnections());
     let d = this.active.get(rec.id);
     if (!d) {
       const hooks = { global: this.global, changed: this.changed, placeFile: (r: DownloadRecord) => this.placeFile(r) };
@@ -184,7 +222,7 @@ export class Manager {
       resumable: false,
       status: req.start === 'now' ? 'downloading' : req.start === 'paused' ? 'paused' : 'queued',
       segments: [],
-      connections: clamp(req.connections ?? this.settings.connections, 1, 32),
+      connections: clamp(req.connections ?? this.settings.connections, 1, this.maxConnections()),
       speedLimit: Math.max(0, req.speedLimit ?? 0),
       inQueue: req.start === 'queue' || req.start === undefined,
       addedAt: Date.now(),
@@ -258,7 +296,10 @@ export class Manager {
       new URL(patch.url);
       r.url = patch.url; // e.g. refresh an expired link; validators still guard against a different file
     }
-    if (patch.connections) r.connections = clamp(patch.connections, 1, 32);
+    if (patch.connections) {
+      if (patch.connections > this.maxConnections()) throw new Error(proMessage('More than 8 connections per download'));
+      r.connections = clamp(patch.connections, 1, this.maxConnections());
+    }
     if (patch.description !== undefined) r.description = patch.description;
     if (patch.inQueue !== undefined) r.inQueue = patch.inQueue;
     if (patch.checksum !== undefined) r.checksum.expected = patch.checksum || undefined;
@@ -270,8 +311,13 @@ export class Manager {
   }
 
   updateSettings(patch: Partial<Settings>) {
+    const pro = this.licensing.pro;
+    if (patch.connections && patch.connections > this.maxConnections()) throw new Error(proMessage('More than 8 connections per download'));
+    if (!pro && patch.scheduler && patch.scheduler.onDone !== 'none' && patch.scheduler.onDone !== this.settings.scheduler.onDone) {
+      throw new Error(proMessage('Shutting down or closing Fetchline when a scheduled queue finishes'));
+    }
     Object.assign(this.settings, patch);
-    this.settings.connections = clamp(this.settings.connections, 1, 32);
+    this.settings.connections = clamp(this.settings.connections, 1, this.maxConnections());
     this.settings.maxConcurrent = clamp(this.settings.maxConcurrent, 1, 20);
     this.global.setRate(this.settings.globalSpeedLimit);
     this.dirty = true;
@@ -324,6 +370,10 @@ export class Manager {
   private whenQueueDone() {
     const action = this.settings.scheduler.onDone;
     this.queueAuto = false;
+    if (action !== 'none' && !this.licensing.pro) {
+      console.log(`${new Date().toISOString()} queue finished; "${action}" skipped (Pro feature, no active licence)`);
+      return;
+    }
     if (action === 'exit') setTimeout(() => this.onExit(), 1000);
     if (action === 'shutdown' && process.platform === 'win32') {
       // 60 s grace so the user can cancel with `shutdown /a`.
@@ -394,6 +444,7 @@ export class Manager {
     return {
       queueRunning: this.queueRunning,
       extensionSeen: this.extensionSeen,
+      license: this.licensing.status(),
       appDir: path.join(path.dirname(fileURLToPath(import.meta.url)), '..'),
       platform: process.platform,
       settings: this.settings,
@@ -434,6 +485,10 @@ export class Manager {
 
 /** Request headers a browser hand-off may pass on (needed by CDNs that check them). */
 const ALLOWED_HEADERS = new Set(['cookie', 'referer', 'user-agent', 'origin', 'authorization', 'accept-language']);
+
+function proMessage(what: string) {
+  return `${what} is a Fetchline Pro feature. Start the free 14-day trial or enter a licence key in Settings.`;
+}
 
 function clamp(n: number, lo: number, hi: number) {
   return Math.min(hi, Math.max(lo, Math.round(Number(n) || lo)));

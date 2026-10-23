@@ -433,6 +433,62 @@ document.addEventListener('keydown', (e) => {
 
 // -------------------------------------------------------- settings dialog
 
+// ------------------------------------------------------------ Pro licence
+
+const BUY_URL = '#'; // set to the merchant-of-record checkout once it exists
+
+function renderPro(st) {
+  const box = $('#pro-status');
+  if (!st) return;
+  const tier = st.tier === 'pro' ? `Pro${st.plan === 'pro-yearly' ? ' (yearly)' : ' (lifetime)'}` : st.tier === 'trial' ? 'Pro trial' : 'Free';
+  const detail =
+    st.tier === 'pro'
+      ? `Licensed to ${esc(st.email)}${st.expires ? ` · renews/expires ${esc(st.expires)}` : ''}`
+      : st.tier === 'trial'
+        ? `${st.trialDaysLeft} day${st.trialDaysLeft === 1 ? '' : 's'} left`
+        : st.trialAvailable
+          ? 'Try every Pro feature free for 14 days, no card needed.'
+          : 'Your trial has ended.';
+  box.innerHTML = `<span class="tier ${st.pro ? 'pro' : ''}">${tier}</span>${detail}${st.error ? `<span class="err">${esc(st.error)}</span>` : ''}`;
+  $('#pro-key-row').hidden = st.tier === 'pro';
+  $('#pro-trial').hidden = !st.trialAvailable;
+  $('#pro-buy').hidden = st.tier === 'pro';
+  $('#pro-buy').href = BUY_URL;
+  $('#pro-remove').hidden = st.tier !== 'pro';
+  // Gated controls
+  const f = $('#form-settings');
+  f.connections.max = st.maxConnections;
+  $('#conn-hint').textContent = st.pro ? '(up to 32 with Pro)' : '(up to 8; 32 with Pro)';
+  for (const o of f.onDone.querySelectorAll('option[data-pro]')) {
+    o.disabled = !st.pro;
+    o.textContent = o.textContent.replace(/ \(Pro\)$/, '') + (st.pro ? '' : ' (Pro)');
+  }
+  $('#d-conn').max = st.maxConnections;
+  $('#form-add').connections.max = st.maxConnections;
+}
+
+async function proCall(method, path, body) {
+  try {
+    renderPro(await api(method, path, body));
+    return true;
+  } catch (e) {
+    toast(e.message);
+    return false;
+  }
+}
+$('#pro-activate').onclick = async () => {
+  if (await proCall('PUT', '/license', { key: $('#pro-key').value })) {
+    $('#pro-key').value = '';
+    toast('Fetchline Pro activated. Thank you!');
+  }
+};
+$('#pro-trial').onclick = async () => {
+  if (await proCall('POST', '/license/trial')) toast('Pro trial started: 14 days.');
+};
+$('#pro-remove').onclick = async () => {
+  if (confirm('Remove the licence from this PC? You can enter the key again later.')) await proCall('DELETE', '/license');
+};
+
 $('#btn-settings').onclick = () => {
   const s = state.snap.settings;
   const f = $('#form-settings');
@@ -444,6 +500,7 @@ $('#btn-settings').onclick = () => {
   f.startAt.value = s.scheduler.startAt;
   f.stopAt.value = s.scheduler.stopAt;
   f.onDone.value = s.scheduler.onDone;
+  renderPro(state.snap.license);
   $('#cat-list').innerHTML = s.categories
     .map((c, i) => `<div class="cat"><b>${esc(c.name)}</b><input data-i="${i}" data-k="exts" value="${esc(c.exts.join(' '))}" title="Extensions"></div>
                     <div class="cat"><span class="muted">folder</span><input data-i="${i}" data-k="dir" value="${esc(c.dir)}"></div>`)

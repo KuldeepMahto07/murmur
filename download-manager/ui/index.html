@@ -110,8 +110,24 @@
   <dialog id="dlg-settings">
     <form method="dialog" id="form-settings">
       <h3>Settings</h3>
+      <fieldset class="pro">
+        <legend>Fetchline Pro</legend>
+        <div id="pro-status" class="pro-status"></div>
+        <div id="pro-actions">
+          <div class="row" id="pro-key-row">
+            <input id="pro-key" placeholder="Paste your licence key (FL1-…)" autocomplete="off" spellcheck="false" />
+            <button type="button" id="pro-activate">Activate</button>
+          </div>
+          <div class="row">
+            <button type="button" id="pro-trial" class="ghost">Start 14-day free trial</button>
+            <a id="pro-buy" class="ghost-link" href="#" target="_blank" rel="noopener">Buy Pro, $19 lifetime</a>
+            <button type="button" id="pro-remove" class="ghost">Remove licence</button>
+          </div>
+        </div>
+        <p class="muted small">Pro adds up to 32 connections per download and actions when a scheduled queue finishes. Speed, resume and verification stay free.</p>
+      </fieldset>
       <div class="two">
-        <label>Connections per download <input name="connections" type="number" min="1" max="32" /></label>
+        <label>Connections per download <span class="pro-hint" id="conn-hint"></span><input name="connections" type="number" min="1" max="32" /></label>
         <label>Queue: downloads at once <input name="maxConcurrent" type="number" min="1" max="20" /></label>
       </div>
       <label>Global speed limit KB/s (0 = none) <input name="globalSpeedLimit" type="number" min="0" /></label>
@@ -126,8 +142,8 @@
         <label>When a scheduled queue finishes
           <select name="onDone">
             <option value="none">Do nothing</option>
-            <option value="exit">Close Fetchline</option>
-            <option value="shutdown">Shut down the PC (60 s warning)</option>
+            <option value="exit" data-pro>Close Fetchline</option>
+            <option value="shutdown" data-pro>Shut down the PC (60 s warning)</option>
           </select>
         </label>
       </fieldset>

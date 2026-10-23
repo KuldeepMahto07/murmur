@@ -97,6 +97,31 @@ Choosing an entry calls AB DM's own integration API, `POST /add`, so AB DM opens
 
 AB DM itself doesn't download YouTube (its YouTube and yt-dlp support requests are still open issues). yt-dlp menu entries therefore always go to Fetchline, even when AB DM is selected.
 
+## Fetchline Pro (licensing)
+
+**Free** is the full downloader: speed, resume, crash recovery, SHA-256, queue, scheduler times, the video button, HLS, yt-dlp and the AB DM hand-off.
+
+**Pro** adds:
+- up to 32 connections per download (Free allows 8)
+- actions when a scheduled queue finishes (shut down the PC, or close Fetchline)
+
+**Getting Pro:** Settings → Fetchline Pro → *Start 14-day free trial* (no card), or paste a licence key.
+
+**How keys work:**
+- Keys are Ed25519-signed and checked offline. There's no account and no phone-home.
+- The engine enforces the limits, so they can't be bypassed from the UI or the extension.
+- If a trial or yearly key ends, the app returns to Free without interrupting anything.
+
+**Issuing keys (vendor):**
+
+```bash
+node scripts/license-tool.ts issue --email buyer@example.com --plan lifetime
+```
+
+- `--plan yearly` gives a key that expires after a year.
+- Check any key with `node scripts/license-tool.ts verify <key>`.
+- The signing key is in `%USERPROFILE%\.fetchline-vendor\` and never in this repository. **Back that folder up:** without it you can't issue keys that existing builds accept.
+
 ## Develop, test and release
 
 ```bash
@@ -105,7 +130,7 @@ npm test
 ```bash
 npm run build
 ```
-- **`npm test`:** 12 unit tests (`tests/engine.test.ts`).
+- **`npm test`:** 17 unit tests (`tests/engine.test.ts`, `tests/license.test.ts`).
 - **`npm run build`:** writes to `dist/`:
   - the store extension zip (yt-dlp stripped and checked)
   - the direct extension zip
