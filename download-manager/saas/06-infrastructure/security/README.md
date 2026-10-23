@@ -13,3 +13,6 @@
 - An extension-to-engine pairing token.
 - Cookies are kept in `data/state.json` to allow resume. Encrypt that file at rest with DPAPI, or drop cookies once a download completes.
 - Code signing ([devops](../devops/README.md)), dependency-free supply chain (keep it), and a `SECURITY.md`.
+
+## Update (2026-10-24)
+- Privacy policy drafted: [`site/privacy.html`](../../../site/privacy.html). Its main promise: URLs, files and cookies never leave the PC, and telemetry would be opt-in only.

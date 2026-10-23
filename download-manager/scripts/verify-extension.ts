@@ -20,7 +20,9 @@ import { spawn, execFileSync, type ChildProcess } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
-const EXT = path.join(ROOT, 'extension');
+const argExt = process.argv.indexOf('--ext');
+/** --ext <dir>: load a different unpacked build, e.g. the stripped store build. */
+const EXT = argExt > 0 ? path.resolve(process.argv[argExt + 1]) : path.join(ROOT, 'extension');
 const WORK = path.join(ROOT, 'data', 'verify-ext');
 const SITE = path.join(ROOT, 'data', 'ext-test-site');
 const ENGINE_PORT = 8792;
@@ -347,6 +349,9 @@ try {
   }
   for (const d of downloads) console.log(`        ${d.status.padEnd(9)} ${d.kind?.padEnd(4)} ${d.hls?.label ?? ''} → ${d.fileName}${d.error ? ' (' + d.error + ')' : ''}`);
   check(downloads.length === 3 && downloads.every((d) => d.status === 'completed'), 'all three downloads completed in the engine');
+  // Every engine call made by the extension identifies it (drives the first-run guide's "connected" tick).
+  const seen = (await engineApi('GET', '/state')).extensionSeen;
+  check(!!seen && seen.client.startsWith('extension/'), `engine recorded the extension (${seen?.client ?? 'none'})`);
 
   const mp4 = downloads.find((d) => d.kind === 'file');
   if (mp4) {

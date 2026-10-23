@@ -4,7 +4,7 @@
 
 | Sub-item | Status | Summary |
 |---|---|---|
-| [Unit testing](unit-testing/) | Not started | There are no unit tests yet. All coverage today is end-to-end (see integration-testing). |
+| [Unit testing](unit-testing/) | Done | 12 `node:test` tests (`npm test`): parsing, HLS, rate limiter, segmentation, cookies, emoji file names, manager validation |
 | [Integration testing](integration-testing/) | Done |  |
 | [Bug fixing](bug-fixing/) | Ongoing | Track new bugs in GitHub Issues with labels `bug`, `site-compat` and `regression`. Every fix should come with a check in `scripts/`. |
 | [Performance testing](performance-testing/) | Partial | Run a 1 GB+ file on a gigabit link, and record CPU and RAM use (the target is under 5% CPU at 50 MB/s). |

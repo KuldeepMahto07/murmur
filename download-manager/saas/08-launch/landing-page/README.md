@@ -1,6 +1,6 @@
 # Landing page
 
-**Status: Not started.** Part of [08 · Launch](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: Built (not deployed).** Part of [08 · Launch](../README.md) in the [Fetchline SaaS plan](../../README.md).
 
 ## Sections
 1. **Hero:** "Faster, verified downloads for Windows." Buttons: Download for Windows (signed installer) and Add to Chrome / Edge.
@@ -18,3 +18,11 @@
 - [ ] Plausible analytics, cookie-free
 - [ ] OG image, favicon (`ui/logo.svg`), and a `SoftwareApplication` schema block
 - [ ] Download links point to GitHub Releases, with SHA-256 shown next to each file
+
+## Update (2026-10-24)
+- [`site/`](../../../site/) is a static site with no build step:
+  - `index.html`: hero, three proofs (2.2× on our test, crash-proof, SHA-256), an honest-limits box, Free/Pro pricing (Pro marked "planned"), and download "coming soon"
+  - `faq.html`, `privacy.html`
+  - the comparison pages (see [seo-wins](../../09-acquisition/seo-wins/README.md))
+- `SoftwareApplication` schema and OG tags are in. A Plausible snippet is ready but commented out until a domain exists.
+- **Next:** pick a domain, deploy with Cloudflare Pages or GitHub Pages, and point the download buttons at the first signed release.

@@ -1,6 +1,6 @@
 # Customer support
 
-**Status: Not started.** Part of [14 · Retention](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: In progress.** Part of [14 · Retention](../README.md) in the [Fetchline SaaS plan](../../README.md).
 
 - **Channels:**
   - GitHub Issues for bugs, with templates for "download fails on a site", "extension not connecting" and "crash".
@@ -13,3 +13,7 @@
   3. Windows SmartScreen warning. (Only until signing is done.)
   4. How do I send downloads to AB Download Manager instead?
 - **Response target:** 48 h free, 24 h Pro.
+
+## Update (2026-10-24)
+- The public FAQ is live in [`site/faq.html`](../../../site/faq.html). It covers YouTube/Instagram/DRM, "not running", "no stream seen yet", SmartScreen, speed, crash recovery, SHA-256, AB DM and privacy.
+- **Next:** GitHub issue templates and an in-app "Copy diagnostics" button.

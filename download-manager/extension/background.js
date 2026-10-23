@@ -10,7 +10,7 @@
 // Scope is deliberate: no DRM handling, no site-specific extractors. Chunks of
 // adaptive streams (range= URLs, .ts/.m4s segments, blob: sources) are ignored.
 
-const DEFAULTS = { target: 'fetchline', port: 8765, abdmPort: 15151, abdmKey: '', takeover: false, ytdlp: true };
+const DEFAULTS = { target: 'fetchline', port: 8765, abdmPort: 15151, abdmKey: '', takeover: false, ytdlp: true }; // @store-replace: const DEFAULTS = { target: 'fetchline', port: 8765, abdmPort: 15151, abdmKey: '', takeover: false };
 const TARGET_NAMES = { fetchline: 'Fetchline', abdm: 'AB Download Manager' };
 const cfg = async () => ({ ...DEFAULTS, ...(await chrome.storage.local.get(Object.keys(DEFAULTS))) });
 
@@ -18,7 +18,7 @@ async function engine(method, path, body, timeoutMs = 5000) {
   const { port } = await cfg();
   const res = await fetch(`http://127.0.0.1:${port}/api${path}`, {
     method,
-    headers: { 'content-type': 'application/json', 'x-fetchline': '1' },
+    headers: { 'content-type': 'application/json', 'x-fetchline': '1', 'x-fetchline-client': `extension/${chrome.runtime.getManifest().version}` },
     body: body ? JSON.stringify(body) : undefined,
     signal: AbortSignal.timeout(timeoutMs),
   });
@@ -258,14 +258,7 @@ function nameFromTitle(title, ext) {
   return t ? `${t}.${ext}` : undefined;
 }
 
-// ------------------------------------------------------------------ yt-dlp
-// Sites where the player streams protected chunks (YouTube, Instagram, ...) are handed to
-// yt-dlp, which runs inside the Fetchline engine. Added at the project owner's request;
-// it needs Fetchline running with yt-dlp installed, whichever download target is selected.
-
-const YTDLP_SITES = /(^|\.)(youtube\.com|youtu\.be|youtube-nocookie\.com|instagram\.com|facebook\.com|fb\.watch|x\.com|twitter\.com|tiktok\.com|vimeo\.com|dailymotion\.com|reddit\.com|twitch\.tv|soundcloud\.com|bilibili\.com|streamable\.com|threads\.net|pinterest\.com|linkedin\.com)$/i;
-const ytdlpCache = new Map(); // page URL -> { at, result }
-
+/** The Fetchline engine's /ping (null when it isn't running). */
 async function engineInfo() {
   try {
     return await engine('GET', '/ping', undefined, 1500);
@@ -273,6 +266,15 @@ async function engineInfo() {
     return null;
   }
 }
+
+// @ytdlp:start  (everything up to @ytdlp:end is stripped from the store build by scripts/build.ts)
+// ------------------------------------------------------------------ yt-dlp
+// Sites where the player streams protected chunks (YouTube, Instagram, ...) are handed to
+// yt-dlp, which runs inside the Fetchline engine. Added at the project owner's request;
+// it needs Fetchline running with yt-dlp installed, whichever download target is selected.
+
+const YTDLP_SITES = /(^|\.)(youtube\.com|youtu\.be|youtube-nocookie\.com|instagram\.com|facebook\.com|fb\.watch|x\.com|twitter\.com|tiktok\.com|vimeo\.com|dailymotion\.com|reddit\.com|twitch\.tv|soundcloud\.com|bilibili\.com|streamable\.com|threads\.net|pinterest\.com|linkedin\.com)$/i;
+const ytdlpCache = new Map(); // page URL -> { at, result }
 
 async function pageCookies(pageUrl) {
   try {
@@ -326,6 +328,8 @@ async function sendToYtdlp({ url, format, label, audioOnly, approxSize, title })
   });
 }
 
+// @ytdlp:end
+
 async function sendToEngine({ url, kind, variant, title, pageUrl, referer, fileName }) {
   if (kind === 'blocked') throw new Error('This stream is protected and cannot be downloaded.');
   const { target } = await cfg();
@@ -359,20 +363,20 @@ chrome.runtime.onMessage.addListener((msg, sender, reply) => {
         await Promise.all([...st.items.values()].filter((i) => i.kind === 'hls' && !i.probe).map((i) => probe(tabId, i)));
         const list = await entries(tabId);
         const usable = list.some((e) => e.kind !== 'blocked');
-        return { engine: up, targetName: TARGET_NAMES[target], entries: list, ytdlp: await ytdlpWanted(msg.pageUrl, usable || msg.hasSrc) };
+        return { engine: up, targetName: TARGET_NAMES[target], entries: list, ytdlp: await ytdlpWanted(msg.pageUrl, usable || msg.hasSrc) }; // @store-replace: return { engine: up, targetName: TARGET_NAMES[target], entries: list };
       }
-      case 'ytdlp-list':
-        return ytdlpEntries(msg.pageUrl);
+      case 'ytdlp-list': // @ytdlp-line
+        return ytdlpEntries(msg.pageUrl); // @ytdlp-line
       case 'download': {
         const st = await tabState(tabId);
         const it = st.items.get(msg.url);
-        const rec = msg.kind === 'ytdlp' ? await sendToYtdlp(msg) : await sendToEngine({ ...msg, referer: it?.referer });
+        const rec = msg.kind === 'ytdlp' ? await sendToYtdlp(msg) : await sendToEngine({ ...msg, referer: it?.referer }); // @store-replace: const rec = await sendToEngine({ ...msg, referer: it?.referer });
         return { ok: true, id: rec.id, fileName: rec.fileName };
       }
       case 'status': {
         const c = await cfg();
         const info = await engineInfo();
-        return { engine: await targetUp(), targetName: TARGET_NAMES[c.target], ytdlpVersion: info?.ytdlp ?? null, fetchlineUp: !!info, ...c };
+        return { engine: await targetUp(), targetName: TARGET_NAMES[c.target], ytdlpVersion: info?.ytdlp ?? null, fetchlineUp: !!info, ...c }; // @store-replace: return { engine: await targetUp(), targetName: TARGET_NAMES[c.target], fetchlineUp: !!info, ...c };
       }
       default:
         return { error: 'unknown message' };

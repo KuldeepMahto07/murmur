@@ -1,6 +1,6 @@
 # SEO wins
 
-**Status: Not started.** Part of [09 · Acquisition](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: In progress.** Part of [09 · Acquisition](../README.md) in the [Fetchline SaaS plan](../../README.md).
 
 ## Keywords to target
 Honest intent, no YouTube:
@@ -21,3 +21,7 @@ Honest intent, no YouTube:
 - Static pages with fast loading
 - `SoftwareApplication` schema
 - Submit to Bing Webmaster Tools, which matters because Edge and Bing users are our audience
+
+## Update (2026-10-24)
+- Built the [`site/vs-idm.html`](../../../site/vs-idm.html) and [`site/vs-ab-download-manager.html`](../../../site/vs-ab-download-manager.html) comparison pages. The IDM facts are dated (October 2026), and the "who should pick which" advice is fair to IDM.
+- **Next:** the guide pages (resume a failed Chrome download, verify SHA-256 on Windows, download m3u8), then submit to Bing Webmaster Tools once the site is live.

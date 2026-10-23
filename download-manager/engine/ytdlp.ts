@@ -48,7 +48,7 @@ export async function ytdlpInfo(): Promise<{ bin: string; version: string } | nu
 }
 
 /** Netscape cookies.txt from the extension's chrome.cookies objects. */
-function cookieFile(cookies: BrowserCookie[]) {
+export function cookieFile(cookies: BrowserCookie[]) {
   const lines = ['# Netscape HTTP Cookie File'];
   for (const c of cookies) {
     if (!c?.name || typeof c.value !== 'string' || !c.domain) continue;
@@ -278,7 +278,7 @@ function killTree(child: ChildProcess) {
 const UTF8_ENV = { ...process.env, PYTHONIOENCODING: 'utf-8', PYTHONUTF8: '1' };
 
 /** The reported path, or (if decoding still mangled it) the file in that folder with the same "[video id]" tag. */
-async function locate(reported: string) {
+export async function locate(reported: string) {
   try {
     await fs.access(reported);
     return reported;

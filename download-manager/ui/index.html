@@ -136,8 +136,49 @@
         <div id="cat-list"></div>
       </fieldset>
       <div class="row end">
+        <button type="button" id="btn-welcome" class="ghost" style="margin-right:auto">Setup guide…</button>
         <button value="cancel" formnovalidate class="ghost">Cancel</button>
         <button value="save" class="primary">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="dlg-welcome">
+    <form method="dialog" id="form-welcome">
+      <h3>Welcome to Fetchline</h3>
+      <p class="muted">Five quick steps. You can change all of this later in Settings.</p>
+      <ol class="steps">
+        <li>
+          <b>Where should downloads go?</b>
+          <label>Download folder <input name="baseDir" /></label>
+          <span class="muted small">Files are sorted into category subfolders here (Video, Music, Archives…).</span>
+        </li>
+        <li>
+          <b>Connect your browser</b>
+          <div id="w-ext" class="ext-status">Waiting for the browser extension…</div>
+          <div class="muted small" id="w-ext-help">
+            In Chrome or Edge open <code>chrome://extensions</code> (or <code>edge://extensions</code>), turn on <i>Developer mode</i>, click <i>Load unpacked</i> and choose
+            <code id="w-ext-path"></code>. This step ticks itself off when the extension connects.
+          </div>
+        </li>
+        <li>
+          <b>Your connection</b>
+          <label class="check"><input type="radio" name="net" value="8" checked /> Fast and stable (8 connections per download)</label>
+          <label class="check"><input type="radio" name="net" value="4" /> Slow or unstable (4 connections, gentler on the line)</label>
+        </li>
+        <li id="w-startup-step">
+          <b>Start with Windows</b>
+          <label class="check"><input type="checkbox" name="startup" /> Start Fetchline in the tray when I sign in</label>
+        </li>
+        <li>
+          <b>Try it</b>
+          <div class="row"><button type="button" id="w-test">Run a test download</button><span id="w-test-status" class="muted small"></span></div>
+          <span class="muted small">Downloads an 11 KB file from kernel.org and checks it against the SHA-256 kernel.org publishes.</span>
+        </li>
+      </ol>
+      <div class="row end">
+        <button value="later" formnovalidate class="ghost">Skip for now</button>
+        <button value="done" class="primary">Finish</button>
       </div>
     </form>
   </dialog>

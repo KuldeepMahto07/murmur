@@ -1,5 +1,6 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import crypto from 'node:crypto';
 import { spawn } from 'node:child_process';
 import type { Category, DownloadRecord, Settings } from './types.ts';
@@ -67,6 +68,8 @@ export class Manager {
   private listeners = new Set<() => void>();
   private timers: NodeJS.Timeout[] = [];
   onExit: () => void = () => {};
+  /** Last time the browser extension talked to the engine (it sends X-Fetchline-Client). */
+  extensionSeen: { at: number; client: string } | null = null;
 
   constructor(dataDir: string) {
     this.dataDir = dataDir;
@@ -390,6 +393,9 @@ export class Manager {
   snapshot() {
     return {
       queueRunning: this.queueRunning,
+      extensionSeen: this.extensionSeen,
+      appDir: path.join(path.dirname(fileURLToPath(import.meta.url)), '..'),
+      platform: process.platform,
       settings: this.settings,
       downloads: [...this.records.values()].map((r) => {
         const live = this.active.get(r.id)?.live();

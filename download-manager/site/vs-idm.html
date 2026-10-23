@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fetchline vs Internet Download Manager (IDM): an honest comparison</title>
+  <meta name="description" content="How Fetchline compares with Internet Download Manager: price, segmented downloading, resume, checksum verification, the video button and what each one doesn't do." />
+  <link rel="icon" href="logo.svg" /><link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="wrap">
+    <nav><a class="brand" href="./"><img src="logo.svg" width="28" height="28" alt="" /> Fetchline</a><a href="./#features">Features</a><a href="./#pricing">Pricing</a><a href="faq.html">FAQ</a><a href="vs-idm.html">vs IDM</a></nav>
+    <section class="prose" style="border:0;max-width:none">
+      <h1 style="font-size:38px">Fetchline vs Internet Download Manager</h1>
+      <p class="lead">IDM has been the default download accelerator on Windows since 1999, and it's good at what it does. Here's an honest comparison. Facts about IDM come from its public website (checked October 2026).</p>
+      <table>
+        <tr><th></th><th>Internet Download Manager</th><th>Fetchline</th></tr>
+        <tr><td>Price</td><td>$24.95 lifetime or $11.95 a year, per PC</td><td>Free; Pro planned at $19 once for 3 PCs</td></tr>
+        <tr><td>Multi-connection, dynamic splitting</td><td class="y">Yes</td><td class="y">Yes, up to 32 connections</td></tr>
+        <tr><td>Resume after crashes and dropped connections</td><td class="y">Yes</td><td class="y">Yes, and it re-checks the resumed bytes</td></tr>
+        <tr><td>Checksum verification</td><td class="n">Not documented</td><td class="y">SHA-256 and MD5 on every file, plus an expected-hash check</td></tr>
+        <tr><td>Queue, scheduler, speed limiter, categories</td><td class="y">Yes, with more options (sync queues, quotas)</td><td class="y">Yes (single queue today; more in Pro)</td></tr>
+        <tr><td>Browser video panel</td><td class="y">Yes</td><td class="y">Yes, for files and HLS. YouTube/Instagram only in the direct build, with <a href="faq.html#youtube">yt-dlp</a></td></tr>
+        <tr><td>Site grabber (spider)</td><td class="y">Yes</td><td class="n">Not yet</td></tr>
+        <tr><td>FTP, proxies, NTLM</td><td class="y">Yes</td><td class="n">Not yet</td></tr>
+        <tr><td>Works with AB Download Manager</td><td class="n">No</td><td class="y">Yes, the extension can hand off to it</td></tr>
+        <tr><td>Platforms</td><td>Windows</td><td>Windows (the engine is cross-platform; other builds later)</td></tr>
+      </table>
+      <h2 style="margin-top:40px">Who should pick which</h2>
+      <p><b>Stay with IDM</b> if you rely on its site grabber, FTP or enterprise proxy support, or if you've already paid and it works for you.</p>
+      <p><b>Try Fetchline</b> if you want verified downloads with real crash recovery, a modern interface and an honest video button, for free.</p>
+      <p class="note">Fetchline is an independent product. It is not affiliated with Tonec. It was designed from IDM's public documentation and shares no code with it.</p>
+    </section>
+    <footer><a href="./">Home</a><a href="faq.html">FAQ</a><a href="vs-ab-download-manager.html">Fetchline and AB DM</a><a href="privacy.html">Privacy</a></footer>
+  </div>
+</body>
+</html>

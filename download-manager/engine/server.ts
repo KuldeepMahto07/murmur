@@ -2,6 +2,8 @@ import http from 'node:http';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { spawn } from 'node:child_process';
+import { existsSync } from 'node:fs';
 import { Manager } from './manager.ts';
 import { probeMedia } from './hls.ts';
 import { probeYtdlp, ytdlpInfo } from './ytdlp.ts';
@@ -33,6 +35,8 @@ export function createServer(mgr: Manager, port: number) {
 
       const body = req.method === 'POST' || req.method === 'PUT' ? await readJson(req) : {};
       const route = `${req.method} /${parts.slice(1).join('/')}`;
+      const client = req.headers['x-fetchline-client'];
+      if (typeof client === 'string' && client.startsWith('extension/')) mgr.extensionSeen = { at: Date.now(), client: client.slice(0, 40) };
       const id = parts[2];
 
       switch (true) {
@@ -60,6 +64,12 @@ export function createServer(mgr: Manager, port: number) {
         case route === `DELETE /downloads/${id}`:
           await mgr.remove(id, url.searchParams.get('deleteFile') === '1');
           return send(res, 200, { ok: true });
+        case route === 'GET /startup':
+          return send(res, 200, { supported: process.platform === 'win32', on: existsSync(STARTUP_LINK) });
+        case route === 'PUT /startup':
+          if (process.platform !== 'win32') return send(res, 400, { error: 'Start with Windows is only available on Windows' });
+          await setStartup(!!body.on);
+          return send(res, 200, { supported: true, on: existsSync(STARTUP_LINK) });
         case route === 'GET /ping':
           return send(res, 200, { app: 'fetchline', version: 1, ytdlp: (await ytdlpInfo())?.version ?? null });
         case route === 'POST /ytdlp/probe': {
@@ -96,6 +106,18 @@ export function createServer(mgr: Manager, port: number) {
     } catch (e) {
       send(res, 400, { error: (e as Error).message });
     }
+  });
+}
+
+const STARTUP_LINK = path.join(process.env.APPDATA ?? '', 'Microsoft', 'Windows', 'Start Menu', 'Programs', 'Startup', 'Fetchline.lnk');
+
+/** Creates/removes the Startup shortcut through the tray script (one implementation for tray and UI). */
+function setStartup(on: boolean) {
+  const tray = path.join(UI_DIR, '..', 'desktop', 'tray.ps1');
+  return new Promise<void>((resolve, reject) => {
+    const p = spawn('powershell', ['-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', tray, '-Action', on ? 'enable-startup' : 'disable-startup'], { windowsHide: true, stdio: 'ignore' });
+    p.on('error', reject);
+    p.on('exit', (code) => (code === 0 ? resolve() : reject(new Error(`startup toggle failed (${code})`))));
   });
 }
 

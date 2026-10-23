@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FAQ · Fetchline</title>
+  <meta name="description" content="Answers about Fetchline: YouTube and DRM, the 'not running' message, SmartScreen warnings, AB Download Manager, checksums and resume." />
+  <link rel="icon" href="logo.svg" /><link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="wrap">
+    <nav><a class="brand" href="./"><img src="logo.svg" width="28" height="28" alt="" /> Fetchline</a><a href="./#features">Features</a><a href="./#pricing">Pricing</a><a href="faq.html">FAQ</a><a href="vs-idm.html">vs IDM</a></nav>
+    <section class="prose" style="border:0">
+      <h1 style="font-size:38px">Frequently asked questions</h1>
+
+      <details id="youtube" open>
+        <summary>Can Fetchline download from YouTube, Instagram, Netflix…?</summary>
+        <p><b>Netflix, Disney+, Prime Video and other DRM-protected services:</b> no, never.</p>
+        <p><b>YouTube and Instagram:</b> not with the Chrome Web Store or Edge Add-ons version of the extension, because store policies forbid it. The version distributed directly (GitHub, winget) can use <a href="https://github.com/yt-dlp/yt-dlp">yt-dlp</a>, a separate open-source program you install yourself (<code>winget install yt-dlp.yt-dlp</code>). It then lists the qualities of supported pages.</p>
+        <p>Downloading from these platforms may break their terms of service. Use it for your own uploads, Creative Commons videos, or with the creator's permission. For your own content, YouTube Studio and Instagram's "Download your information" are the official routes.</p>
+      </details>
+
+      <details>
+        <summary>The extension says "Fetchline is not running"</summary>
+        <p>The extension hands downloads to the Fetchline app on your PC. Start it from the Start menu or the tray, or with <code>desktop\Fetchline.vbs</code>. Right-click the tray icon to turn on <i>Start with Windows</i> so it's always there. If you changed the port, set the same port in the extension popup.</p>
+      </details>
+
+      <details>
+        <summary>The button shows "No downloadable stream seen yet"</summary>
+        <p>Play the video for a few seconds: many players only request the stream when playback starts. If the site streams in a protected way, there's nothing Fetchline can download.</p>
+      </details>
+
+      <details>
+        <summary>Windows SmartScreen warns about the installer</summary>
+        <p>Until our code-signing certificate is in place, new unsigned apps get this warning. Every release lists its SHA-256 checksum so you can confirm the file is the one we published.</p>
+      </details>
+
+      <details>
+        <summary>How is it faster than my browser?</summary>
+        <p>Browsers fetch a file over one connection. Many servers limit speed per connection, so Fetchline asks for several parts at once. When a connection finishes, it splits the biggest remaining part again, so all connections stay busy until the end. If a server doesn't allow this, Fetchline falls back to one connection.</p>
+      </details>
+
+      <details>
+        <summary>What happens if my PC crashes or the Wi-Fi drops?</summary>
+        <p>Progress is written to disk every second. After a crash, Fetchline resumes downloads on its own when it starts. It first re-reads a small overlap of what it already has and compares it with the server, so a corrupted tail can't slip into your file.</p>
+      </details>
+
+      <details>
+        <summary>What do the SHA-256 and "matches expected" mean?</summary>
+        <p>Every finished file gets a SHA-256 fingerprint. Many sites (Linux distributions, SDKs, datasets) publish theirs. Paste it in the "Expected checksum" box and Fetchline marks the download red if the file doesn't match.</p>
+      </details>
+
+      <details>
+        <summary>I use AB Download Manager. Can I keep it?</summary>
+        <p>Yes. In the extension popup choose <i>Send downloads to → AB Download Manager</i>. The video button then sends files and streams to AB DM through its own integration API. See <a href="vs-ab-download-manager.html">Fetchline and AB Download Manager</a>.</p>
+      </details>
+
+      <details>
+        <summary>Does Fetchline collect my browsing or downloads?</summary>
+        <p>No. Nothing about your URLs, files or cookies leaves your PC. See the <a href="privacy.html">privacy policy</a>.</p>
+      </details>
+    </section>
+    <footer><a href="./">Home</a><a href="vs-idm.html">Fetchline vs IDM</a><a href="vs-ab-download-manager.html">Fetchline and AB DM</a><a href="privacy.html">Privacy</a></footer>
+  </div>
+</body>
+</html>

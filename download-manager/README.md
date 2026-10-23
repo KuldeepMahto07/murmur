@@ -97,6 +97,23 @@ Choosing an entry calls AB DM's own integration API, `POST /add`, so AB DM opens
 
 AB DM itself doesn't download YouTube (its YouTube and yt-dlp support requests are still open issues). yt-dlp menu entries therefore always go to Fetchline, even when AB DM is selected.
 
+## Develop, test and release
+
+```bash
+npm test
+```
+```bash
+npm run build
+```
+- **`npm test`:** 12 unit tests (`tests/engine.test.ts`).
+- **`npm run build`:** writes to `dist/`:
+  - the store extension zip (yt-dlp stripped and checked)
+  - the direct extension zip
+  - the Windows app zip
+  - `SHA256SUMS.txt`
+- **CI:** `.github/workflows/fetchline.yml` runs every suite on Windows for changes under `download-manager/`.
+- **Landing site:** `site/` is static (home, FAQ, privacy, comparisons). Serve it with any static host.
+
 ## Verify
 
 ```bash

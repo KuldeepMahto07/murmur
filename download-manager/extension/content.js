@@ -186,7 +186,7 @@
       return note('The extension was updated — reload this page.', true);
     }
     if (res?.error) return note(res.error, true);
-    if (!res.engine && !res.ytdlp) {
+    if (!res.engine && !res.ytdlp) { // @store-replace: if (!res.engine) {
       return note(
         res.targetName === 'AB Download Manager'
           ? 'AB Download Manager is not running (or its browser integration is off). Start it, then try again.'
@@ -204,12 +204,13 @@
     const emptyText = src.startsWith('blob:')
       ? 'No downloadable stream seen yet. Play the video for a few seconds and try again.'
       : 'No downloadable media seen on this page yet. Start playback and try again.';
-    if (!res.engine) rows.length = 0; // target app down: only yt-dlp (via Fetchline) can help
-    if (!rows.length && !res.ytdlp) return note(emptyText);
+    if (!res.engine) rows.length = 0; // target app down: only yt-dlp (via Fetchline) can help // @store-replace: if (!res.engine) rows.length = 0;
+    if (!rows.length && !res.ytdlp) return note(emptyText); // @store-replace: if (!rows.length) return note(emptyText);
 
     const noteEl = menu.querySelector('.note');
     if (rows.length) noteEl.remove();
     rows.forEach(addRow);
+    // @ytdlp:start  (stripped from the store build by scripts/build.ts)
     if (!res.ytdlp) return;
 
     // Ask yt-dlp (through Fetchline) for this page's qualities; this can take a few seconds.
@@ -232,6 +233,7 @@
       wait.remove();
       if (!rows.length) note(emptyText);
     }
+    // @ytdlp:end
   }
 
   function addRow(r) {

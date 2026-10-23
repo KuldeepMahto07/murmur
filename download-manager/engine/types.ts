@@ -90,6 +90,8 @@ export interface Settings {
   maxConcurrent: number;
   globalSpeedLimit: number;
   categories: Category[];
+  /** First-run setup finished (the UI shows the welcome dialog until then). */
+  onboarded?: boolean;
   scheduler: {
     enabled: boolean;
     startAt: string;   // "HH:MM", local time, daily

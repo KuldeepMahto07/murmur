@@ -1,0 +1,15 @@
+{
+  "name": "fetchline",
+  "version": "0.3.0",
+  "private": true,
+  "description": "Segmented download manager with a browser video button",
+  "type": "module",
+  "engines": { "node": ">=24" },
+  "scripts": {
+    "start": "node --disable-warning=ExperimentalWarning engine/main.ts",
+    "test": "node --disable-warning=ExperimentalWarning --test tests/engine.test.ts",
+    "verify": "node --disable-warning=ExperimentalWarning scripts/verify.ts --local",
+    "verify:extension": "node --disable-warning=ExperimentalWarning scripts/verify-extension.ts",
+    "build": "node --disable-warning=ExperimentalWarning scripts/build.ts"
+  }
+}

@@ -217,7 +217,88 @@ function render() {
   renderTable();
   renderToolbar();
   renderDetails();
+  renderWelcome();
 }
+
+// ------------------------------------------------------------ first-run welcome
+
+// An 11 KB kernel patch whose SHA-256 kernel.org publishes in sha256sums.asc.
+const TEST_URL = 'https://cdn.kernel.org/pub/linux/kernel/v6.x/patch-6.6.1.xz';
+const TEST_SHA = 'sha256:39654b8d91e5c36544bc987a8ab353f53cdea738179155cd6eb7c992ba7f8c04';
+let welcomeShown = false;
+let testId = null;
+
+async function openWelcome() {
+  const f = $('#form-welcome');
+  const s = state.snap;
+  f.baseDir.value = s.settings.baseDir;
+  f.net.value = s.settings.connections <= 4 ? '4' : '8';
+  $('#w-ext-path').textContent = `${s.appDir}\\extension`.replace(/\//g, '\\');
+  const st = await api('GET', '/startup').catch(() => ({ supported: false }));
+  $('#w-startup-step').hidden = !st.supported;
+  f.startup.checked = !!st.on;
+  $('#dlg-welcome').showModal();
+  renderWelcome();
+}
+
+function renderWelcome() {
+  if (!welcomeShown && !state.snap.settings.onboarded) {
+    welcomeShown = true;
+    openWelcome();
+  }
+  if (!$('#dlg-welcome').open) return;
+  const seen = state.snap.extensionSeen;
+  const live = seen && Date.now() - seen.at < 10 * 60_000;
+  const ext = $('#w-ext');
+  ext.textContent = live ? `✔ Browser extension connected (${seen.client.replace('extension/', 'v')})` : 'Waiting for the browser extension… (open any page once it is loaded)';
+  ext.classList.toggle('ok', !!live);
+  $('#w-ext-help').hidden = !!live;
+  const t = testId && state.snap.downloads.find((d) => d.id === testId);
+  if (t) {
+    $('#w-test-status').innerHTML =
+      t.status === 'completed' && t.checksum?.match
+        ? '<span class="ok">✔ Downloaded and verified: SHA-256 matches kernel.org</span>'
+        : t.status === 'error'
+          ? `<span class="bad">✘ ${esc(t.error)}</span>`
+          : `${STATUS[t.status]}…`;
+  }
+}
+
+$('#w-test').onclick = async () => {
+  try {
+    const d = await api('POST', '/downloads', { url: TEST_URL, checksum: TEST_SHA, start: 'now', description: 'Fetchline test download' });
+    testId = d.id;
+    renderWelcome();
+  } catch (e) {
+    $('#w-test-status').textContent = e.message;
+  }
+};
+
+$('#dlg-welcome').addEventListener('close', async () => {
+  const f = $('#form-welcome');
+  const done = $('#dlg-welcome').returnValue === 'done';
+  try {
+    const patch = { onboarded: true };
+    if (done) {
+      patch.baseDir = f.baseDir.value.trim() || state.snap.settings.baseDir;
+      patch.connections = Number(f.net.value);
+      // Category folders follow the base folder when it changes.
+      if (patch.baseDir !== state.snap.settings.baseDir) {
+        const old = state.snap.settings.baseDir;
+        patch.categories = state.snap.settings.categories.map((c) => ({ ...c, dir: c.dir.startsWith(old) ? patch.baseDir + c.dir.slice(old.length) : c.dir }));
+      }
+      if (!$('#w-startup-step').hidden) await api('PUT', '/startup', { on: f.startup.checked });
+    }
+    await api('PUT', '/settings', patch);
+    if (done) toast('All set. Paste a link or use the video button in your browser.');
+  } catch (e) {
+    toast(e.message);
+  }
+});
+$('#btn-welcome').onclick = () => {
+  $('#dlg-settings').close('');
+  openWelcome();
+};
 
 // --------------------------------------------------------------- events
 
