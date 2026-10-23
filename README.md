@@ -2,7 +2,7 @@
 
 A local transcription app: drop in audio or video (or paste a link) and get a timed, speaker-labelled transcript you can search, edit, translate and export. Everything runs on your machine.
 
-- `docs/turboscribe-analysis.md`: notes on the product this app takes its feature set from
+- `saas/`: business lifecycle docs (16 stages); the TurboScribe teardown is in `saas/01-idea/competitor-analysis/`
 - `docs/plan.md`: the approved stack and MVP scope
 
 ## Features
