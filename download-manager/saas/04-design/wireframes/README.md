@@ -11,3 +11,10 @@ There are no separate wireframe files. The layout was designed directly in code,
 ## Missing
 - Low-fidelity wireframes for the planned desktop shell's tray menu and notifications, and for an options page in the extension.
 - An onboarding screen for the first run (extension install, folder choice).
+
+## Update (2026-10-24): store screenshots
+- First store assets captured at 1280×800 in [`site/store/`](../../../site/store/):
+  - `01-main-window.png` — the main window with sample downloads (complete / paused / queued), dark.
+  - `02-video-download.png` — the video Download menu over a player (qualities + blocked DRM).
+- Captured with headless Edge against the app with sample data (`site/store/README.md`).
+- **Still to do:** a promo tile (440×280) and a light-mode hero; low-fidelity wireframes for the tray menu and extension options page.

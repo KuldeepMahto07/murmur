@@ -20,7 +20,7 @@ Pages below that say "no YouTube" describe the store build and its marketing, wh
 | 01 | [Idea](01-idea/) | ✅ Done | — (IDM teardown and competitor grid in [competitor-analysis](01-idea/competitor-analysis/)) |
 | 02 | [Validation](02-validation/) | 🟡 In progress | Run 15 [customer interviews](02-validation/customer-interviews/) (IDM, AB DM and course users) and test $9 / $15 / $25 |
 | 03 | [Planning](03-planning/) | 🟡 In progress | Installer done. **Owner:** code-signing certificate (or Azure Artifact Signing) |
-| 04 | [Design](04-design/) | 🟡 In progress | Store screenshots and promo tile (the first-run welcome dialog is done) |
+| 04 | [Design](04-design/) | 🟡 In progress | UI, UX flows and the shared token file done; store screenshots captured. Promo tile + low-fi wireframes remain |
 | 05 | [Development](05-development/) | 🟡 In progress | Engine, UI, API, extension, tray, licensing and browser pairing done. Core build complete |
 | 06 | [Infrastructure](06-infrastructure/) | 🟡 In progress | CI, `npm run build` and the **installer** (`npm run installer`, tested) are done. Next: code signing, push so CI runs |
 | 07 | [Testing](07-testing/) | 🟡 In progress | Unit tests (12) and E2E suites pass. Next: a 2-week [beta](07-testing/beta-testing/) with 30–50 waitlist users |
