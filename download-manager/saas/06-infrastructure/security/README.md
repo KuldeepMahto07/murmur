@@ -16,3 +16,7 @@
 
 ## Update (2026-10-24)
 - Privacy policy drafted: [`site/privacy.html`](../../../site/privacy.html). Its main promise: URLs, files and cookies never leave the PC, and telemetry would be opt-in only.
+
+## Update (2026-10-24)
+- **Browser pairing** added (optional): mutating API calls require either a first-party same-origin request or a secret token the user pairs once. See [05-development/authentication](../../05-development/authentication/README.md). Default off.
+- **Still open:** encrypt the stored cookies at rest, and a `SECURITY.md`.

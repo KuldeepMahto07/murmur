@@ -40,6 +40,33 @@ const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<
   $('#abdmKey').onchange = (e) => save({ abdmKey: e.target.value.trim() });
   $('#open').onclick = () => chrome.tabs.create({ url: `http://127.0.0.1:${$('#port').value}/` });
 
+  // Browser pairing: shown when Harbor is reachable and the destination is Harbor.
+  const pairRow = $('#pairRow');
+  const pairBox = $('#pairBox');
+  function renderPair(s) {
+    pairRow.hidden = !(s.target === 'fetchline' && s.fetchlineUp);
+    if (pairRow.hidden) return;
+    if (s.paired) {
+      pairBox.innerHTML = '<span class="ok">✓ Paired with Harbor.</span> <a href="#" id="unpair">Unpair</a>';
+      $('#unpair').onclick = async (e) => {
+        e.preventDefault();
+        await chrome.runtime.sendMessage({ type: 'unpair' });
+        renderPair(await chrome.runtime.sendMessage({ type: 'status' }));
+      };
+    } else {
+      pairBox.innerHTML =
+        'Enter the code from Harbor → Settings → Browser pairing:' +
+        '<div style="display:flex;gap:6px;margin-top:6px"><input id="pairCode" inputmode="numeric" maxlength="6" placeholder="6-digit code" style="flex:1" /><button id="pairBtn" type="button">Pair</button></div>' +
+        '<div id="pairMsg" style="margin-top:4px"></div>';
+      $('#pairBtn').onclick = async () => {
+        const out = await chrome.runtime.sendMessage({ type: 'pair', code: $('#pairCode').value });
+        if (out.ok) renderPair(await chrome.runtime.sendMessage({ type: 'status' }));
+        else $('#pairMsg').innerHTML = `<span class="bad">${esc(out.error)}</span>`;
+      };
+    }
+  }
+  renderPair(status);
+
   if (!tab?.id) return;
   const res = await chrome.runtime.sendMessage({ type: 'list', tabId: tab.id });
   const list = $('#list');

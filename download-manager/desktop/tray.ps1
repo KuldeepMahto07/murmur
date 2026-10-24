@@ -51,8 +51,12 @@ if (-not $created) {
 
 Add-Type -AssemblyName System.Windows.Forms, System.Drawing
 
+# The pairing token (first-party native caller), so tray menu actions work even when
+# the user turns on "Require browser pairing". Read from the engine's data folder.
+$PairToken = try { (Get-Content (Join-Path $DataDir 'pairing.json') -Raw | ConvertFrom-Json).token } catch { $null }
 function Invoke-Api([string] $method, [string] $path) {
   $h = @{ 'X-Fetchline' = '1' }
+  if ($PairToken) { $h['X-Harbor-Token'] = $PairToken }
   if ($method -eq 'GET') { return Invoke-RestMethod -Uri "$Base/api$path" -TimeoutSec 3 }
   return Invoke-RestMethod -Method $method -Uri "$Base/api$path" -Headers $h -ContentType 'application/json' -Body '{}' -TimeoutSec 10
 }

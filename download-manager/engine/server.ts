@@ -7,6 +7,7 @@ import { existsSync } from 'node:fs';
 import { Manager } from './manager.ts';
 import { probeMedia } from './hls.ts';
 import { probeYtdlp, ytdlpInfo } from './ytdlp.ts';
+import { isSameOrigin } from './pairing.ts';
 
 const UI_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'ui');
 const MIME: Record<string, string> = {
@@ -38,6 +39,15 @@ export function createServer(mgr: Manager, port: number) {
       const client = req.headers['x-fetchline-client'];
       if (typeof client === 'string' && client.startsWith('extension/')) mgr.extensionSeen = { at: Date.now(), client: client.slice(0, 40) };
       const id = parts[2];
+
+      // Pairing gate: when enabled, a mutating call must be first-party (the app's own UI,
+      // proven by the browser's same-origin marker) or carry the pairing token. Pairing itself
+      // and shutdown (called by the tray/installer helpers) are exempt.
+      const exemptFromPairing = route === 'POST /pair' || route === 'POST /shutdown';
+      if (req.method !== 'GET' && !exemptFromPairing) {
+        const ok = mgr.pairing.allow(!!mgr.settings.requirePairing, isSameOrigin(req.headers), req.headers['x-harbor-token'] as string | undefined);
+        if (!ok) return send(res, 403, { error: 'This browser needs to be paired with Harbor. Open Harbor → Settings → Browser pairing for a code.', needPair: true });
+      }
 
       switch (true) {
         case route === 'GET /state':
@@ -80,6 +90,16 @@ export function createServer(mgr: Manager, port: number) {
           return send(res, 200, { supported: true, on: existsSync(STARTUP_LINK) });
         case route === 'GET /ping':
           return send(res, 200, { app: 'fetchline', version: 1, ytdlp: (await ytdlpInfo())?.version ?? null });
+        case route === 'GET /pairing/status':
+          // The 6-digit code is returned only to the app's own UI (same-origin), never to others.
+          return send(res, 200, mgr.pairing.status(!!mgr.settings.requirePairing, isSameOrigin(req.headers)));
+        case route === 'POST /pair': {
+          const r = await mgr.pairing.pair(String(body.code ?? ''));
+          return send(res, r.ok ? 200 : 403, r);
+        }
+        case route === 'POST /pairing/reset':
+          await mgr.pairing.reset();
+          return send(res, 200, mgr.pairing.status(!!mgr.settings.requirePairing, isSameOrigin(req.headers)));
         case route === 'POST /ytdlp/probe': {
           const t0 = Date.now();
           try {

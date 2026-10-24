@@ -168,6 +168,13 @@
         <label class="cell stack"><span>Download folder</span><input name="baseDir" /></label>
       </div>
 
+      <p class="group-title">Browser pairing</p>
+      <div class="group">
+        <label class="cell"><span>Require browser pairing <small>only paired browsers can send downloads</small></span><input type="checkbox" class="switch" name="requirePairing" /></label>
+        <div class="cell" id="pair-info"><span id="pair-text"></span></div>
+      </div>
+      <p class="group-foot">The engine already blocks web pages. Turn this on to also stop other local programs. Enter the code below in the Harbor browser extension once.</p>
+
       <p class="group-title">Scheduler</p>
       <div class="group">
         <label class="cell"><span>Start the queue automatically</span><input type="checkbox" class="switch" name="schedEnabled" /></label>

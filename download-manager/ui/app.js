@@ -593,7 +593,9 @@ $('#btn-settings').onclick = () => {
   f.startAt.value = s.scheduler.startAt;
   f.stopAt.value = s.scheduler.stopAt;
   f.onDone.value = s.scheduler.onDone;
+  f.requirePairing.checked = !!s.requirePairing;
   renderPro(state.snap.license);
+  renderPairing();
   $('#cat-list').innerHTML = s.categories
     .map((c, i) => `<div class="cell"><b>${esc(c.name)}</b><input data-i="${i}" data-k="exts" value="${esc(c.exts.join(' '))}" title="File extensions" aria-label="${esc(c.name)} extensions"></div>
                     <div class="cell sub"><span>Folder</span><input data-i="${i}" data-k="dir" value="${esc(c.dir)}" aria-label="${esc(c.name)} folder"></div>`)
@@ -616,12 +618,34 @@ $('#dlg-settings').addEventListener('close', async () => {
       baseDir: f.baseDir.value,
       categories,
       scheduler: { enabled: f.schedEnabled.checked, startAt: f.startAt.value || '02:00', stopAt: f.stopAt.value, onDone: f.onDone.value },
+      requirePairing: f.requirePairing.checked,
     });
     toast('Settings saved');
   } catch (e) {
     toast(e.message);
   }
 });
+
+// Browser pairing: show the 6-digit code (the engine only reveals it to this first-party UI).
+async function renderPairing() {
+  const box = $('#pair-text');
+  try {
+    const p = await api('GET', '/pairing/status');
+    box.innerHTML = p.paired
+      ? `<span class="ok">✓ A browser is paired.</span> Pairing code <code>${esc(p.code)}</code> · <a href="#" id="pair-reset">Unpair / new code</a>`
+      : `Pairing code: <code style="font-size:16px">${esc(p.code)}</code> — enter it once in the Harbor extension popup. <a href="#" id="pair-reset">New code</a>`;
+    const reset = $('#pair-reset');
+    if (reset)
+      reset.onclick = async (e) => {
+        e.preventDefault();
+        await api('POST', '/pairing/reset');
+        renderPairing();
+        toast('Pairing reset — paired browsers must pair again.');
+      };
+  } catch {
+    box.textContent = 'Unavailable.';
+  }
+}
 
 let toastTimer;
 function toast(msg) {

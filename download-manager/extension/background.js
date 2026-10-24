@@ -10,21 +10,40 @@
 // Scope is deliberate: no DRM handling, no site-specific extractors. Chunks of
 // adaptive streams (range= URLs, .ts/.m4s segments, blob: sources) are ignored.
 
-const DEFAULTS = { target: 'fetchline', port: 8765, abdmPort: 15151, abdmKey: '', takeover: false, ytdlp: true }; // @store-replace: const DEFAULTS = { target: 'fetchline', port: 8765, abdmPort: 15151, abdmKey: '', takeover: false };
+const DEFAULTS = { target: 'fetchline', port: 8765, abdmPort: 15151, abdmKey: '', takeover: false, ytdlp: true, pairToken: '' }; // @store-replace: const DEFAULTS = { target: 'fetchline', port: 8765, abdmPort: 15151, abdmKey: '', takeover: false, pairToken: '' };
 const TARGET_NAMES = { fetchline: 'Harbor', abdm: 'AB Download Manager' };
 const cfg = async () => ({ ...DEFAULTS, ...(await chrome.storage.local.get(Object.keys(DEFAULTS))) });
 
 async function engine(method, path, body, timeoutMs = 5000) {
-  const { port } = await cfg();
+  const { port, pairToken } = await cfg();
+  const headers = { 'content-type': 'application/json', 'x-fetchline': '1', 'x-fetchline-client': `extension/${chrome.runtime.getManifest().version}` };
+  if (pairToken) headers['x-harbor-token'] = pairToken; // sent when the user has paired this browser
   const res = await fetch(`http://127.0.0.1:${port}/api${path}`, {
     method,
-    headers: { 'content-type': 'application/json', 'x-fetchline': '1', 'x-fetchline-client': `extension/${chrome.runtime.getManifest().version}` },
+    headers,
     body: body ? JSON.stringify(body) : undefined,
     signal: AbortSignal.timeout(timeoutMs),
   });
   const data = await res.json().catch(() => ({}));
+  // 403 needPair: the engine requires pairing and this browser isn't paired (or the token was reset).
+  if (res.status === 403 && data.needPair) throw Object.assign(new Error(data.error || 'Pairing required'), { needPair: true });
   if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
   return data;
+}
+
+/** Exchange the code the user reads from Harbor → Settings → Browser pairing for a token. */
+async function pairWithEngine(code) {
+  const { port } = await cfg();
+  const res = await fetch(`http://127.0.0.1:${port}/api/pair`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json', 'x-fetchline': '1' },
+    body: JSON.stringify({ code: String(code || '').trim() }),
+    signal: AbortSignal.timeout(5000),
+  }).catch(() => null);
+  const data = res ? await res.json().catch(() => ({})) : {};
+  if (!res || !data.ok) return { ok: false, error: data.error || 'Could not reach Harbor. Is it running?' };
+  await chrome.storage.local.set({ pairToken: data.token });
+  return { ok: true };
 }
 
 /** AB Download Manager's integration API (the same calls its own extension makes). */
@@ -376,8 +395,13 @@ chrome.runtime.onMessage.addListener((msg, sender, reply) => {
       case 'status': {
         const c = await cfg();
         const info = await engineInfo();
-        return { engine: await targetUp(), targetName: TARGET_NAMES[c.target], ytdlpVersion: info?.ytdlp ?? null, fetchlineUp: !!info, ...c }; // @store-replace: return { engine: await targetUp(), targetName: TARGET_NAMES[c.target], fetchlineUp: !!info, ...c };
+        return { engine: await targetUp(), targetName: TARGET_NAMES[c.target], ytdlpVersion: info?.ytdlp ?? null, fetchlineUp: !!info, paired: !!c.pairToken, ...c }; // @store-replace: return { engine: await targetUp(), targetName: TARGET_NAMES[c.target], fetchlineUp: !!info, paired: !!c.pairToken, ...c };
       }
+      case 'pair':
+        return pairWithEngine(msg.code);
+      case 'unpair':
+        await chrome.storage.local.set({ pairToken: '' });
+        return { ok: true };
       default:
         return { error: 'unknown message' };
     }

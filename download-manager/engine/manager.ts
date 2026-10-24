@@ -8,6 +8,7 @@ import { Download } from './download.ts';
 import { HlsDownload } from './hls.ts';
 import { YtdlpDownload, type BrowserCookie } from './ytdlp.ts';
 import { Licensing } from './license.ts';
+import { Pairing } from './pairing.ts';
 import { TokenBucket } from './limiter.ts';
 import { fileNameFromUrl, sanitizeFileName } from './net.ts';
 
@@ -70,6 +71,7 @@ export class Manager {
   private timers: NodeJS.Timeout[] = [];
   onExit: () => void = () => {};
   readonly licensing: Licensing;
+  readonly pairing: Pairing;
   /** Last time the browser extension talked to the engine (it sends X-Fetchline-Client). */
   extensionSeen: { at: number; client: string } | null = null;
 
@@ -80,6 +82,7 @@ export class Manager {
     this.dataDir = dataDir;
     this.defaultBaseDir = opts.defaultBaseDir;
     this.licensing = new Licensing(dataDir);
+    this.pairing = new Pairing(dataDir);
   }
 
   private get stateFile() {
@@ -89,6 +92,7 @@ export class Manager {
   async load() {
     await fs.mkdir(this.dataDir, { recursive: true });
     await this.licensing.load();
+    await this.pairing.load();
     let saved: { settings?: Settings; downloads?: DownloadRecord[]; queueRunning?: boolean } = {};
     try {
       saved = JSON.parse(await fs.readFile(this.stateFile, 'utf8'));
@@ -449,6 +453,7 @@ export class Manager {
       queueRunning: this.queueRunning,
       extensionSeen: this.extensionSeen,
       license: this.licensing.status(),
+      pairing: this.pairing.status(!!this.settings.requirePairing, false),
       appDir: path.join(path.dirname(fileURLToPath(import.meta.url)), '..'),
       platform: process.platform,
       settings: this.settings,

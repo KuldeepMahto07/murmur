@@ -92,6 +92,8 @@ export interface Settings {
   categories: Category[];
   /** First-run setup finished (the UI shows the welcome dialog until then). */
   onboarded?: boolean;
+  /** When true, cross-site callers (the browser extension) must pair; the app's own UI is exempt. */
+  requirePairing?: boolean;
   scheduler: {
     enabled: boolean;
     startAt: string;   // "HH:MM", local time, daily

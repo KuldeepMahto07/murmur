@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Harbor Integration",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Adds a download button over videos and hands downloads to Harbor or AB Download Manager running on this PC.",
   "permissions": ["webRequest", "storage", "contextMenus", "cookies", "downloads"],
   "host_permissions": ["<all_urls>"],
