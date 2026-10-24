@@ -1,6 +1,6 @@
 # Monitoring
 
-**Status: Not started.** Part of [06 · Infrastructure](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: Not started.** Part of [06 · Infrastructure](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 A desktop app has no servers to monitor. What matters is release health:
 - **Opt-in crash reports:** off by default. When an engine run hits an error, offer "send report", which sends the log tail and versions but no URLs or cookies.

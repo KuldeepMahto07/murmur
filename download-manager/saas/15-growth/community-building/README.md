@@ -1,6 +1,6 @@
 # Community building
 
-**Status: Not started.** Part of [15 · Growth](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: Not started.** Part of [15 · Growth](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 - **Open core in public:** an open-source engine and extension under a permissive licence, with Pro features in a separate module.
 - **Contributor-friendly:** `good first issue` labels, especially site-compatibility reports (a site that serves plain MP4/HLS but isn't detected).

@@ -1,6 +1,6 @@
 # Integrations
 
-**Status: Done.** Part of [05 · Development](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: Done.** Part of [05 · Development](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 | Integration | Code | Status |
 |---|---|---|

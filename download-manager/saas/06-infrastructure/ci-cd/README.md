@@ -1,6 +1,6 @@
 # CI/CD
 
-**Status: Ready (not yet run on GitHub).** Part of [06 · Infrastructure](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: Ready (not yet run on GitHub).** Part of [06 · Infrastructure](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 ## GitHub Actions plan (`.github/workflows/` at the repo root, scoped to `download-manager/**`)
 | Job | Runs | Notes |

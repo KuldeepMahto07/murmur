@@ -1,6 +1,6 @@
 # User tracking
 
-**Status: Not started.** Part of [13 · Analytics](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: Not started.** Part of [13 · Analytics](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 **Privacy first:** a download manager sees every URL a user fetches, so analytics must never include URLs, file names or cookies.
 

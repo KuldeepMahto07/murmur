@@ -1,6 +1,6 @@
 # Hiring
 
-**Status: Not started.** Part of [16 · Scaling](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: Not started.** Part of [16 · Scaling](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 **Hire in order, only when revenue supports it:**
 1. **Part-time support and community contractor** at about $1.5k/month MRR. Covers the FAQ, triage and Discord.

@@ -36,7 +36,7 @@ process.on('SIGINT', exit);
 process.on('SIGTERM', exit);
 
 server.listen(port, '127.0.0.1', () => {
-  console.log(`Fetchline engine on http://127.0.0.1:${port}  (data: ${dataDir}, pid ${process.pid})`);
+  console.log(`Harbor engine on http://127.0.0.1:${port}  (data: ${dataDir}, pid ${process.pid})`);
 });
 
 async function claimPort() {
@@ -44,13 +44,13 @@ async function claimPort() {
   const base = `http://127.0.0.1:${port}/api`;
   const ping = await fetch(`${base}/ping`).catch(() => null);
   if (ping?.ok) {
-    console.log(`Fetchline is already running on http://127.0.0.1:${port}`);
+    console.log(`Harbor is already running on http://127.0.0.1:${port}`);
     process.exit(0);
   }
-  // An older Fetchline (from before /ping existed) still answers /state: ask it to save and exit.
+  // An older Harbor (from before /ping existed) still answers /state: ask it to save and exit.
   const old = await fetch(`${base}/state`).catch(() => null);
   if (old?.ok) {
-    console.log('Closing an older Fetchline that is still running…');
+    console.log('Closing an older Harbor that is still running…');
     await fetch(`${base}/shutdown`, { method: 'POST', headers: { 'x-fetchline': '1' } }).catch(() => {});
     for (let i = 0; i < 50; i++) {
       await new Promise((r) => setTimeout(r, 200));

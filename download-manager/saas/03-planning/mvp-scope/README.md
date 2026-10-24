@@ -1,6 +1,6 @@
 # MVP scope
 
-**Status: Done.** Part of [03 · Planning](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: Done.** Part of [03 · Planning](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 The MVP scope was approved on 2026-10-23 and has been delivered:
 - **Engine:** segmented HTTP(S) with dynamic splitting, keep-alive reuse, retries and backoff, and fallback to one connection.

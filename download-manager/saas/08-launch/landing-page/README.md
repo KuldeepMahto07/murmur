@@ -1,6 +1,6 @@
 # Landing page
 
-**Status: Built (not deployed).** Part of [08 · Launch](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: Built (not deployed).** Part of [08 · Launch](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 ## Sections
 1. **Hero:** "Faster, verified downloads for Windows." Buttons: Download for Windows (signed installer) and Add to Chrome / Edge.

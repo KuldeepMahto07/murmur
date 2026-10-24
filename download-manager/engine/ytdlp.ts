@@ -8,8 +8,8 @@ import { verifyFile, type DownloadHooks } from './download.ts';
 /*
  * yt-dlp integration (https://github.com/yt-dlp/yt-dlp), added at the project
  * owner's request for sites such as YouTube and Instagram. yt-dlp is an external
- * program the user installs (winget install yt-dlp.yt-dlp); Fetchline only runs it.
- * It does not handle DRM-protected media, and neither does Fetchline.
+ * program the user installs (winget install yt-dlp.yt-dlp); Harbor only runs it.
+ * It does not handle DRM-protected media, and neither does Harbor.
  */
 
 export interface BrowserCookie {

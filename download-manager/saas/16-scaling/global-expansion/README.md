@@ -1,6 +1,6 @@
 # Global expansion
 
-**Status: Not started.** Part of [16 · Scaling](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: Not started.** Part of [16 · Scaling](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 - **Regional pricing:** purchasing-power pricing through the merchant of record (see [pricing-strategy](../../11-conversion/pricing-strategy/README.md)).
 - **Local payment methods:** UPI (India), cards and wallets in Indonesia, and local cards in MENA, as far as the merchant of record supports them.

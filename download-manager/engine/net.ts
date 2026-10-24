@@ -9,7 +9,7 @@ const agents: Record<string, http.Agent> = {
   'https:': new https.Agent({ keepAlive: true, maxSockets: 64 }),
 };
 
-export const USER_AGENT = 'Fetchline/0.1 (+segmented downloader)';
+export const USER_AGENT = 'Harbor/0.3 (+segmented downloader)';
 
 export interface RequestOptions {
   method?: string;

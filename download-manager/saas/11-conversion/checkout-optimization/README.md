@@ -1,6 +1,6 @@
 # Checkout optimization
 
-**Status: Not started.** Part of [11 · Conversion](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: Not started.** Part of [11 · Conversion](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 - **Merchant of record:** Lemon Squeezy or Paddle. It handles global VAT and sales tax, cards, PayPal and local methods, and has built-in licence-key and affiliate support.
 - **In-app flow:**

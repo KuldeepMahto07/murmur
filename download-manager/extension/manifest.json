@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Fetchline Integration",
-  "version": "0.3.2",
-  "description": "Adds a download button over videos and hands downloads to Fetchline or AB Download Manager running on this PC.",
+  "name": "Harbor Integration",
+  "version": "0.4.0",
+  "description": "Adds a download button over videos and hands downloads to Harbor or AB Download Manager running on this PC.",
   "permissions": ["webRequest", "storage", "contextMenus", "cookies", "downloads"],
   "host_permissions": ["<all_urls>"],
   "background": { "service_worker": "background.js", "type": "module" },
@@ -16,8 +16,8 @@
   ],
   "action": {
     "default_popup": "popup.html",
-    "default_title": "Fetchline",
-    "default_icon": { "16": "icons/16.png", "32": "icons/32.png", "48": "icons/48.png" }
+    "default_title": "Harbor",
+    "default_icon": { "16": "icons/harbor-16.png", "32": "icons/harbor-32.png", "48": "icons/harbor-48.png" }
   },
-  "icons": { "16": "icons/16.png", "32": "icons/32.png", "48": "icons/48.png", "128": "icons/128.png" }
+  "icons": { "16": "icons/harbor-16.png", "32": "icons/harbor-32.png", "48": "icons/harbor-48.png", "128": "icons/harbor-128.png" }
 }

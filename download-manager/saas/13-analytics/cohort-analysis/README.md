@@ -1,6 +1,6 @@
 # Cohort analysis
 
-**Status: Not started.** Part of [13 · Analytics](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: Not started.** Part of [13 · Analytics](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 - **Cohorts:** group users by install week and by channel (Chrome Web Store, Edge Add-ons, winget, Microsoft Store, website).
 - **Retention:** a user counts as retained in week N if their install ID made an update check that week.

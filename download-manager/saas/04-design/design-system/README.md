@@ -1,6 +1,6 @@
 # Design system
 
-**Status: Partial.** Part of [04 · Design](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: Partial.** Part of [04 · Design](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 ## Tokens (in `ui/style.css`)
 | Token | Dark | Light |

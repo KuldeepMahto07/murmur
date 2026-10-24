@@ -1,6 +1,6 @@
 # Social media
 
-**Status: Not started.** Part of [09 · Acquisition](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: Not started.** Part of [09 · Acquisition](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 | Channel | Content | Cadence |
 |---|---|---|

@@ -1,6 +1,6 @@
 # Integration testing
 
-**Status: Done.** Part of [07 · Testing](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: Done.** Part of [07 · Testing](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 | Suite | Covers | Last result |
 |---|---|---|

@@ -4,7 +4,7 @@ import path from 'node:path';
 import { LICENSE_PUBLIC_KEY } from './license-key.ts';
 
 /*
- * Fetchline Pro licensing: offline Ed25519-signed keys, no account, no phone-home.
+ * Harbor Pro licensing: offline Ed25519-signed keys, no account, no phone-home.
  *
  *   key = "FL1-" + base64url(JSON payload) + "." + base64url(Ed25519 signature over those payload bytes)
  *
@@ -46,7 +46,7 @@ export function checkKey(key: string, publicKeyB64 = LICENSE_PUBLIC_KEY, now = D
   if (!publicKeyB64) return { ok: false, error: 'This build has no licence public key' };
   const clean = String(key ?? '').replace(/\s+/g, '');
   const m = /^FL1-([A-Za-z0-9_-]+)\.([A-Za-z0-9_-]+)$/.exec(clean);
-  if (!m) return { ok: false, error: 'Not a Fetchline licence key (it should start with FL1-)' };
+  if (!m) return { ok: false, error: 'Not a Harbor licence key (it should start with FL1-)' };
   const bytes = Buffer.from(m[1], 'base64url');
   const sig = Buffer.from(m[2], 'base64url');
   // Only the canonical encoding is accepted, so one licence has exactly one valid key string.

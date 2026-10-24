@@ -1,6 +1,6 @@
 # Problem discovery
 
-**Status: Done.** Part of [01 · Idea](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: Done.** Part of [01 · Idea](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 ## The problem
 Big downloads in a browser are fragile and slow. Users run into four problems:

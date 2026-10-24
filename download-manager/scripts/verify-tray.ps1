@@ -1,5 +1,5 @@
 # End-to-end check of the Windows tray app (desktop\tray.ps1) on a spare port with its
-# own data folder, so a Fetchline you already run is not touched.
+# own data folder, so a Harbor you already run is not touched.
 #   powershell -ExecutionPolicy Bypass -File scripts\verify-tray.ps1
 $ErrorActionPreference = 'Stop'
 $Root = Split-Path -Parent $PSScriptRoot
@@ -44,12 +44,12 @@ if (-not $exited) { Stop-Process -Id $proc.Id -Force }
 Check ((LogText) -match 'tray exited') 'tray cleaned up (icon removed, lock released)'
 
 # 4. Start with Windows: create and remove the Startup shortcut (restores what was there).
-$link = Join-Path ([Environment]::GetFolderPath('Startup')) 'Fetchline.lnk'
+$link = Join-Path ([Environment]::GetFolderPath('Startup')) 'Harbor.lnk'
 $had = Test-Path $link
 & powershell -NoProfile -ExecutionPolicy Bypass -File $Tray -Action enable-startup -Data $Data
 $ok = Test-Path $link
 if ($ok) { $target = (New-Object -ComObject WScript.Shell).CreateShortcut($link).Arguments }
-Check ($ok -and $target -like '*Fetchline.vbs*') 'Start with Windows creates a Startup shortcut to Fetchline.vbs'
+Check ($ok -and $target -like '*Harbor.vbs*') 'Start with Windows creates a Startup shortcut to Harbor.vbs'
 if (-not $had) {
   & powershell -NoProfile -ExecutionPolicy Bypass -File $Tray -Action disable-startup -Data $Data
   Check (-not (Test-Path $link)) 'turning it off removes the shortcut'

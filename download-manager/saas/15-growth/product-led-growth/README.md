@@ -1,6 +1,6 @@
 # Product led growth
 
-**Status: Not started.** Part of [15 · Growth](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: Not started.** Part of [15 · Growth](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 - **Free that's actually good:** the speed, resume and verification are free, which drives word of mouth.
 - **Visible value:** the details pane shows "Saved you X minutes vs. a single connection" (estimated from the measured segment speeds). Users can screenshot and share it.

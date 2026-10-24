@@ -1,9 +1,9 @@
 # User onboarding
 
-**Status: Done.** Part of [14 · Retention](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: Done.** Part of [14 · Retention](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 **First-run flow, built into the desktop shell:**
-1. Welcome: choose the download folder (default: Downloads\Fetchline).
+1. Welcome: choose the download folder (default: Downloads\Harbor).
 2. "Connect your browser": buttons for the Chrome Web Store and Edge Add-ons. The app polls `/api/ping` from the extension and ticks off when it's connected.
 3. Pick your connection type (fast or unstable). This sets the default connection count and speed limit.
 4. Test download: a small public file showing the segment map and a ✓ verified SHA-256. This is the "aha" moment.

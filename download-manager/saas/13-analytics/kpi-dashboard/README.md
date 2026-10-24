@@ -1,6 +1,6 @@
 # KPI dashboard
 
-**Status: Not started.** Part of [13 · Analytics](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: Not started.** Part of [13 · Analytics](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 | KPI | Definition | Launch-quarter goal |
 |---|---|---|

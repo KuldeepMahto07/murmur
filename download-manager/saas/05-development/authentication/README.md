@@ -1,8 +1,8 @@
 # Authentication
 
-**Status: In progress.** Part of [05 · Development](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: In progress.** Part of [05 · Development](../README.md) in the [Harbor SaaS plan](../../README.md).
 
-- **User accounts:** none. Fetchline is a local, single-user app, and the API is protected by its loopback guard (see [apis](../apis/README.md)).
+- **User accounts:** none. Harbor is a local, single-user app, and the API is protected by its loopback guard (see [apis](../apis/README.md)).
 - **Site credentials:** basic auth in the URL is supported (`engine/net.ts`). Cookies come from the browser through the extension.
 - **AB DM API key:** the user can set it in the extension popup, and it is sent as `X-Api-Key`.
 

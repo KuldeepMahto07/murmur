@@ -1,7 +1,7 @@
-# Fetchline tray app (Windows). Runs the engine without a console window, adds a
+# Harbor tray app (Windows). Runs the engine without a console window, adds a
 # tray icon with a menu, and shows a notification when a download finishes or fails.
 #
-#   wscript desktop\Fetchline.vbs                   # normal start (no console flash)
+#   wscript desktop\Harbor.vbs                   # normal start (no console flash)
 #   powershell -File desktop\tray.ps1 -Action enable-startup | disable-startup
 param(
   [ValidateSet('run', 'enable-startup', 'disable-startup')] [string] $Action = 'run',
@@ -15,7 +15,7 @@ $Root = Split-Path -Parent $PSScriptRoot
 $Base = "http://127.0.0.1:$Port"
 $DataDir = if ($Data) { [IO.Path]::GetFullPath($Data) } else { Join-Path $Root 'data' }
 $Log = Join-Path $DataDir 'tray.log'
-$StartupLink = Join-Path ([Environment]::GetFolderPath('Startup')) 'Fetchline.lnk'
+$StartupLink = Join-Path ([Environment]::GetFolderPath('Startup')) 'Harbor.lnk'
 New-Item -ItemType Directory -Force -Path $DataDir | Out-Null
 
 function Write-Log([string] $msg) { Add-Content -Path $Log -Value "$(Get-Date -Format s) $msg" -Encoding UTF8 }
@@ -25,9 +25,9 @@ function Set-Startup([bool] $on) {
     $sh = New-Object -ComObject WScript.Shell
     $lnk = $sh.CreateShortcut($StartupLink)
     $lnk.TargetPath = Join-Path $env:WINDIR 'System32\wscript.exe'
-    $lnk.Arguments = '"' + (Join-Path $PSScriptRoot 'Fetchline.vbs') + '"'
+    $lnk.Arguments = '"' + (Join-Path $PSScriptRoot 'Harbor.vbs') + '"'
     $lnk.WorkingDirectory = $Root
-    $lnk.Description = 'Fetchline download manager'
+    $lnk.Description = 'Harbor download manager'
     $lnk.Save()
   } elseif (Test-Path $StartupLink) { Remove-Item $StartupLink }
   Write-Log "start with Windows: $on"
@@ -59,7 +59,7 @@ function Test-Engine { try { return (Invoke-Api GET '/ping').app -eq 'fetchline'
 if (-not (Test-Engine)) {
   $node = (Get-Command node -ErrorAction SilentlyContinue).Source
   if (-not $node) {
-    [System.Windows.Forms.MessageBox]::Show('Node.js 24+ is required to run Fetchline.', 'Fetchline') | Out-Null
+    [System.Windows.Forms.MessageBox]::Show('Node.js 24+ is required to run Harbor.', 'Harbor') | Out-Null
     return
   }
   $main = Join-Path $Root 'engine\main.ts'
@@ -70,18 +70,19 @@ if (-not (Test-Engine)) {
   for ($i = 0; $i -lt 50 -and -not $up; $i++) { Start-Sleep -Milliseconds 200; $up = Test-Engine }
   if (-not $up) {
     Write-Log 'engine failed to start'
-    [System.Windows.Forms.MessageBox]::Show("The Fetchline engine did not start.`nSee data\engine.err.log", 'Fetchline') | Out-Null
+    [System.Windows.Forms.MessageBox]::Show("The Harbor engine did not start.`nSee data\engine.err.log", 'Harbor') | Out-Null
     return
   }
   Write-Log 'engine started'
 } else { Write-Log 'attached to running engine' }
 
 # ---- tray icon and menu
-$iconPath = Join-Path $Root 'extension\icons\32.png'
-$bmp = New-Object System.Drawing.Bitmap $iconPath
+$iconPath = Join-Path $Root 'extension\icons\harbor-32.png'
+# Load from bytes so the PNG file isn't kept open (and locked) while the tray runs.
+$bmp = New-Object System.Drawing.Bitmap (New-Object System.IO.MemoryStream (,[System.IO.File]::ReadAllBytes($iconPath)))
 $tray = New-Object System.Windows.Forms.NotifyIcon
 $tray.Icon = [System.Drawing.Icon]::FromHandle($bmp.GetHicon())
-$tray.Text = 'Fetchline'
+$tray.Text = 'Harbor'
 $tray.Visible = $true
 
 # Run() with a context (not bare) so ExitThread() reliably ends the loop from timer/menu events.
@@ -92,7 +93,7 @@ function Add-Item([string] $text, [scriptblock] $onClick) {
   $item.add_Click($onClick)
   return $item
 }
-$open = Add-Item 'Open Fetchline' { Start-Process $Base }
+$open = Add-Item 'Open Harbor' { Start-Process $Base }
 $open.Font = New-Object System.Drawing.Font($open.Font, [System.Drawing.FontStyle]::Bold)
 $queueItem = Add-Item 'Start queue' {
   try { $s = Invoke-Api GET '/state'; Invoke-Api POST ($(if ($s.queueRunning) { '/queue/stop' } else { '/queue/start' })) | Out-Null } catch { Write-Log "queue: $_" }
@@ -103,7 +104,7 @@ $startup = Add-Item 'Start with Windows' { Set-Startup (-not (Test-Path $Startup
 $startup.Checked = Test-Path $StartupLink
 $menu.Items.Add('-') | Out-Null
 $script:quitting = $false
-Add-Item 'Quit Fetchline' {
+Add-Item 'Quit Harbor' {
   $script:quitting = $true
   try { Invoke-Api POST '/shutdown' | Out-Null } catch {}
   Write-Log 'quit from tray'
@@ -130,7 +131,7 @@ $timer.add_Tick({
   }
   $active = @($s.downloads | Where-Object { $_.status -eq 'downloading' })
   $speed = ($active | Measure-Object -Property speed -Sum).Sum
-  $tip = if ($active.Count) { 'Fetchline - {0} active, {1:N1} MB/s' -f $active.Count, ($speed / 1MB) } else { 'Fetchline - idle' }
+  $tip = if ($active.Count) { 'Harbor - {0} active, {1:N1} MB/s' -f $active.Count, ($speed / 1MB) } else { 'Harbor - idle' }
   $tray.Text = $tip.Substring(0, [Math]::Min(63, $tip.Length))
   $queueItem.Text = $(if ($s.queueRunning) { 'Stop queue' } else { 'Start queue' })
   foreach ($d in $s.downloads) {

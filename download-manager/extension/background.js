@@ -1,17 +1,17 @@
-// Fetchline Integration — background service worker.
+// Harbor Integration — background service worker.
 //
 // 1. Watches network responses for media (direct audio/video files and HLS
 //    playlists) per tab, so the overlay can offer them.
 // 2. Hands chosen items to the chosen download manager over its loopback API:
-//    the Fetchline engine, or AB Download Manager (github.com/amir1376/ab-download-manager).
-// 3. Context menu "Download with Fetchline", and optional takeover of normal
+//    the Harbor engine, or AB Download Manager (github.com/amir1376/ab-download-manager).
+// 3. Context menu "Download with Harbor", and optional takeover of normal
 //    browser downloads.
 //
 // Scope is deliberate: no DRM handling, no site-specific extractors. Chunks of
 // adaptive streams (range= URLs, .ts/.m4s segments, blob: sources) are ignored.
 
 const DEFAULTS = { target: 'fetchline', port: 8765, abdmPort: 15151, abdmKey: '', takeover: false, ytdlp: true }; // @store-replace: const DEFAULTS = { target: 'fetchline', port: 8765, abdmPort: 15151, abdmKey: '', takeover: false };
-const TARGET_NAMES = { fetchline: 'Fetchline', abdm: 'AB Download Manager' };
+const TARGET_NAMES = { fetchline: 'Harbor', abdm: 'AB Download Manager' };
 const cfg = async () => ({ ...DEFAULTS, ...(await chrome.storage.local.get(Object.keys(DEFAULTS))) });
 
 async function engine(method, path, body, timeoutMs = 5000) {
@@ -228,7 +228,7 @@ async function entries(tabId) {
       const ext = (baseName(it.url).match(/\.([a-z0-9]+)$/i)?.[1] || it.mime.split('/')[1] || 'file').toUpperCase();
       out.push({ url: it.url, kind: 'file', label: `${ext} file`, sub: [fmtSize(it.size), baseName(it.url)].filter(Boolean).join(' · '), size: it.size || 0 });
     } else if (it.probe?.encrypted) {
-      out.push({ url: it.url, kind: 'blocked', label: 'Encrypted stream', sub: 'Protected with keys/DRM — Fetchline will not download it' });
+      out.push({ url: it.url, kind: 'blocked', label: 'Encrypted stream', sub: 'Protected with keys/DRM — Harbor will not download it' });
     } else if (it.probe?.kind === 'master') {
       for (const v of it.probe.variants) out.push({ url: it.url, variant: v.url, kind: 'hls', label: `HLS ${v.label}`, sub: baseName(it.url), size: v.bandwidth });
     } else if (it.probe?.kind === 'media') {
@@ -258,7 +258,7 @@ function nameFromTitle(title, ext) {
   return t ? `${t}.${ext}` : undefined;
 }
 
-/** The Fetchline engine's /ping (null when it isn't running). */
+/** The Harbor engine's /ping (null when it isn't running). */
 async function engineInfo() {
   try {
     return await engine('GET', '/ping', undefined, 1500);
@@ -270,8 +270,8 @@ async function engineInfo() {
 // @ytdlp:start  (everything up to @ytdlp:end is stripped from the store build by scripts/build.ts)
 // ------------------------------------------------------------------ yt-dlp
 // Sites where the player streams protected chunks (YouTube, Instagram, ...) are handed to
-// yt-dlp, which runs inside the Fetchline engine. Added at the project owner's request;
-// it needs Fetchline running with yt-dlp installed, whichever download target is selected.
+// yt-dlp, which runs inside the Harbor engine. Added at the project owner's request;
+// it needs Harbor running with yt-dlp installed, whichever download target is selected.
 
 const YTDLP_SITES = /(^|\.)(youtube\.com|youtu\.be|youtube-nocookie\.com|instagram\.com|facebook\.com|fb\.watch|x\.com|twitter\.com|tiktok\.com|vimeo\.com|dailymotion\.com|reddit\.com|twitch\.tv|soundcloud\.com|bilibili\.com|streamable\.com|threads\.net|pinterest\.com|linkedin\.com)$/i;
 const ytdlpCache = new Map(); // page URL -> { at, result }
@@ -297,7 +297,7 @@ async function ytdlpEntries(pageUrl) {
   const hit = ytdlpCache.get(pageUrl);
   if (hit && Date.now() - hit.at < 10 * 60_000) return hit.result;
   const info = await engineInfo();
-  if (!info) return { error: 'Downloads from this site need Fetchline running. Start it, then try again.' };
+  if (!info) return { error: 'Downloads from this site need Harbor running. Start it, then try again.' };
   if (!info.ytdlp) return { error: "Video-site support isn't set up on this PC yet." };
   const known = YTDLP_SITES.test(new URL(pageUrl).hostname);
   let p;
@@ -390,8 +390,8 @@ chrome.runtime.onMessage.addListener((msg, sender, reply) => {
 // ---------------------------------------------------------- context menu
 
 chrome.runtime.onInstalled.addListener(() => {
-  chrome.contextMenus.create({ id: 'fl-link', title: 'Download link with Fetchline', contexts: ['link'] });
-  chrome.contextMenus.create({ id: 'fl-media', title: 'Download media with Fetchline', contexts: ['video', 'audio'] });
+  chrome.contextMenus.create({ id: 'fl-link', title: 'Download link with Harbor', contexts: ['link'] });
+  chrome.contextMenus.create({ id: 'fl-media', title: 'Download media with Harbor', contexts: ['video', 'audio'] });
 });
 
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
@@ -417,12 +417,12 @@ chrome.downloads.onCreated.addListener(async (item) => {
   if (!takeover || item.byExtensionId || !/^https?:/i.test(item.finalUrl || item.url)) return;
   if (!(await targetUp())) return; // download manager not running: let the browser handle it
   try {
-    // Hand off first; only cancel the browser's copy once Fetchline has accepted it.
+    // Hand off first; only cancel the browser's copy once Harbor has accepted it.
     const url = item.finalUrl || item.url;
     await sendToEngine({ url, kind: HLS_EXT.test(new URL(url).pathname) ? 'hls' : 'file', referer: item.referrer, pageUrl: item.referrer });
     await chrome.downloads.cancel(item.id);
     await chrome.downloads.erase({ id: item.id });
   } catch (e) {
-    console.warn('Fetchline takeover failed', e);
+    console.warn('Harbor takeover failed', e);
   }
 });

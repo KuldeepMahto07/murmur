@@ -1,6 +1,6 @@
 # Bug fixing
 
-**Status: Ongoing.** Part of [07 · Testing](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: Ongoing.** Part of [07 · Testing](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 ## Fixed during development (2026-10-23)
 | Bug | Fix |

@@ -1,6 +1,6 @@
 # Performance testing
 
-**Status: Partial.** Part of [07 · Testing](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: Partial.** Part of [07 · Testing](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 | Measure | Result |
 |---|---|

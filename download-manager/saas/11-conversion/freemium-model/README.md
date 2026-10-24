@@ -1,6 +1,6 @@
 # Freemium model
 
-**Status: In progress.** Part of [11 · Conversion](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: In progress.** Part of [11 · Conversion](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 | Free (forever) | Pro |
 |---|---|
@@ -18,7 +18,7 @@
 | Feature | Free | Pro | Where it's enforced |
 |---|---|---|---|
 | Connections per download | up to 8 | up to 32 | `Manager.maxConnections()`: add, edit, settings, and every download start (a lapsed licence caps existing downloads at 8) |
-| Scheduler completion actions (shut down the PC, close Fetchline) | — | ✅ | `updateSettings()` refuses them on Free; `whenQueueDone()` skips them if the licence lapsed |
+| Scheduler completion actions (shut down the PC, close Harbor) | — | ✅ | `updateSettings()` refuses them on Free; `whenQueueDone()` skips them if the licence lapsed |
 | Speed, resume, crash recovery, SHA-256, queue, scheduler times, video button, HLS, yt-dlp, AB DM hand-off | ✅ | ✅ | never gated |
 
 Planned Pro items will use the same `licensing.pro` check when they're built: multiple and sync queues, quotas, batch-add, proxy, CLI and per-site rules.

@@ -19,9 +19,9 @@ const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<
   // @ytdlp:start
   $('#ytdlp').checked = status.ytdlp;
   $('#ytdlpStatus').textContent = !status.fetchlineUp
-    ? 'Needs Fetchline running.'
+    ? 'Needs Harbor running.'
     : status.ytdlpVersion
-      ? 'Ready. These downloads always go to Fetchline.'
+      ? 'Ready. These downloads always go to Harbor.'
       : "Video-site support isn't set up on this PC yet.";
   $('#ytdlp').onchange = (e) => save({ ytdlp: e.target.checked });
   // @ytdlp:end

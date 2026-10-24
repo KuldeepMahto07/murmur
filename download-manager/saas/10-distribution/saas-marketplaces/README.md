@@ -1,6 +1,6 @@
 # SaaS marketplaces (app & extension stores)
 
-**Status: In progress.** Part of [10 · Distribution](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: In progress.** Part of [10 · Distribution](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 For a desktop app plus an extension, the "marketplaces" are the app and extension stores:
 

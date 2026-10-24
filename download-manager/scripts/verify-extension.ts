@@ -226,7 +226,7 @@ try {
     for (const t of targetInfos.filter((t: any) => t.type === 'service_worker' && t.url.startsWith('chrome-extension://'))) {
       const sid = (await cdp.send('Target.attachToTarget', { targetId: t.targetId, flatten: true })).sessionId;
       const r = await cdp.send('Runtime.evaluate', { expression: 'chrome.runtime.getManifest().name', returnByValue: true }, sid);
-      if (r.result?.value === 'Fetchline Integration') {
+      if (r.result?.value === 'Harbor Integration') {
         swSession = sid;
         break;
       }
@@ -270,7 +270,7 @@ try {
   await sleep(3500); // let the video play and the page fetch its playlists
 
   let mainFrameId = (await cdp.send('Page.getFrameTree', {}, s)).frameTree.frame.id;
-  const iso = () => contexts.filter((c) => c.auxData?.type === 'isolated' && c.auxData.frameId === mainFrameId && c.name === 'Fetchline Integration').pop();
+  const iso = () => contexts.filter((c) => c.auxData?.type === 'isolated' && c.auxData.frameId === mainFrameId && c.name === 'Harbor Integration').pop();
   const inExt = async (expr: string) => {
     const ctx = iso();
     if (!ctx) throw new Error('content script context not found');
@@ -332,7 +332,7 @@ try {
     const sent = await inExt(`[...__fetchlineRoot.querySelectorAll('.menu .row.sent')].length`);
     return ok && sent > 0;
   };
-  check(await clickRow('MP4 file'), 'clicking MP4 sends it to Fetchline');
+  check(await clickRow('MP4 file'), 'clicking MP4 sends it to Harbor');
   await sleep(1000);
   await openMenu();
   check(await clickRow('HLS 480p'), 'clicking HLS 480p (separate audio) sends it');
@@ -504,7 +504,7 @@ try {
         if (yd && (yd.status === 'completed' || yd.status === 'error')) break;
       }
       console.log(`        ${yd?.status} → ${yd?.fileName}${yd?.error ? ' (' + yd.error + ')' : ''}`);
-      check(yd?.status === 'completed', 'yt-dlp download completed in Fetchline');
+      check(yd?.status === 'completed', 'yt-dlp download completed in Harbor');
       if (yd?.status === 'completed') {
         const info = ffprobe(path.join(yd.dir, yd.fileName));
         check(info.video?.height === 360 && info.audio && info.duration > 600, `file is 360p with audio, ${info.duration.toFixed(0)} s`);

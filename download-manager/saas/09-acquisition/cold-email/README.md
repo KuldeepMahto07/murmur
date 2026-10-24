@@ -1,6 +1,6 @@
 # Cold email
 
-**Status: Not started.** Part of [09 · Acquisition](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: Not started.** Part of [09 · Acquisition](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 B2C cold email doesn't fit a $15 desktop tool. Use it only for **partner and press** outreach:
 - **Targets:** writers of "best download manager 2026" roundups (Windows Central, How-To Geek, MakeUseOf, TechRadar), and maintainers of "awesome-windows" style lists.

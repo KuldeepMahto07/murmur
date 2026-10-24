@@ -1,6 +1,6 @@
 # Customer support
 
-**Status: In progress.** Part of [14 · Retention](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: In progress.** Part of [14 · Retention](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 - **Channels:**
   - GitHub Issues for bugs, with templates for "download fails on a site", "extension not connecting" and "crash".

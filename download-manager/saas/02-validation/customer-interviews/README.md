@@ -1,9 +1,9 @@
 # Customer interviews
 
-**Status: Not started.** Part of [02 · Validation](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: Not started.** Part of [02 · Validation](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 ## Goal
-Find out whether people will switch from IDM, AB DM or the browser's built-in downloads to Fetchline, and what they would pay.
+Find out whether people will switch from IDM, AB DM or the browser's built-in downloads to Harbor, and what they would pay.
 
 ## Who to talk to (15 interviews)
 - 5 current IDM users. Recruit them from r/software, r/DataHoarder, tech Discords and IDM-related forums.

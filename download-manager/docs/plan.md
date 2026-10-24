@@ -1,6 +1,6 @@
-# Fetchline: plan and MVP status
+# Harbor: plan and MVP status
 
-Fetchline is an original segmented download manager built from the public-docs study in [idm-analysis.md](../saas/01-idea/competitor-analysis/idm-analysis.md). It shares no code, name, artwork or text with IDM.
+Harbor is an original segmented download manager built from the public-docs study in [idm-analysis.md](../saas/01-idea/competitor-analysis/idm-analysis.md). It shares no code, name, artwork or text with IDM.
 
 ## Approved stack (2026-10-23)
 

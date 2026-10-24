@@ -1,6 +1,6 @@
 # Landing page test
 
-**Status: Not started.** Part of [02 · Validation](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: Not started.** Part of [02 · Validation](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 ## Test
 A one-page site with three parts:

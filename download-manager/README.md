@@ -1,16 +1,16 @@
-# Fetchline
+# Harbor
 
 A segmented download manager, built from a study of what Internet Download Manager does.
 
 - The study used only IDM's public website and docs: [saas/01-idea/competitor-analysis/idm-analysis.md](saas/01-idea/competitor-analysis/idm-analysis.md).
 - The product, go-to-market and business plan follow a 16-stage lifecycle: [saas/README.md](saas/README.md).
-- Fetchline is original code, with its own name and design.
+- Harbor is original code, with its own name and design.
 - The plan and design notes are in [docs/plan.md](docs/plan.md).
 
 ## Run
 
-**Recommended (Windows tray app):** double-click `download-manager\desktop\Fetchline.vbs`.
-- It starts the engine with no console window and puts a Fetchline icon in the system tray.
+**Recommended (Windows tray app):** double-click `download-manager\desktop\Harbor.vbs`.
+- It starts the engine with no console window and puts a Harbor icon in the system tray.
 - Double-click the icon to open the UI. Right-click it for **Start/Stop queue**, **Pause all**, **Start with Windows** and **Quit**.
 - A notification pops up when a download finishes (noting a verified checksum) or fails.
 - Only one tray runs at a time. If an engine is already running, the tray attaches to it.
@@ -56,16 +56,16 @@ Then open http://127.0.0.1:8765. Downloads go to `download-manager/data/Download
 `extension/` is a Manifest V3 extension for Chrome and Edge.
 
 **What it does:**
-- **Download button on videos:** hovering a video (or starting playback) shows a **Download** button at the video's top-right. Clicking it lists the media the page has loaded: direct files (MP4, WebM, MP3…) with their size, and each quality of an HLS stream (for example 1080p, 720p, 480p). Picking one sends it to Fetchline.
+- **Download button on videos:** hovering a video (or starting playback) shows a **Download** button at the video's top-right. Clicking it lists the media the page has loaded: direct files (MP4, WebM, MP3…) with their size, and each quality of an HLS stream (for example 1080p, 720p, 480p). Picking one sends it to Harbor.
 - **File naming:** HLS videos are named from the page title and saved as MP4, joined with ffmpeg. Separate audio tracks are merged in.
 - **Browser details passed on:** the cookies, referer and user agent go with the download, so sites that check them still work.
-- **Other ways in:** right-click → *Download link / media with Fetchline*. The toolbar popup lists the tab's media and has an option to **take over normal browser downloads** (off by default).
+- **Other ways in:** right-click → *Download link / media with Harbor*. The toolbar popup lists the tab's media and has an option to **take over normal browser downloads** (off by default).
 
 **YouTube, Instagram and other sites, via yt-dlp:** added at the owner's request on 2026-10-23.
-- **How it works:** on sites like YouTube (including Shorts), Instagram, Facebook, X, TikTok, Vimeo and Reddit, or on any page where nothing else is found, the menu asks [yt-dlp](https://github.com/yt-dlp/yt-dlp) through the Fetchline engine. It lists qualities (for example 2160p to 360p MP4, and audio only) with size estimates.
-- **The download:** runs in Fetchline with progress, pause and resume (yt-dlp continues its partial files), and gets a SHA-256 when it finishes. The page's cookies are passed in a temporary cookies file, which is deleted after each run.
+- **How it works:** on sites like YouTube (including Shorts), Instagram, Facebook, X, TikTok, Vimeo and Reddit, or on any page where nothing else is found, the menu asks [yt-dlp](https://github.com/yt-dlp/yt-dlp) through the Harbor engine. It lists qualities (for example 2160p to 360p MP4, and audio only) with size estimates.
+- **The download:** runs in Harbor with progress, pause and resume (yt-dlp continues its partial files), and gets a SHA-256 when it finishes. The page's cookies are passed in a temporary cookies file, which is deleted after each run.
 - **Requirements:**
-  - Fetchline must be running, even when AB DM is the selected destination.
+  - Harbor must be running, even when AB DM is the selected destination.
   - yt-dlp must be installed: `winget install yt-dlp.yt-dlp`, which also installs Deno (needed for YouTube) and FFmpeg.
 - **Switching it off:** use the popup option "Use yt-dlp for YouTube, Instagram and similar sites".
 - **Your responsibility:** downloading from these platforms can break their terms of service. Use it for your own uploads, Creative Commons content, or with the creator's permission.
@@ -76,7 +76,7 @@ Then open http://127.0.0.1:8765. Downloads go to `download-manager/data/Download
 - **Encrypted or live HLS** in the built-in HLS downloader. These are listed as blocked.
 
 **Install (unpacked):**
-1. Start Fetchline (`start.bat`). If it was already running, restart it so the engine has the new routes.
+1. Start Harbor (`start.bat`). If it was already running, restart it so the engine has the new routes.
 2. Open `chrome://extensions` (or `edge://extensions`) and switch on **Developer mode**.
 3. Click **Load unpacked** and pick the `download-manager/extension` folder.
 4. Play any page video, hover it, and click **Download**.
@@ -85,7 +85,7 @@ The extension talks to the engine at `http://127.0.0.1:8765`. Change the port in
 
 ### Sending downloads to AB Download Manager instead
 
-[AB Download Manager](https://github.com/amir1376/ab-download-manager) (Apache-2.0) is a mature open-source download manager. Fetchline's video button can hand downloads to it instead of to the Fetchline engine.
+[AB Download Manager](https://github.com/amir1376/ab-download-manager) (Apache-2.0) is a mature open-source download manager. Harbor's video button can hand downloads to it instead of to the Harbor engine.
 
 1. Install AB DM separately, for example with `winget install amir1376.ABDownloadManager`, and start it. Its browser integration (port 15151) is on by default.
 2. Open the extension popup, choose **Send downloads to → AB Download Manager**, and set the port.
@@ -95,17 +95,17 @@ Choosing an entry calls AB DM's own integration API, `POST /add`, so AB DM opens
 - **Files** are sent as `http` items. **HLS qualities** are sent as `hls` items with the chosen quality's playlist.
 - The page's cookies, referer and user agent go with each item.
 
-AB DM itself doesn't download YouTube (its YouTube and yt-dlp support requests are still open issues). yt-dlp menu entries therefore always go to Fetchline, even when AB DM is selected.
+AB DM itself doesn't download YouTube (its YouTube and yt-dlp support requests are still open issues). yt-dlp menu entries therefore always go to Harbor, even when AB DM is selected.
 
-## Fetchline Pro (licensing)
+## Harbor Pro (licensing)
 
 **Free** is the full downloader: speed, resume, crash recovery, SHA-256, queue, scheduler times, the video button, HLS, yt-dlp and the AB DM hand-off.
 
 **Pro** adds:
 - up to 32 connections per download (Free allows 8)
-- actions when a scheduled queue finishes (shut down the PC, or close Fetchline)
+- actions when a scheduled queue finishes (shut down the PC, or close Harbor)
 
-**Getting Pro:** Settings → Fetchline Pro → *Start 14-day free trial* (no card), or paste a licence key.
+**Getting Pro:** Settings → Harbor Pro → *Start 14-day free trial* (no card), or paste a licence key.
 
 **How keys work:**
 - Keys are Ed25519-signed and checked offline. There's no account and no phone-home.
@@ -167,12 +167,12 @@ A second phase switches the extension to AB Download Manager and checks the exac
 - It accepted both `/add` requests from the extension (`200 OK`) and opened its add dialog.
 - Given the same items through `/start-headless-download`, it downloaded the MP4 byte-identical and the 360p HLS stream as a 20 s 360p video with audio.
 
-It passed 3 runs out of 3 on 2026-10-23 (Fetchline phase); the AB DM phase passed on its first run.
+It passed 3 runs out of 3 on 2026-10-23 (Harbor phase); the AB DM phase passed on its first run.
 
 With `--youtube`, a further phase opens a real YouTube page: Blender's *Big Buck Bunny*, which is CC-BY. It checks four things:
 - the Download button appears over YouTube's player
 - the menu lists yt-dlp's qualities (2160p to 360p, plus audio only)
-- clicking **360p MP4** downloads it through Fetchline
+- clicking **360p MP4** downloads it through Harbor
 - the file is 360p H.264 with audio, 635 s long, filed under Video with a SHA-256
 
 This phase passed 2 runs out of 2. An engine-level check also passed: pausing a 720p yt-dlp download stopped every yt-dlp process within 217 ms, and resuming continued from the partial file.

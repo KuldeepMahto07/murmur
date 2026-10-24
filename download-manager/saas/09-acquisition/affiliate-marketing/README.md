@@ -1,6 +1,6 @@
 # Affiliate marketing
 
-**Status: Not started.** Part of [09 · Acquisition](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: Not started.** Part of [09 · Acquisition](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 - **Platform:** the merchant of record's built-in affiliate system (Lemon Squeezy and Paddle both support affiliates).
 - **Commission:** 30% of Pro sales, with a 60-day cookie.

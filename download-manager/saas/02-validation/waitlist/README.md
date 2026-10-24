@@ -1,6 +1,6 @@
 # Waitlist
 
-**Status: Not started.** Part of [02 · Validation](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: Not started.** Part of [02 · Validation](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 - **Tool:** a simple form (Buttondown or a GitHub Discussions "Beta" thread) collecting email, current download manager and OS.
 - **Segments:** tag people "IDM user", "AB DM user" or "no manager" to send targeted messages later.

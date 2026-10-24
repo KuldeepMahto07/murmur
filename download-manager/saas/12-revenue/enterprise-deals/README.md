@@ -1,8 +1,8 @@
 # Enterprise deals
 
-**Status: Not started.** Part of [12 · Revenue](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: Not started.** Part of [12 · Revenue](../README.md) in the [Harbor SaaS plan](../../README.md).
 
-## Fetchline for Teams
+## Harbor for Teams
 - **Price:** $4/user/year, minimum 10 seats.
 - **Features:**
   - MSI installer and Group Policy/Intune settings (proxy, folders, allowed sites, speed limits)

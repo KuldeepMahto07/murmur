@@ -1,8 +1,8 @@
 # Cloud hosting
 
-**Status: Not started.** Part of [06 · Infrastructure](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: Not started.** Part of [06 · Infrastructure](../README.md) in the [Harbor SaaS plan](../../README.md).
 
-Fetchline runs on the user's PC, so there is no app server to host. The only hosted pieces are:
+Harbor runs on the user's PC, so there is no app server to host. The only hosted pieces are:
 
 | Need | Plan | Cost |
 |---|---|---|

@@ -1,6 +1,6 @@
 # Churn reduction
 
-**Status: Not started.** Part of [14 · Retention](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: Not started.** Part of [14 · Retention](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 **Why users drop download managers:**
 - Broken browser capture after a browser update

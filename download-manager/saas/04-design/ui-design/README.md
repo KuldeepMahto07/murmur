@@ -1,6 +1,6 @@
 # UI design
 
-**Status: Partial.** Part of [04 · Design](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: Partial.** Part of [04 · Design](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 ## Built
 - **Style:** dark and light themes with a teal-to-indigo gradient accent. The look is original and doesn't reuse IDM's artwork or layout skin.

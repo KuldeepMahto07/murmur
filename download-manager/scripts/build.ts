@@ -1,7 +1,7 @@
 /**
  * Release build. Writes to dist/ (gitignored):
- *   fetchline-extension-direct-<v>.zip  extension as-is (yt-dlp on) for GitHub Releases / sideloading
- *   fetchline-extension-store-<v>.zip   yt-dlp code stripped, for the Chrome Web Store and Edge Add-ons
+ *   harbor-extension-direct-<v>.zip  extension as-is (yt-dlp on) for GitHub Releases / sideloading
+ *   harbor-extension-store-<v>.zip   yt-dlp code stripped, for the Chrome Web Store and Edge Add-ons
  *   fetchline-<v>-windows.zip           app: engine, UI, tray launcher, direct extension, docs
  *   SHA256SUMS.txt
  *
@@ -164,12 +164,12 @@ console.log(`store build check passed (${store.length} files, no yt-dlp code, sc
 if (checkOnly) process.exit(0);
 
 const outputs: [string, Buffer][] = [
-  [`fetchline-extension-store-${v}.zip`, zip(store)],
-  [`fetchline-extension-direct-${v}.zip`, zip(await extensionEntries('direct'))],
+  [`harbor-extension-store-${v}.zip`, zip(store)],
+  [`harbor-extension-direct-${v}.zip`, zip(await extensionEntries('direct'))],
 ];
 const appSkip = (rel: string) => /^(data|dist|tests|node_modules|\.git|saas)(\/|$)/.test(rel) || rel === 'scripts' || rel.endsWith('.part');
-const app = (await collect(ROOT, '', appSkip)).map((e) => ({ ...e, name: `Fetchline-${v}/${e.name}` }));
-outputs.push([`fetchline-${v}-windows.zip`, zip(app)]);
+const app = (await collect(ROOT, '', appSkip)).map((e) => ({ ...e, name: `Harbor-${v}/${e.name}` }));
+outputs.push([`harbor-${v}-windows.zip`, zip(app)]);
 
 const sums: string[] = [];
 for (const [name, buf] of outputs) {

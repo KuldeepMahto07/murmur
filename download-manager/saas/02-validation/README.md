@@ -4,7 +4,7 @@
 
 | Sub-item | Status | Summary |
 |---|---|---|
-| [Customer interviews](customer-interviews/) | Not started | Find out whether people will switch from IDM, AB DM or the browser's built-in downloads to Fetchline, and what they would pay. |
+| [Customer interviews](customer-interviews/) | Not started | Find out whether people will switch from IDM, AB DM or the browser's built-in downloads to Harbor, and what they would pay. |
 | [Landing page test](landing-page-test/) | Not started | A one-page site with three parts: |
 | [Waitlist](waitlist/) | Not started | Tool: a simple form (Buttondown or a GitHub Discussions "Beta" thread) collecting email, current download manager and OS. |
 | [Pre sales](pre-sales/) | Not started | Offer: an "early supporter" lifetime Pro licence at $12, against a planned $19. |

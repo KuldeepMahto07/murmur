@@ -1,6 +1,6 @@
 # Subscriptions
 
-**Status: In progress.** Part of [12 · Revenue](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: In progress.** Part of [12 · Revenue](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 - **Main revenue:** one-time lifetime licences, which match what the IDM audience expects.
 - **Optional yearly plan:** $9/year, to smooth cash flow.

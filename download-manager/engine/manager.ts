@@ -314,7 +314,7 @@ export class Manager {
     const pro = this.licensing.pro;
     if (patch.connections && patch.connections > this.maxConnections()) throw new Error(proMessage('More than 8 connections per download'));
     if (!pro && patch.scheduler && patch.scheduler.onDone !== 'none' && patch.scheduler.onDone !== this.settings.scheduler.onDone) {
-      throw new Error(proMessage('Shutting down or closing Fetchline when a scheduled queue finishes'));
+      throw new Error(proMessage('Shutting down or closing Harbor when a scheduled queue finishes'));
     }
     Object.assign(this.settings, patch);
     this.settings.connections = clamp(this.settings.connections, 1, this.maxConnections());
@@ -377,7 +377,7 @@ export class Manager {
     if (action === 'exit') setTimeout(() => this.onExit(), 1000);
     if (action === 'shutdown' && process.platform === 'win32') {
       // 60 s grace so the user can cancel with `shutdown /a`.
-      spawn('shutdown', ['/s', '/t', '60', '/c', 'Fetchline: queue finished'], { detached: true, stdio: 'ignore' }).unref();
+      spawn('shutdown', ['/s', '/t', '60', '/c', 'Harbor: queue finished'], { detached: true, stdio: 'ignore' }).unref();
     }
   }
 
@@ -487,7 +487,7 @@ export class Manager {
 const ALLOWED_HEADERS = new Set(['cookie', 'referer', 'user-agent', 'origin', 'authorization', 'accept-language']);
 
 function proMessage(what: string) {
-  return `${what} is a Fetchline Pro feature. Start the free 14-day trial or enter a licence key in Settings.`;
+  return `${what} is a Harbor Pro feature. Start the free 14-day trial or enter a licence key in Settings.`;
 }
 
 function clamp(n: number, lo: number, hi: number) {

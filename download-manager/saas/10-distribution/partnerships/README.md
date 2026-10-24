@@ -1,6 +1,6 @@
 # Partnerships
 
-**Status: Not started.** Part of [10 · Distribution](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: Not started.** Part of [10 · Distribution](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 - **AB Download Manager:**
   - We already integrate (the hand-off is verified against v1.11.1).

@@ -1,8 +1,8 @@
-// Fetchline Integration — floating "Download" button over videos.
+// Harbor Integration — floating "Download" button over videos.
 //
 // Shows when the pointer is over a sizeable <video>/<audio> (or when one starts
 // playing). Clicking opens a menu of the media this tab has loaded; choosing an
-// entry hands it to Fetchline. All UI lives in a closed shadow root so page CSS
+// entry hands it to Harbor. All UI lives in a closed shadow root so page CSS
 // and scripts cannot restyle or read it.
 (() => {
   if (window.__fetchlineLoaded) return;
@@ -64,7 +64,7 @@
       }
     </style>
     <div class="wrap">
-    <button class="fab" part="fab" title="Download with Fetchline">
+    <button class="fab" part="fab" title="Download with Harbor">
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v9M4 7.5 8 11.5l4-4M3 14h10"/></svg>
       <span>Download</span>
     </button>
@@ -188,12 +188,12 @@
 
   async function openMenu() {
     menu.hidden = false;
-    menu.innerHTML = `<div class="head"><b>Fetchline</b><button class="x" title="Close">✕</button></div><div class="note">Looking for media on this page…</div>`;
+    menu.innerHTML = `<div class="head"><b>Harbor</b><button class="x" title="Close">✕</button></div><div class="note">Looking for media on this page…</div>`;
     menu.querySelector('.x').onclick = closeMenu;
     place();
 
     if (target?.mediaKeys) {
-      return note('This video is protected with DRM. Fetchline does not download protected media.', true);
+      return note('This video is protected with DRM. Harbor does not download protected media.', true);
     }
 
     let res;
@@ -208,7 +208,7 @@
       return note(
         res.targetName === 'AB Download Manager'
           ? 'AB Download Manager is not running (or its browser integration is off). Start it, then try again.'
-          : 'Fetchline is not running. Start it (start.bat), then try again.',
+          : 'Harbor is not running. Open Harbor (tray or Harbor.vbs), then try again.',
         true,
       );
     }
@@ -222,7 +222,7 @@
     const emptyText = src.startsWith('blob:')
       ? 'No downloadable stream seen yet. Play the video for a few seconds and try again.'
       : 'No downloadable media seen on this page yet. Start playback and try again.';
-    if (!res.engine) rows.length = 0; // target app down: only video-site support (via Fetchline) can help // @store-replace: if (!res.engine) rows.length = 0;
+    if (!res.engine) rows.length = 0; // target app down: only video-site support (via Harbor) can help // @store-replace: if (!res.engine) rows.length = 0;
     if (!rows.length && !res.ytdlp) return note(emptyText); // @store-replace: if (!rows.length) return note(emptyText);
 
     const noteEl = menu.querySelector('.note');
@@ -231,7 +231,7 @@
     // @ytdlp:start  (stripped from the store build by scripts/build.ts)
     if (!res.ytdlp) return;
 
-    // Ask yt-dlp (through Fetchline) for this page's qualities; this can take a few seconds.
+    // Ask yt-dlp (through Harbor) for this page's qualities; this can take a few seconds.
     const wait = document.createElement('div');
     wait.className = 'note';
     wait.textContent = 'Looking for video qualities…';
@@ -288,6 +288,6 @@
   }
 
   chrome.runtime.onMessage.addListener((msg) => {
-    if (msg?.type === 'toast' && window === window.top) toast(`Fetchline: ${msg.text}`);
+    if (msg?.type === 'toast' && window === window.top) toast(`Harbor: ${msg.text}`);
   });
 })();

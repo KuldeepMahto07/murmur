@@ -55,7 +55,7 @@ const eta = (d) => {
 const STATUS = { queued: 'Queued', downloading: 'Downloading', paused: 'Paused', verifying: 'Verifying', completed: 'Complete', error: 'Error' };
 
 // --------------------------------------------------------------- icons
-// Fetchline's own line icons (24-unit grid, drawn for this app; no third-party symbol sets).
+// Harbor's own line icons (24-unit grid, drawn for this app; no third-party symbol sets).
 
 const P = (d) => `<path d="${d}"/>`;
 const C = (cx, cy, r, fill = false) => `<circle cx="${cx}" cy="${cy}" r="${r}"${fill ? ' fill="currentColor" stroke="none"' : ''}/>`;
@@ -147,10 +147,10 @@ function renderSidebar() {
     chip.classList.toggle('is-pro', !!lic.pro);
     chip.innerHTML =
       lic.tier === 'pro'
-        ? `<b>Fetchline Pro</b><span>${esc(lic.email ?? '')}</span>`
+        ? `<b>Harbor Pro</b><span>${esc(lic.email ?? '')}</span>`
         : lic.tier === 'trial'
           ? `<b>Pro Trial</b><span>${lic.trialDaysLeft} day${lic.trialDaysLeft === 1 ? '' : 's'} left</span>`
-          : `<b>Fetchline Free</b><span>${lic.trialAvailable ? 'Try Pro free for 14 days' : 'Upgrade to Pro'}</span>`;
+          : `<b>Harbor Free</b><span>${lic.trialAvailable ? 'Try Pro free for 14 days' : 'Upgrade to Pro'}</span>`;
   }
 }
 $('#side-pro').onclick = () => $('#btn-settings').click();
@@ -348,7 +348,7 @@ function renderWelcome() {
 
 $('#w-test').onclick = async () => {
   try {
-    const d = await api('POST', '/downloads', { url: TEST_URL, checksum: TEST_SHA, start: 'now', description: 'Fetchline test download' });
+    const d = await api('POST', '/downloads', { url: TEST_URL, checksum: TEST_SHA, start: 'now', description: 'Harbor test download' });
     testId = d.id;
     renderWelcome();
   } catch (e) {
@@ -572,7 +572,7 @@ async function proCall(method, path, body) {
 $('#pro-activate').onclick = async () => {
   if (await proCall('PUT', '/license', { key: $('#pro-key').value })) {
     $('#pro-key').value = '';
-    toast('Fetchline Pro activated. Thank you!');
+    toast('Harbor Pro activated. Thank you!');
   }
 };
 $('#pro-trial').onclick = async () => {

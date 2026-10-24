@@ -1,6 +1,6 @@
 # Influencer outreach
 
-**Status: Not started.** Part of [09 · Acquisition](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: Not started.** Part of [09 · Acquisition](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 - **Who:** Windows-utility YouTubers and "must-have free apps" channels (10k–500k subscribers), plus tech TikTok and Shorts creators who make "apps you need" lists.
 - **Offer:** a free Pro lifetime licence, an affiliate link (see [affiliate-marketing](../affiliate-marketing/README.md)) and early access to new builds.

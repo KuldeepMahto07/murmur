@@ -1,6 +1,6 @@
 # Add-ons
 
-**Status: Not started.** Part of [12 · Revenue](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: Not started.** Part of [12 · Revenue](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 These are candidates. Ship them only once there is clear demand.
 - **Family pack:** 5 users, $39 lifetime.

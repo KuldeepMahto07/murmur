@@ -1,6 +1,6 @@
 # Frontend
 
-**Status: Done (MVP).** Part of [05 · Development](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: Done (MVP).** Part of [05 · Development](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 **Code lives in [`download-manager/ui/`](../../../ui/). It was not moved, so the engine still serves it as is.**
 
@@ -13,7 +13,7 @@
 
 The extension's UI (popup and video overlay) is in [`extension/`](../../../extension/). See [integrations](../integrations/README.md).
 
-**Desktop shell (interim, Windows):** [`desktop/tray.ps1`](../../../desktop/tray.ps1), started by [`desktop/Fetchline.vbs`](../../../desktop/Fetchline.vbs).
+**Desktop shell (interim, Windows):** [`desktop/tray.ps1`](../../../desktop/tray.ps1), started by [`desktop/Harbor.vbs`](../../../desktop/Harbor.vbs).
 - PowerShell and WinForms, with no extra installs.
 - Runs the engine hidden; a tray icon menu (open, queue, pause all, start with Windows, quit); notifications when downloads finish or fail; one tray per port.
 - Verified by [`scripts/verify-tray.ps1`](../../../scripts/verify-tray.ps1).

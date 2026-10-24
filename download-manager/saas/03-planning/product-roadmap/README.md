@@ -1,6 +1,6 @@
 # Product roadmap
 
-**Status: In progress.** Part of [03 · Planning](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: In progress.** Part of [03 · Planning](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 | Phase | Scope | Status |
 |---|---|---|

@@ -1,10 +1,10 @@
 # Competitor analysis
 
-**Status: Done.** Part of [01 · Idea](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: Done.** Part of [01 · Idea](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 - **IDM deep dive:** [idm-analysis.md](idm-analysis.md), a feature and architecture study built from IDM's public site and docs only. It was moved here from `docs/`.
 
-| | IDM | AB Download Manager | Free Download Manager | Fetchline (today) |
+| | IDM | AB Download Manager | Free Download Manager | Harbor (today) |
 |---|---|---|---|---|
 | Price | $24.95 lifetime / $11.95 a year | Free, open source | Free | Free MVP; Pro planned |
 | Segmented and dynamic splitting | Yes | Yes | Yes | Yes (verified 8 connections) |

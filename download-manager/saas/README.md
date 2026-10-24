@@ -1,6 +1,6 @@
-# Fetchline: SaaS lifecycle plan
+# Harbor: SaaS lifecycle plan
 
-**What Fetchline is:** a fast, crash-proof download manager with checksum verification, plus a browser extension that puts a Download button on videos. It is a Windows desktop app; the extension runs in Chrome and Edge. The code lives in [`../engine`](../engine), [`../ui`](../ui) and [`../extension`](../extension), and it stays where it is. This tree holds the research, the plans and the go-to-market strategy.
+**What Harbor is:** a fast, crash-proof download manager with checksum verification, plus a browser extension that puts a Download button on videos. It is a Windows desktop app; the extension runs in Chrome and Edge. The code lives in [`../engine`](../engine), [`../ui`](../ui) and [`../extension`](../extension), and it stays where it is. This tree holds the research, the plans and the go-to-market strategy.
 
 **Business model:** freemium with a one-time lifetime Pro licence.
 - **Free:** speed, resume and verification.
@@ -31,7 +31,7 @@ Pages below that say "no YouTube" describe the store build and its marketing, wh
 | 12 | [Revenue](12-revenue/) | 🟡 In progress | Licence keys and the vendor tool are built. Next: purchase webhook → `license-tool issue`; founders' pre-sale at $12 |
 | 13 | [Analytics](13-analytics/) | ⚪ Not started | Anonymous update-check count, plus opt-in events (no URLs, ever) |
 | 14 | [Retention](14-retention/) | 🟡 In progress | First-run onboarding and the public FAQ are done. Next: issue templates and an in-app "Copy diagnostics" button |
-| 15 | [Growth](15-growth/) | ⚪ Not started | Shareable verification report; `fetchline://` "Download with Fetchline" button |
+| 15 | [Growth](15-growth/) | ⚪ Not started | Shareable verification report; `fetchline://` "Download with Harbor" button |
 | 16 | [Scaling](16-scaling/) | ⚪ Not started | Release automation (sign, winget, store publish APIs) once revenue starts |
 
 **Statuses:**

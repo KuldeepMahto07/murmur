@@ -1,6 +1,6 @@
 # Expansion strategy
 
-**Status: Not started.** Part of [15 · Growth](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: Not started.** Part of [15 · Growth](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 | Expansion | Why | When |
 |---|---|---|

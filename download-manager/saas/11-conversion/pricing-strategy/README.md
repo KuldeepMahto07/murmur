@@ -1,6 +1,6 @@
 # Pricing strategy
 
-**Status: Draft.** Part of [11 · Conversion](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: Draft.** Part of [11 · Conversion](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 ## Anchor
 IDM costs $24.95 lifetime or $11.95 a year for 1 PC (checked 2026-10-23). AB DM is free.

@@ -1,6 +1,6 @@
 # SEO wins
 
-**Status: In progress.** Part of [09 · Acquisition](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: In progress.** Part of [09 · Acquisition](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 ## Keywords to target
 Honest intent, no YouTube:
@@ -12,8 +12,8 @@ Honest intent, no YouTube:
 | Page | Angle |
 |---|---|
 | `/vs/idm` | Feature and price comparison table; be fair, including that IDM supports YouTube |
-| `/vs/ab-download-manager` | "Use both: Fetchline's video button can hand off to AB DM" |
-| `/guides/resume-failed-chrome-download` | Fixes the problem; Fetchline is the long-term answer |
+| `/vs/ab-download-manager` | "Use both: Harbor's video button can hand off to AB DM" |
+| `/guides/resume-failed-chrome-download` | Fixes the problem; Harbor is the long-term answer |
 | `/guides/verify-sha256-windows` | Ranks on its own and shows the verification feature |
 | `/guides/download-m3u8` | How HLS works; what is and isn't allowed |
 

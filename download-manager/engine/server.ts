@@ -117,7 +117,7 @@ export function createServer(mgr: Manager, port: number) {
   });
 }
 
-const STARTUP_LINK = path.join(process.env.APPDATA ?? '', 'Microsoft', 'Windows', 'Start Menu', 'Programs', 'Startup', 'Fetchline.lnk');
+const STARTUP_LINK = path.join(process.env.APPDATA ?? '', 'Microsoft', 'Windows', 'Start Menu', 'Programs', 'Startup', 'Harbor.lnk');
 
 /** Creates/removes the Startup shortcut through the tray script (one implementation for tray and UI). */
 function setStartup(on: boolean) {

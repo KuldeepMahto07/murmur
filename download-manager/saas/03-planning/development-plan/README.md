@@ -1,6 +1,6 @@
 # Development plan
 
-**Status: In progress.** Part of [03 · Planning](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: In progress.** Part of [03 · Planning](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 ## Next 6 weeks
 | Week | Work | Done when |

@@ -1,6 +1,6 @@
 # Security
 
-**Status: Partial.** Part of [06 · Infrastructure](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: Partial.** Part of [06 · Infrastructure](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 ## Done
 - **Loopback API:** binds to 127.0.0.1 only, with the `X-Fetchline` header and loopback `Host` checks, so websites cannot drive the engine (`engine/server.ts`).

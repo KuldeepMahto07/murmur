@@ -1,6 +1,6 @@
 # Exit strategy
 
-**Status: Not started.** Part of [16 · Scaling](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: Not started.** Part of [16 · Scaling](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 **Options, in order of fit:**
 1. **Lifestyle business:** keep it profitable, small and independent. Fits a lifetime-licence model best.

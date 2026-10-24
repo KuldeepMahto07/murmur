@@ -1,6 +1,6 @@
 # DevOps
 
-**Status: Partial.** Part of [06 · Infrastructure](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: Partial.** Part of [06 · Infrastructure](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 ## Release process to set up
 1. **Versioning:** semver in one place, with `manifest.json` and the app version kept in step by a script.

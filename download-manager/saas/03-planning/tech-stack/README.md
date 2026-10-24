@@ -1,6 +1,6 @@
 # Tech stack
 
-**Status: Done.** Part of [03 · Planning](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: Done.** Part of [03 · Planning](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 | Layer | Choice | Why |
 |---|---|---|

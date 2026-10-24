@@ -1,6 +1,6 @@
 # Email automation
 
-**Status: Not started.** Part of [14 · Retention](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: Not started.** Part of [14 · Retention](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 There is email only for people who gave it: waitlist, buyers, newsletter.
 

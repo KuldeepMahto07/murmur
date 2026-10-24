@@ -1,6 +1,6 @@
 # Prototype
 
-**Status: Done (functional).** Part of [04 · Design](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: Done (functional).** Part of [04 · Design](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 The working product is the prototype:
 - **Run it:** `start.bat`, then http://127.0.0.1:8765.

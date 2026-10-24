@@ -1,6 +1,6 @@
 # A/B testing
 
-**Status: Not started.** Part of [13 · Analytics](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: Not started.** Part of [13 · Analytics](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 **Where it's possible:**
 - **Website hero copy and pricing page:** Plausible goals plus a split URL. Run each test for at least 2 weeks or 1,000 visitors.

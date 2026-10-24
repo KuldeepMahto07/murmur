@@ -1,6 +1,6 @@
 # Directories
 
-**Status: Not started.** Part of [10 · Distribution](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: Not started.** Part of [10 · Distribution](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 ## Software directories checklist
 - [ ] AlternativeTo (as an alternative to IDM, FDM, AB DM and JDownloader)

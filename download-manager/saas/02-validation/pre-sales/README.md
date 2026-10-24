@@ -1,6 +1,6 @@
 # Pre sales
 
-**Status: Not started.** Part of [02 · Validation](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: Not started.** Part of [02 · Validation](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 - **Offer:** an "early supporter" lifetime Pro licence at $12, against a planned $19.
 - **Delivery:** a licence key emailed at Pro launch, with a full refund if Pro doesn't ship within 6 months.

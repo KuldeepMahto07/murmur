@@ -1,6 +1,6 @@
 # Communities
 
-**Status: Not started.** Part of [10 · Distribution](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: Not started.** Part of [10 · Distribution](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 | Community | How to take part |
 |---|---|
@@ -9,4 +9,4 @@
 | Discord server (once 500+ users) | #help, #beta, #feature-requests |
 | Regional forums and Telegram groups (IDM-heavy markets) | Localised posts once a UI translation exists |
 
-**Rule:** give before asking. Answer download problems even when Fetchline isn't the fix.
+**Rule:** give before asking. Answer download problems even when Harbor isn't the fix.

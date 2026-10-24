@@ -1,6 +1,6 @@
 # Feature prioritization
 
-**Status: Done.** Part of [03 · Planning](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: Done.** Part of [03 · Planning](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 Scored with RICE (Reach × Impact × Confidence ÷ Effort) for the next release:
 
@@ -18,7 +18,7 @@ Scored with RICE (Reach × Impact × Confidence ÷ Effort) for the next release:
 
 **Why yt-dlp and not our own extractors:**
 - yt-dlp is maintained upstream and already tracks site changes, so we don't take on that patching work ourselves.
-- It's an external program the user installs, and Fetchline only runs it.
+- It's an external program the user installs, and Harbor only runs it.
 
 **Risks we accept:**
 - the platforms' terms of service (the user is responsible for what they download)

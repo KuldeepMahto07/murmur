@@ -1,6 +1,6 @@
 # Public release
 
-**Status: Not started.** Part of [08 · Launch](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: Not started.** Part of [08 · Launch](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 ## Go/no-go checklist
 - [ ] Signed installer; winget manifest merged

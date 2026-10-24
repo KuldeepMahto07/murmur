@@ -1,6 +1,6 @@
 # Product hunt
 
-**Status: Not started.** Part of [08 · Launch](../README.md) in the [Fetchline SaaS plan](../../README.md).
+**Status: Not started.** Part of [08 · Launch](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 ## Plan
 - **When:** launch on a Tuesday to Thursday, **after** the store listings are live and the installer is signed.
