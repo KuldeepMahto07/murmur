@@ -73,8 +73,12 @@ export class Manager {
   /** Last time the browser extension talked to the engine (it sends X-Fetchline-Client). */
   extensionSeen: { at: number; client: string } | null = null;
 
-  constructor(dataDir: string) {
+  /** Default download folder for a fresh install (the welcome guide lets the user change it). */
+  private defaultBaseDir?: string;
+
+  constructor(dataDir: string, opts: { defaultBaseDir?: string } = {}) {
     this.dataDir = dataDir;
+    this.defaultBaseDir = opts.defaultBaseDir;
     this.licensing = new Licensing(dataDir);
   }
 
@@ -89,7 +93,7 @@ export class Manager {
     try {
       saved = JSON.parse(await fs.readFile(this.stateFile, 'utf8'));
     } catch {}
-    this.settings = { ...defaultSettings(path.join(this.dataDir, 'Downloads')), ...saved.settings };
+    this.settings = { ...defaultSettings(this.defaultBaseDir ?? path.join(this.dataDir, 'Downloads')), ...saved.settings };
     this.global.setRate(this.settings.globalSpeedLimit);
     this.enforceLimits();
     for (const r of saved.downloads ?? []) {

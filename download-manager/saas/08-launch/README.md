@@ -8,4 +8,4 @@
 | [Product hunt](product-hunt/) | Not started | When: launch on a Tuesday to Thursday, after the store listings are live and the installer is signed. |
 | [Beta users](beta-users/) | Not started | Source: the waitlist, plus r/DataHoarder, r/software and r/opensource "feedback wanted" threads (follow each sub's self-promotion rules). |
 | [Early adopters](early-adopters/) | Not started | Target groups, where download managers are discussed: |
-| [Public release](public-release/) | Not started | [ ] Signed installer; winget manifest merged |
+| [Public release](public-release/) | In progress | Installer done and tested; signing, store accounts and the winget PR remain |

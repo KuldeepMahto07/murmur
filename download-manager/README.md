@@ -7,6 +7,14 @@ A segmented download manager, built from a study of what Internet Download Manag
 - Harbor is original code, with its own name and design.
 - The plan and design notes are in [docs/plan.md](docs/plan.md).
 
+## Install (Windows)
+
+Run `Harbor-Setup-<version>.exe`, built with `npm run installer` into `dist/`.
+- It installs for your user only (no admin prompt) and bundles everything it needs, including Node.js.
+- It adds Harbor to the Start menu. Options: a desktop shortcut, starting with Windows, and video-site support.
+- Your settings and download list stay in `%APPDATA%\Harbor`, and new downloads go to `Downloads\Harbor`. Uninstalling (Settings → Apps) or upgrading keeps both.
+- The installer isn't code-signed yet, so Windows SmartScreen may show "Windows protected your PC". Choose *More info → Run anyway*. Signing is on the roadmap.
+
 ## Run
 
 **Recommended (Windows tray app):** double-click `download-manager\desktop\Harbor.vbs`.
@@ -136,7 +144,8 @@ npm run build
   - the direct extension zip
   - the Windows app zip
   - `SHA256SUMS.txt`
-- **CI:** `.github/workflows/fetchline.yml` runs every suite on Windows for changes under `download-manager/`.
+- **`npm run installer`:** builds `dist/Harbor-Setup-<version>.exe` (Inno Setup 6). `scripts/verify-installer.ps1` tests install, run, upgrade and uninstall.
+- **CI:** `.github/workflows/fetchline.yml` runs every suite on Windows for changes under `download-manager/`, including the installer.
 - **Landing site:** `site/` is static (home, FAQ, privacy, comparisons). Serve it with any static host.
 
 ## Verify

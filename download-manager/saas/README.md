@@ -19,12 +19,12 @@ Pages below that say "no YouTube" describe the store build and its marketing, wh
 |---|---|---|---|
 | 01 | [Idea](01-idea/) | ✅ Done | — (IDM teardown and competitor grid in [competitor-analysis](01-idea/competitor-analysis/)) |
 | 02 | [Validation](02-validation/) | 🟡 In progress | Run 15 [customer interviews](02-validation/customer-interviews/) (IDM, AB DM and course users) and test $9 / $15 / $25 |
-| 03 | [Planning](03-planning/) | 🟡 In progress | [Development plan](03-planning/development-plan/) week 3: installer and code signing. The interim tray shell is done; decide later whether Electron replaces it |
+| 03 | [Planning](03-planning/) | 🟡 In progress | Installer done. **Owner:** code-signing certificate (or Azure Artifact Signing) |
 | 04 | [Design](04-design/) | 🟡 In progress | Store screenshots and promo tile (the first-run welcome dialog is done) |
 | 05 | [Development](05-development/) | 🟡 In progress | Engine, UI, API, extension, tray app and licensing are done. Next: extension pairing token |
-| 06 | [Infrastructure](06-infrastructure/) | 🟡 In progress | CI workflow and `npm run build` are done. Next: push so CI runs, then code signing and an installer (MSIX or Inno Setup) |
+| 06 | [Infrastructure](06-infrastructure/) | 🟡 In progress | CI, `npm run build` and the **installer** (`npm run installer`, tested) are done. Next: code signing, push so CI runs |
 | 07 | [Testing](07-testing/) | 🟡 In progress | Unit tests (12) and E2E suites pass. Next: a 2-week [beta](07-testing/beta-testing/) with 30–50 waitlist users |
-| 08 | [Launch](08-launch/) | 🟡 In progress | [Landing site](08-launch/landing-page/) built in `site/`. Next: domain + Cloudflare Pages deploy; work through the [public-release](08-launch/public-release/) list |
+| 08 | [Launch](08-launch/) | 🟡 In progress | Site built, installer ready. Next: deploy the site; signing + store accounts (owner); work through [public-release](08-launch/public-release/) |
 | 09 | [Acquisition](09-acquisition/) | 🟡 In progress | `/vs/idm` and `/vs/ab-download-manager` pages built. Next: guide pages and the first build-in-public post |
 | 10 | [Distribution](10-distribution/) | 🟡 In progress | Store zip ready (`npm run build`). **Owner:** open Chrome Web Store and Edge Partner Center accounts, then upload; winget PR after signing |
 | 11 | [Conversion](11-conversion/) | 🟡 In progress | Trial and gating are live. **Owner:** set up the merchant of record (Lemon Squeezy or Paddle) and put the checkout URL into `BUY_URL` |

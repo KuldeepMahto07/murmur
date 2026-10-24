@@ -1,6 +1,6 @@
 # Public release
 
-**Status: Not started.** Part of [08 · Launch](../README.md) in the [Harbor SaaS plan](../../README.md).
+**Status: In progress.** Part of [08 · Launch](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 ## Go/no-go checklist
 - [ ] Signed installer; winget manifest merged
@@ -10,3 +10,8 @@
 - [ ] `verify.ts` and `verify-extension.ts` green on the release build
 - [ ] Support email, GitHub issue templates and a privacy policy (no data collected by default)
 - [ ] Rollback plan: keep the previous installer and a store version ready to re-publish
+
+## Update (2026-10-24)
+- [x] Installer built and tested (install, upgrade, uninstall)
+- [ ] Code signing (owner: certificate) → then the winget manifest PR
+- [x] Store zip ready (`npm run build`); [ ] store accounts (owner)

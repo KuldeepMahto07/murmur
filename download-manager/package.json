@@ -10,6 +10,7 @@
     "test": "node --disable-warning=ExperimentalWarning --test tests/engine.test.ts tests/license.test.ts",
     "verify": "node --disable-warning=ExperimentalWarning scripts/verify.ts --local",
     "verify:extension": "node --disable-warning=ExperimentalWarning scripts/verify-extension.ts",
-    "build": "node --disable-warning=ExperimentalWarning scripts/build.ts"
+    "build": "node --disable-warning=ExperimentalWarning scripts/build.ts",
+    "installer": "node --disable-warning=ExperimentalWarning scripts/build-installer.ts"
   }
 }

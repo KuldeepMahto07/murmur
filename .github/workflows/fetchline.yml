@@ -1,6 +1,6 @@
-# CI for Fetchline (download-manager/). Path-filtered so the other projects in this
+# CI for Harbor (download-manager/). Path-filtered so the other projects in this
 # repository (Murmur, Clarion) neither trigger nor are affected by it.
-name: Fetchline
+name: Harbor
 
 on:
   push:
@@ -61,3 +61,23 @@ jobs:
       - name: Windows tray app
         shell: powershell
         run: powershell -ExecutionPolicy Bypass -File scripts/verify-tray.ps1
+
+  installer:
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 24 }
+      - name: Install Inno Setup
+        run: choco install innosetup -y --no-progress
+      - name: Build Harbor-Setup.exe (bundles this Node runtime)
+        shell: pwsh
+        run: |
+          $env:ISCC = 'C:\Program Files (x86)\Inno Setup 6\ISCC.exe'
+          npm run installer
+      - name: Install, run, upgrade, uninstall
+        shell: powershell
+        run: powershell -ExecutionPolicy Bypass -File scripts/verify-installer.ps1
+      - uses: actions/upload-artifact@v4
+        with: { name: harbor-installer, path: 'download-manager/dist/Harbor-Setup-*.exe' }

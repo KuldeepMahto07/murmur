@@ -6,14 +6,17 @@
 param(
   [ValidateSet('run', 'enable-startup', 'disable-startup')] [string] $Action = 'run',
   [int] $Port = 8765,
-  # Engine data folder (default: download-manager\data). Tests use a separate one.
+  # Engine data folder. Default: %APPDATA%\Harbor when installed, download-manager\data from source.
   [string] $Data = ''
 )
 
 $ErrorActionPreference = 'Stop'
 $Root = Split-Path -Parent $PSScriptRoot
 $Base = "http://127.0.0.1:$Port"
-$DataDir = if ($Data) { [IO.Path]::GetFullPath($Data) } else { Join-Path $Root 'data' }
+# Installed builds ship their own Node runtime next to the app files.
+$BundledNode = Join-Path $Root 'node\node.exe'
+$Installed = Test-Path $BundledNode
+$DataDir = if ($Data) { [IO.Path]::GetFullPath($Data) } elseif ($Installed) { Join-Path $env:APPDATA 'Harbor' } else { Join-Path $Root 'data' }
 $Log = Join-Path $DataDir 'tray.log'
 $StartupLink = Join-Path ([Environment]::GetFolderPath('Startup')) 'Harbor.lnk'
 New-Item -ItemType Directory -Force -Path $DataDir | Out-Null
@@ -57,20 +60,26 @@ function Test-Engine { try { return (Invoke-Api GET '/ping').app -eq 'fetchline'
 
 # ---- engine: reuse a running one, otherwise start it hidden
 if (-not (Test-Engine)) {
-  $node = (Get-Command node -ErrorAction SilentlyContinue).Source
+  $node = if ($Installed) { $BundledNode } else { (Get-Command node -ErrorAction SilentlyContinue).Source }
   if (-not $node) {
     [System.Windows.Forms.MessageBox]::Show('Node.js 24+ is required to run Harbor.', 'Harbor') | Out-Null
     return
   }
   $main = Join-Path $Root 'engine\main.ts'
+  $engineArgs = @('--disable-warning=ExperimentalWarning', "`"$main`"", '--port', "$Port", '--data', "`"$DataDir`"")
+  if ($Installed) {
+    # New installs download to the user's own Downloads\Harbor folder.
+    $downloads = (New-Object -ComObject Shell.Application).NameSpace('shell:Downloads').Self.Path
+    $engineArgs += @('--downloads', "`"$(Join-Path $downloads 'Harbor')`"")
+  }
   Start-Process -FilePath $node -WindowStyle Hidden -WorkingDirectory $Root `
-    -ArgumentList @('--disable-warning=ExperimentalWarning', "`"$main`"", '--port', "$Port", '--data', "`"$DataDir`"") `
+    -ArgumentList $engineArgs `
     -RedirectStandardOutput (Join-Path $DataDir 'engine.log') -RedirectStandardError (Join-Path $DataDir 'engine.err.log')
   $up = $false
   for ($i = 0; $i -lt 50 -and -not $up; $i++) { Start-Sleep -Milliseconds 200; $up = Test-Engine }
   if (-not $up) {
     Write-Log 'engine failed to start'
-    [System.Windows.Forms.MessageBox]::Show("The Harbor engine did not start.`nSee data\engine.err.log", 'Harbor') | Out-Null
+    [System.Windows.Forms.MessageBox]::Show("The Harbor engine did not start.`nSee $DataDir\engine.err.log", 'Harbor') | Out-Null
     return
   }
   Write-Log 'engine started'

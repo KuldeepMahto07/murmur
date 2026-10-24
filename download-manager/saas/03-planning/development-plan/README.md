@@ -15,3 +15,6 @@
 ## Rules
 - Every feature lands with a check in `scripts/`.
 - No YouTube or DRM extraction, ever. See [feature-prioritization](../feature-prioritization/README.md).
+
+## Update (2026-10-24)
+- Week 3: the **installer is done** (`npm run installer`, tested end to end). Code signing is waiting on a certificate; that's an owner step.

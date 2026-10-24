@@ -9,6 +9,8 @@ const { values } = parseArgs({
   options: {
     port: { type: 'string', default: process.env.FETCHLINE_PORT ?? '8765' },
     data: { type: 'string', default: process.env.FETCHLINE_DATA },
+    // Default download folder for a new data folder (the installed app passes the user's Downloads\Harbor).
+    downloads: { type: 'string' },
   },
 });
 
@@ -19,7 +21,7 @@ const port = Number(values.port);
 // Sort out the port before touching state, so an older instance can save first.
 await claimPort();
 
-const mgr = new Manager(dataDir);
+const mgr = new Manager(dataDir, { defaultBaseDir: values.downloads ? path.resolve(values.downloads) : undefined });
 await mgr.load();
 const server = createServer(mgr, port);
 

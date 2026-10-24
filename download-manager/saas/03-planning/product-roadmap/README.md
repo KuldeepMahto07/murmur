@@ -10,3 +10,6 @@
 | **Launch** | Chrome Web Store, Edge Add-ons, winget, landing page | ⏳ |
 | **Pro** | Licence keys, multiple and sync queues, quotas, site grabber, proxy/SOCKS | ⏳ |
 | **Later** | macOS and Linux builds, team/MSI deployment, localisation | ⏳ |
+
+## Update (2026-10-24)
+- **Beta:** the tray app and the Windows installer are done. Left: code signing, the store listings and the winget manifest.
