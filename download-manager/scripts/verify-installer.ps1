@@ -1,11 +1,13 @@
-# End-to-end check of dist\Harbor-Setup-<version>.exe:
-# silent install to a temp folder -> launch the installed app on a spare port with its own
-# data folder -> verified test download -> silent uninstall -> nothing left behind.
+# End-to-end check of the Windows installer. Builds an ISOLATED test variant
+# (its own AppId, name "Harbor (Test)", folder and shortcuts) so none of this can
+# ever touch a real Harbor install on the same machine:
+#   build test installer -> silent install to a temp folder -> run on a spare port with its
+#   own data folder -> verified test download -> upgrade over a running copy -> silent uninstall.
 #   powershell -ExecutionPolicy Bypass -File scripts\verify-installer.ps1
 $ErrorActionPreference = 'Stop'
 $Root = Split-Path -Parent $PSScriptRoot
 $version = (Get-Content (Join-Path $Root 'package.json') -Raw | ConvertFrom-Json).version
-$setup = Join-Path $Root "dist\Harbor-Setup-$version.exe"
+$setup = Join-Path $Root 'dist\Harbor-Setup-test.exe'
 $appDir = Join-Path $env:TEMP 'harbor-install-test'
 $data = Join-Path $env:TEMP 'harbor-install-test-data'
 $port = 8798
@@ -17,14 +19,21 @@ function Check([bool] $ok, [string] $what) {
   if (-not $ok) { $script:failures++ }
 }
 function Ping { try { (Invoke-RestMethod "$api/ping" -TimeoutSec 1).app -eq 'fetchline' } catch { $false } }
-$uninstKey = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\{6E0D5B2A-6B1F-4E8C-9C1B-4A7E2F1D3C55}_is1'
-$startMenu = Join-Path ([Environment]::GetFolderPath('Programs')) 'Harbor.lnk'
+# Isolated test identity (matches /DTestBuild in installer\harbor.iss).
+$uninstKey = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\{A1B2C3D4-7777-4777-8777-000000000001}_is1'
+$startMenu = Join-Path ([Environment]::GetFolderPath('Programs')) 'Harbor (Test).lnk'
+# A real install (production AppId / "Harbor.lnk") must be untouched by this whole run.
+$realKey = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\{6E0D5B2A-6B1F-4E8C-9C1B-4A7E2F1D3C55}_is1'
+$realMenu = Join-Path ([Environment]::GetFolderPath('Programs')) 'Harbor.lnk'
+$realKeyBefore = Test-Path $realKey
+$realMenuBefore = Test-Path $realMenu
 
-Check (Test-Path $setup) "installer exists ($([math]::Round((Get-Item $setup).Length / 1MB, 1)) MB)"
+# 0. Build the isolated test installer.
+& node --disable-warning=ExperimentalWarning (Join-Path $Root 'scripts\build-installer.ts') --test
+Check (Test-Path $setup) "test installer built ($([math]::Round((Get-Item $setup).Length / 1MB, 1)) MB)"
 foreach ($p in $appDir, $data) { if (Test-Path $p) { Remove-Item -Recurse -Force $p } }
 
-# 1. Silent install (no optional tasks: no desktop icon, no startup entry, no winget step).
-# The video-site task runs winget; if the helper is already installed this is quick.
+# 1. Silent install (video-site task on, so the winget step is exercised).
 $p = Start-Process $setup -ArgumentList @('/VERYSILENT', '/SUPPRESSMSGBOXES', '/NORESTART', "/DIR=`"$appDir`"", '/TASKS="videosites"', "/LOG=`"$env:TEMP\harbor-install.log`"") -PassThru -Wait
 Check ($p.ExitCode -eq 0) "silent install exit code $($p.ExitCode)"
 $log = Get-Content "$env:TEMP\harbor-install.log" -Raw
@@ -34,7 +43,7 @@ foreach ($f in 'node\node.exe', 'node\LICENSE.txt', 'engine\main.ts', 'ui\index.
 }
 Check (Test-Path $startMenu) 'Start menu shortcut created'
 $reg = Get-ItemProperty $uninstKey -ErrorAction SilentlyContinue
-Check ($reg -and $reg.DisplayName -eq 'Harbor' -and $reg.DisplayVersion -eq $version) "listed in Apps & features as Harbor $version"
+Check ($reg -and $reg.DisplayName -eq 'Harbor (Test)' -and $reg.DisplayVersion -eq $version) "listed in Apps & features as Harbor (Test) $version"
 
 # 2. Run the installed app (bundled Node) on a spare port with a throwaway data folder.
 $tray = Start-Process powershell -WindowStyle Hidden -PassThru -ArgumentList @(
@@ -74,6 +83,9 @@ Check (-not (Test-Path $uninstKey)) 'Apps & features entry removed'
 Check (Test-Path (Join-Path $data 'state.json')) 'user data folder kept'
 $tray.WaitForExit(15000) | Out-Null
 Check $tray.HasExited 'tray exited'
+
+# 5. The test must not have touched a real install.
+Check ((Test-Path $realKey) -eq $realKeyBefore -and (Test-Path $realMenu) -eq $realMenuBefore) 'a real Harbor install (if any) was left untouched'
 
 Remove-Item -Recurse -Force $data -ErrorAction SilentlyContinue
 Write-Host $(if ($failures) { "`n$failures check(s) FAILED" } else { "`nALL CHECKS PASSED" })

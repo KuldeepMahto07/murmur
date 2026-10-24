@@ -28,5 +28,5 @@
   - Optional "Video-site support" step, which runs winget.
 - **Data:** settings and the download list live in `%APPDATA%\Harbor`, and new installs download to `Downloads\Harbor`. Uninstall and upgrades keep both.
 - **Upgrade and uninstall:** they stop a Harbor running from the install folder first ([`installer/stop-harbor.ps1`](../../../installer/stop-harbor.ps1), matched by process path, never a copy started elsewhere), then replace or remove the files and remove the Apps entry.
-- **Tested:** [`scripts/verify-installer.ps1`](../../../scripts/verify-installer.ps1) passes 28/28: silent install → runs on the bundled Node → verified download → upgrade over a running copy (data kept) → uninstall leaves nothing behind. It also runs in CI.
+- **Tested:** [`scripts/verify-installer.ps1`](../../../scripts/verify-installer.ps1) builds an isolated "Harbor (Test)" variant (own AppId, name, folder and shortcuts) and runs the full cycle — silent install → bundled Node → verified download → upgrade over a running copy (data kept) → uninstall leaves nothing behind — then asserts it never touched a real install. It also runs in CI.
 - **Still to do:** code signing (needs a certificate or Azure Artifact Signing; until then SmartScreen warns), then the winget manifest.

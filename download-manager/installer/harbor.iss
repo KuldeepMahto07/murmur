@@ -6,23 +6,34 @@
 #ifndef AppVersion
   #define AppVersion "0.0.0"
 #endif
+; A test build (/DTestBuild, from scripts/verify-installer.ps1) gets its own AppId,
+; name, default folder and shortcuts, so it can never collide with or clobber a real install.
+#ifdef TestBuild
+  #define AppIdFull "{{A1B2C3D4-7777-4777-8777-000000000001}"
+  #define NameSuffix " (Test)"
+  #define OutputBase "Harbor-Setup-test"
+#else
+  #define AppIdFull "{{6E0D5B2A-6B1F-4E8C-9C1B-4A7E2F1D3C55}"
+  #define NameSuffix ""
+  #define OutputBase "Harbor-Setup-" + AppVersion
+#endif
 
 [Setup]
-AppId={{6E0D5B2A-6B1F-4E8C-9C1B-4A7E2F1D3C55}
-AppName=Harbor
+AppId={#AppIdFull}
+AppName=Harbor{#NameSuffix}
 AppVersion={#AppVersion}
-AppVerName=Harbor {#AppVersion}
+AppVerName=Harbor{#NameSuffix} {#AppVersion}
 AppPublisher=Harbor
 AppComments=Fast, crash-proof, verified downloads
-DefaultDirName={localappdata}\Programs\Harbor
+DefaultDirName={localappdata}\Programs\Harbor{#NameSuffix}
 DisableProgramGroupPage=yes
 DisableDirPage=auto
 PrivilegesRequired=lowest
 OutputDir={#OutDir}
-OutputBaseFilename=Harbor-Setup-{#AppVersion}
+OutputBaseFilename={#OutputBase}
 SetupIconFile={#StageDir}\harbor.ico
 UninstallDisplayIcon={app}\harbor.ico
-UninstallDisplayName=Harbor
+UninstallDisplayName=Harbor{#NameSuffix}
 Compression=lzma2/max
 SolidCompression=yes
 WizardStyle=modern
@@ -46,10 +57,10 @@ Source: "{#StageDir}\*"; DestDir: "{app}"; Flags: recursesubdirs createallsubdir
 Source: "{#StageDir}\desktop\stop-harbor.ps1"; Flags: dontcopy
 
 [Icons]
-Name: "{userprograms}\Harbor"; Filename: "{sys}\wscript.exe"; Parameters: """{app}\desktop\Harbor.vbs"""; WorkingDir: "{app}"; IconFilename: "{app}\harbor.ico"; Comment: "Harbor download manager"
-Name: "{userdesktop}\Harbor"; Filename: "{sys}\wscript.exe"; Parameters: """{app}\desktop\Harbor.vbs"""; WorkingDir: "{app}"; IconFilename: "{app}\harbor.ico"; Tasks: desktopicon
+Name: "{userprograms}\Harbor{#NameSuffix}"; Filename: "{sys}\wscript.exe"; Parameters: """{app}\desktop\Harbor.vbs"""; WorkingDir: "{app}"; IconFilename: "{app}\harbor.ico"; Comment: "Harbor download manager"
+Name: "{userdesktop}\Harbor{#NameSuffix}"; Filename: "{sys}\wscript.exe"; Parameters: """{app}\desktop\Harbor.vbs"""; WorkingDir: "{app}"; IconFilename: "{app}\harbor.ico"; Tasks: desktopicon
 ; Same name/place as the tray's own "Start with Windows" switch, so both control one shortcut.
-Name: "{userstartup}\Harbor"; Filename: "{sys}\wscript.exe"; Parameters: """{app}\desktop\Harbor.vbs"""; WorkingDir: "{app}"; IconFilename: "{app}\harbor.ico"; Tasks: startup
+Name: "{userstartup}\Harbor{#NameSuffix}"; Filename: "{sys}\wscript.exe"; Parameters: """{app}\desktop\Harbor.vbs"""; WorkingDir: "{app}"; IconFilename: "{app}\harbor.ico"; Tasks: startup
 
 [Run]
 ; winget is a Windows "app execution alias" that Inno's file check can't see, so launch it through cmd.

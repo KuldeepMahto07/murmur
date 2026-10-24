@@ -48,13 +48,20 @@ await fs.writeFile(path.join(STAGE, 'node', 'VERSION.txt'), `Node.js ${process.v
 await fs.copyFile(path.join(ROOT, 'installer', 'harbor.ico'), path.join(STAGE, 'harbor.ico'));
 await fs.copyFile(path.join(ROOT, 'installer', 'stop-harbor.ps1'), path.join(STAGE, 'desktop', 'stop-harbor.ps1'));
 
-// ---- compile
-execFileSync(iscc, ['/Q', `/DAppVersion=${version}`, `/DStageDir=${STAGE}`, `/DOutDir=${DIST}`, path.join(ROOT, 'installer', 'harbor.iss')], { stdio: 'inherit' });
+// ---- compile.  --test builds an isolated variant (own AppId/name/shortcuts) used only by
+// scripts/verify-installer.ps1, so testing install/uninstall never touches a real install.
+const test = process.argv.includes('--test');
+const defs = [`/DAppVersion=${version}`, `/DStageDir=${STAGE}`, `/DOutDir=${DIST}`];
+if (test) defs.push('/DTestBuild');
+execFileSync(iscc, ['/Q', ...defs, path.join(ROOT, 'installer', 'harbor.iss')], { stdio: 'inherit' });
 
-const exe = path.join(DIST, `Harbor-Setup-${version}.exe`);
+const exe = path.join(DIST, test ? 'Harbor-Setup-test.exe' : `Harbor-Setup-${version}.exe`);
 const buf = await fs.readFile(exe);
 const sha = crypto.createHash('sha256').update(buf).digest('hex');
-const sums = path.join(DIST, 'SHA256SUMS.txt');
-const old = existsSync(sums) ? (await fs.readFile(sums, 'utf8')).split('\n').filter((l) => l && !l.endsWith(path.basename(exe))) : [];
-await fs.writeFile(sums, [...old, `${sha}  ${path.basename(exe)}`].join('\n') + '\n');
-console.log(`${path.basename(exe)}  ${(buf.length / 1048576).toFixed(1)} MB  sha256 ${sha.slice(0, 16)}…  (Node ${process.version} bundled)`);
+if (!test) {
+  // The test installer is a throwaway; only the real installer goes in the checksums file.
+  const sums = path.join(DIST, 'SHA256SUMS.txt');
+  const old = existsSync(sums) ? (await fs.readFile(sums, 'utf8')).split('\n').filter((l) => l && !l.endsWith(path.basename(exe))) : [];
+  await fs.writeFile(sums, [...old, `${sha}  ${path.basename(exe)}`].join('\n') + '\n');
+}
+console.log(`${path.basename(exe)}  ${(buf.length / 1048576).toFixed(1)} MB  sha256 ${sha.slice(0, 16)}…  (Node ${process.version} bundled)${test ? '  [test build]' : ''}`);
