@@ -24,8 +24,11 @@ Check (Test-Path $setup) "installer exists ($([math]::Round((Get-Item $setup).Le
 foreach ($p in $appDir, $data) { if (Test-Path $p) { Remove-Item -Recurse -Force $p } }
 
 # 1. Silent install (no optional tasks: no desktop icon, no startup entry, no winget step).
-$p = Start-Process $setup -ArgumentList @('/VERYSILENT', '/SUPPRESSMSGBOXES', '/NORESTART', "/DIR=`"$appDir`"", '/TASKS=""', "/LOG=`"$env:TEMP\harbor-install.log`"") -PassThru -Wait
+# The video-site task runs winget; if the helper is already installed this is quick.
+$p = Start-Process $setup -ArgumentList @('/VERYSILENT', '/SUPPRESSMSGBOXES', '/NORESTART', "/DIR=`"$appDir`"", '/TASKS="videosites"', "/LOG=`"$env:TEMP\harbor-install.log`"") -PassThru -Wait
 Check ($p.ExitCode -eq 0) "silent install exit code $($p.ExitCode)"
+$log = Get-Content "$env:TEMP\harbor-install.log" -Raw
+Check ($log -match 'winget install --id' -and $log -notmatch "File doesn't exist") 'video-site support step actually ran winget'
 foreach ($f in 'node\node.exe', 'node\LICENSE.txt', 'engine\main.ts', 'ui\index.html', 'desktop\Harbor.vbs', 'desktop\tray.ps1', 'extension\manifest.json', 'harbor.ico', 'unins000.exe') {
   Check (Test-Path (Join-Path $appDir $f)) "installed $f"
 }

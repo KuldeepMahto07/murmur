@@ -52,7 +52,8 @@ Name: "{userdesktop}\Harbor"; Filename: "{sys}\wscript.exe"; Parameters: """{app
 Name: "{userstartup}\Harbor"; Filename: "{sys}\wscript.exe"; Parameters: """{app}\desktop\Harbor.vbs"""; WorkingDir: "{app}"; IconFilename: "{app}\harbor.ico"; Tasks: startup
 
 [Run]
-Filename: "winget.exe"; Parameters: "install --id yt-dlp.yt-dlp -e --scope user --silent --accept-source-agreements --accept-package-agreements --disable-interactivity"; StatusMsg: "Setting up video-site support…"; Flags: runhidden waituntilterminated skipifdoesntexist; Tasks: videosites
+; winget is a Windows "app execution alias" that Inno's file check can't see, so launch it through cmd.
+Filename: "{cmd}"; Parameters: "/c winget install --id yt-dlp.yt-dlp -e --scope user --silent --accept-source-agreements --accept-package-agreements --disable-interactivity"; StatusMsg: "Setting up video-site support…"; Flags: runhidden waituntilterminated; Tasks: videosites
 Filename: "{sys}\wscript.exe"; Parameters: """{app}\desktop\Harbor.vbs"""; Description: "Open Harbor"; Flags: postinstall nowait skipifsilent
 
 [UninstallRun]
