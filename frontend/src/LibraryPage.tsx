@@ -113,7 +113,7 @@ export default function LibraryPage({ config }: { config: Config }) {
                 </td>
                 <td>{clock(j.duration)}</td>
                 <td>{j.detected_language || j.language || "auto"}</td>
-                <td className="muted">{new Date(j.created_at + (j.created_at.endsWith("Z") ? "" : "Z")).toLocaleString()}</td>
+                <td className="muted">{new Date(/(Z|[+-]\d\d:\d\d)$/.test(j.created_at) ? j.created_at : j.created_at + "Z").toLocaleString()}</td>
                 <td className="actions">
                   {j.status === "failed" && <button className="link" onClick={() => api.retry(j.id).then(load)}>retry</button>}
                   <button
