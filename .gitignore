@@ -9,3 +9,9 @@ samples/*.wav
 samples/*.mp3
 samples/out/
 *.tsbuildinfo
+
+# retell
+retell/.venv/
+retell/work/
+retell/sfx/*.wav
+retell/sfx/*.mp3

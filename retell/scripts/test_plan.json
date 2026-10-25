@@ -1,0 +1,10 @@
+{
+  "title": "Nobody noticed who was watching the whole time",
+  "beats": [
+    {"t": 0.5, "mode": "over", "narration": "This looks like a normal day at the park. But keep your eyes on the right side of the screen.", "effect": {"type": "none"}, "zoom": 1.0, "sfx": "none"},
+    {"t": 3.0, "mode": "freeze", "narration": "See this ball? It's rolling straight toward that bush, and that is not an accident.", "effect": {"type": "circle", "x": 0.234, "y": 0.653, "r": 0.05, "label": "the ball"}, "zoom": 1.4, "sfx": "scratch"},
+    {"t": 6.0, "mode": "freeze", "narration": "Because right here, someone has been hiding the entire time.", "effect": {"type": "arrow", "x": 0.8125, "y": 0.42, "r": 0.04, "label": "look"}, "zoom": 1.8, "sfx": "whoosh"},
+    {"t": 8.0, "mode": "freeze", "narration": "A tiny orange cat, waiting for its moment.", "effect": {"type": "spotlight", "x": 0.8125, "y": 0.42, "r": 0.07}, "zoom": 1.0, "sfx": "ding"}
+  ],
+  "outro": "Did you spot the cat before I pointed it out?"
+}
