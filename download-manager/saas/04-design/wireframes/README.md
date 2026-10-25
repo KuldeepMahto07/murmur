@@ -1,6 +1,6 @@
 # Wireframes
 
-**Status: Partial.** Part of [04 · Design](../README.md) in the [Harbor SaaS plan](../../README.md).
+**Status: Done.** Part of [04 · Design](../README.md) in the [Harbor SaaS plan](../../README.md).
 
 ## What exists
 There are no separate wireframe files. The layout was designed directly in code, and the current screens act as the wireframes:
@@ -21,4 +21,4 @@ There are no separate wireframe files. The layout was designed directly in code,
 ## Update (2026-10-25): promo tile + light-mode hero
 - The 440×280 small promo tile is built: [`site/store/03-promo-tile-440x280.png`](../../../site/store/03-promo-tile-440x280.png), with a reproducible HTML source (`site/store/promo-tile.html`) that reuses the logo mark and the `ui/tokens.css` palette.
 - The 1400×560 light-mode marquee / hero is built: [`site/store/04-hero-1400x560.png`](../../../site/store/04-hero-1400x560.png) (source `site/store/hero.html`) — headline on the left, a light-theme app-window illustration (download rows, progress, segment map) on the right. Balances the dark store screenshots.
-- **Still to do:** low-fidelity wireframes for the tray menu and extension options page.
+- **Low-fidelity wireframes built** for the two not-yet-built screens: [`wireframes-lofi.png`](wireframes-lofi.png) (source `wireframes.html`) — the Windows tray right-click menu (Open Harbor, Start/Stop queue, Pause all, Start with Windows, Quit, matching `desktop/tray.ps1`) and the extension options page (destination, behaviour toggles, pairing), the roomy version of `extension/popup.html`. Grayscale on purpose.
