@@ -678,6 +678,18 @@ function renderUpdateStatus() {
   else if (u.checkedAt) box.textContent = `Up to date (Harbor ${esc(u.current)}).`;
   else box.textContent = '';
 }
+// Where "Report a Problem" and a filed bug point. Matches the update-check repo.
+const REPORT_URL = 'https://github.com/KuldeepMahto07/harbor/issues/new/choose';
+$('#report-link').href = REPORT_URL;
+$('#btn-diag').onclick = async () => {
+  try {
+    const { text } = await api('GET', '/diagnostics');
+    await navigator.clipboard.writeText(text);
+    toast('Diagnostics copied — paste them into your bug report.');
+  } catch (e) {
+    toast('Could not copy diagnostics: ' + e.message);
+  }
+};
 $('#btn-check-update').onclick = async () => {
   const btn = $('#btn-check-update');
   btn.disabled = true;

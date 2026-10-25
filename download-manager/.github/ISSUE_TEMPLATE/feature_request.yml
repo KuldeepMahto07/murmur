@@ -1,0 +1,29 @@
+name: Feature request
+description: Suggest an improvement or a new capability.
+labels: ['enhancement']
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What are you trying to do?
+      description: The problem or workflow behind the request — not just the solution.
+      placeholder: I download the same set of files every week and want to…
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would help?
+      placeholder: A saved group of downloads I can start with one click.
+    validations:
+      required: true
+  - type: dropdown
+    id: have-pro
+    attributes:
+      label: Are you using Harbor Pro?
+      options:
+        - 'No'
+        - 'Yes (trial)'
+        - 'Yes (licensed)'
+    validations:
+      required: false

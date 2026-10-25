@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { spawn } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { Manager } from './manager.ts';
-import { probeMedia } from './hls.ts';
+import { probeMedia, findFfmpeg } from './hls.ts';
 import { probeYtdlp, ytdlpInfo } from './ytdlp.ts';
 import { isSameOrigin } from './pairing.ts';
 
@@ -77,6 +77,8 @@ export function createServer(mgr: Manager, port: number) {
         case route === 'POST /update/check':
           await mgr.updater.check(true);
           return send(res, 200, mgr.updater.state);
+        case route === 'GET /diagnostics':
+          return send(res, 200, { text: await buildDiagnostics(mgr) });
         case route === 'GET /license':
           return send(res, 200, mgr.licensing.status());
         case route === 'PUT /license':
@@ -150,6 +152,50 @@ function setStartup(on: boolean) {
     p.on('error', reject);
     p.on('exit', (code) => (code === 0 ? resolve() : reject(new Error(`startup toggle failed (${code})`))));
   });
+}
+
+/**
+ * A support report the user can paste into a bug report. Privacy-first: versions,
+ * counts and settings only — never URLs, file names, folders, keys or the e-mail.
+ * The video helper is named neutrally (the tool's name is not shown in the app).
+ */
+async function buildDiagnostics(mgr: Manager): Promise<string> {
+  const u = mgr.updater.state;
+  const lic = mgr.licensing.status();
+  const [yt, ffmpeg] = await Promise.all([ytdlpInfo().catch(() => null), findFfmpeg().catch(() => null)]);
+
+  const byStatus = new Map<string, number>();
+  for (const r of mgr.records.values()) byStatus.set(r.status, (byStatus.get(r.status) ?? 0) + 1);
+  const counts = [...byStatus.entries()].map(([k, n]) => `${n} ${k}`).join(' · ') || 'none';
+
+  const update = u.error
+    ? `last check failed (${u.error})`
+    : !mgr.settings.updateCheck && mgr.settings.updateCheck !== undefined
+      ? 'checks off'
+      : u.available
+        ? `${u.latest} available`
+        : u.checkedAt
+          ? 'up to date'
+          : 'not checked yet';
+  const license =
+    lic.tier === 'pro' ? `Pro${lic.plan === 'pro-yearly' ? ' (yearly)' : ' (lifetime)'}` : lic.tier === 'trial' ? `Trial (${lic.trialDaysLeft} days left)` : 'Free';
+  const s = mgr.settings;
+
+  return [
+    `Harbor ${u.current} diagnostics`,
+    `Generated: ${new Date().toISOString()}`,
+    ``,
+    `App:        ${u.current} (${process.platform}, ${process.arch})`,
+    `Runtime:    Node ${process.version}`,
+    `Video help: ${yt ? `present (${yt.version})` : 'not installed'} · ffmpeg ${ffmpeg ? 'present' : 'not found'}`,
+    `Update:     ${update}`,
+    `License:    ${license}`,
+    `Downloads:  ${mgr.records.size} total — ${counts}`,
+    `Settings:   ${s.connections} connections, ${s.maxConcurrent} concurrent, speed limit ${s.globalSpeedLimit ? Math.round(s.globalSpeedLimit / 1024) + ' KB/s' : 'none'}`,
+    `Pairing:    ${s.requirePairing ? 'required' : 'off'}${mgr.extensionSeen ? ' · extension connected' : ''}`,
+    ``,
+    `This report contains no URLs, file names or folders.`,
+  ].join('\n');
 }
 
 function events(req: http.IncomingMessage, res: http.ServerResponse, mgr: Manager) {

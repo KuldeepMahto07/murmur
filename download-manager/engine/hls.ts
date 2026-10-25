@@ -127,7 +127,7 @@ export async function probeMedia(url: string, headers?: Record<string, string>) 
 }
 
 let ffmpegPath: string | null | undefined;
-async function findFfmpeg(): Promise<string | null> {
+export async function findFfmpeg(): Promise<string | null> {
   if (ffmpegPath !== undefined) return ffmpegPath;
   ffmpegPath = await new Promise((resolve) => {
     const p = spawn(process.env.FETCHLINE_FFMPEG ?? 'ffmpeg', ['-version'], { stdio: 'ignore' });
