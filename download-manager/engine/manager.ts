@@ -421,7 +421,7 @@ export class Manager {
       for (const r of this.records.values()) {
         const d = this.active.get(r.id);
         const segments = d?.done ? await d.checkpoint().catch(() => d.durable) : d ? d.durable : r.segments;
-        downloads.push({ ...r, segments: segments.map((s) => ({ ...s })) });
+        downloads.push({ ...r, segments: segments.map((s) => ({ ...s })), ...(r.status === 'completed' ? withoutSecrets(r) : {}) });
       }
       const json = JSON.stringify(
         { version: 1, settings: this.settings, queueRunning: this.queueRunning, downloads },
@@ -498,6 +498,12 @@ export class Manager {
     r.error = (e as Error).message;
     this.dirty = true;
   }
+}
+
+/** A finished download never needs its credentials again, so state.json doesn't keep them. */
+export function withoutSecrets(r: DownloadRecord): Pick<DownloadRecord, 'headers' | 'ytdlp'> {
+  const headers = r.headers ? Object.fromEntries(Object.entries(r.headers).filter(([k]) => k !== 'cookie' && k !== 'authorization')) : undefined;
+  return { headers, ytdlp: r.ytdlp ? { ...r.ytdlp, cookies: undefined } : undefined };
 }
 
 /** Request headers a browser hand-off may pass on (needed by CDNs that check them). */

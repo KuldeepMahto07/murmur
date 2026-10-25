@@ -30,3 +30,8 @@
 - **Upgrade and uninstall:** they stop a Harbor running from the install folder first ([`installer/stop-harbor.ps1`](../../../installer/stop-harbor.ps1), matched by process path, never a copy started elsewhere), then replace or remove the files and remove the Apps entry.
 - **Tested:** [`scripts/verify-installer.ps1`](../../../scripts/verify-installer.ps1) builds an isolated "Harbor (Test)" variant (own AppId, name, folder and shortcuts) and runs the full cycle — silent install → bundled Node → verified download → upgrade over a running copy (data kept) → uninstall leaves nothing behind — then asserts it never touched a real install. It also runs in CI.
 - **Still to do:** code signing (needs a certificate or Azure Artifact Signing; until then SmartScreen warns), then the winget manifest.
+
+## Update (2026-10-25): signing hook
+- The tag-triggered release job has a **Sign installer** step (signtool, SHA-256, RFC 3161 timestamp, `signtool verify /pa`). It refreshes the installer's line in `SHA256SUMS.txt` after signing.
+- It runs only when the repository secrets `WINDOWS_SIGN_PFX` (base64 of the .pfx) and `WINDOWS_SIGN_PASSWORD` exist; until then releases ship unsigned as before.
+- **Owner:** buy an OV/EV certificate (or set up Azure Artifact Signing, which would replace this step), then add the two secrets.

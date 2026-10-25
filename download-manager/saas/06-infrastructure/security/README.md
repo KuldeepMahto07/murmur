@@ -20,3 +20,7 @@
 ## Update (2026-10-24)
 - **Browser pairing** added (optional): mutating API calls require either a first-party same-origin request or a secret token the user pairs once. See [05-development/authentication](../../05-development/authentication/README.md). Default off.
 - **Still open:** encrypt the stored cookies at rest, and a `SECURITY.md`.
+
+## Update (2026-10-25)
+- **Cookies at rest:** `state.json` no longer keeps the `cookie` / `authorization` headers or yt-dlp browser cookies of finished downloads (`withoutSecrets` in `engine/manager.ts`, unit-tested). Unfinished downloads still keep them in plain text so they can resume; DPAPI encryption would close that.
+- **`SECURITY.md`** added at [`download-manager/SECURITY.md`](../../../SECURITY.md). **Owner:** turn on private vulnerability reporting in the GitHub repo's settings once it exists.

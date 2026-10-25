@@ -84,7 +84,8 @@ jobs:
         with: { name: harbor-installer, path: 'download-manager/dist/Harbor-Setup-*.exe' }
 
   # Cuts a GitHub Release when a version tag (v*) is pushed: builds the installer and the
-  # extension/app zips, then attaches them. Unsigned for now — signing is an owner step.
+  # extension/app zips, then attaches them. The installer is signed once the owner adds the
+  # WINDOWS_SIGN_PFX (base64 .pfx) and WINDOWS_SIGN_PASSWORD secrets; until then it ships unsigned.
   release:
     if: startsWith(github.ref, 'refs/tags/v')
     needs: [unit-and-engine, installer]
@@ -92,6 +93,8 @@ jobs:
     timeout-minutes: 20
     permissions:
       contents: write
+    env:
+      HAS_SIGNING: ${{ secrets.WINDOWS_SIGN_PFX != '' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -105,6 +108,27 @@ jobs:
         run: |
           $env:ISCC = 'C:\Program Files (x86)\Inno Setup 6\ISCC.exe'
           npm run installer
+      - name: Sign installer (skipped until the signing secrets exist)
+        if: env.HAS_SIGNING == 'true'
+        shell: pwsh
+        env:
+          SIGN_PFX: ${{ secrets.WINDOWS_SIGN_PFX }}
+          SIGN_PASSWORD: ${{ secrets.WINDOWS_SIGN_PASSWORD }}
+        run: |
+          $pfx = Join-Path $env:RUNNER_TEMP 'sign.pfx'
+          [IO.File]::WriteAllBytes($pfx, [Convert]::FromBase64String($env:SIGN_PFX))
+          try {
+            $signtool = Get-ChildItem 'C:\Program Files (x86)\Windows Kits\10\bin\*\x64\signtool.exe' | Sort-Object FullName | Select-Object -Last 1
+            $exe = Get-ChildItem dist/Harbor-Setup-*.exe | Select-Object -First 1
+            & $signtool.FullName sign /fd SHA256 /tr http://timestamp.digicert.com /td SHA256 /f $pfx /p $env:SIGN_PASSWORD $exe.FullName
+            if ($LASTEXITCODE) { throw "signtool sign failed ($LASTEXITCODE)" }
+            & $signtool.FullName verify /pa $exe.FullName
+            if ($LASTEXITCODE) { throw "signtool verify failed ($LASTEXITCODE)" }
+            # Signing changes the bytes, so refresh the installer's line in SHA256SUMS.txt.
+            $sha = (Get-FileHash $exe.FullName -Algorithm SHA256).Hash.ToLower()
+            $sums = Get-Content dist/SHA256SUMS.txt | Where-Object { $_ -and -not $_.EndsWith($exe.Name) }
+            @($sums) + "$sha  $($exe.Name)" | Set-Content dist/SHA256SUMS.txt -Encoding ascii
+          } finally { Remove-Item $pfx -Force -ErrorAction SilentlyContinue }
       - name: Publish release
         shell: pwsh
         env:

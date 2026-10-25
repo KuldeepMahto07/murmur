@@ -10,7 +10,8 @@ import { parsePlaylist } from '../engine/hls.ts';
 import { TokenBucket } from '../engine/limiter.ts';
 import { Download, MIN_SPLIT } from '../engine/download.ts';
 import { cookieFile, locate } from '../engine/ytdlp.ts';
-import { Manager } from '../engine/manager.ts';
+import { Manager, withoutSecrets } from '../engine/manager.ts';
+import { redactError, errorSummary } from '../engine/server.ts';
 import type { DownloadRecord } from '../engine/types.ts';
 
 // ------------------------------------------------------------------ net.ts
@@ -179,4 +180,32 @@ test('Manager.add: validation, categories, kinds', async () => {
     await m.shutdown();
     await fs.rm(dir, { recursive: true, force: true });
   }
+});
+
+test('withoutSecrets: drops cookie/authorization and yt-dlp cookies, keeps the rest', () => {
+  const r = {
+    headers: { cookie: 'sid=1', authorization: 'Bearer x', referer: 'https://a.example/', 'user-agent': 'UA' },
+    ytdlp: { format: 'best', cookies: [{ domain: '.a.example', name: 'sid', value: '1' }] },
+  } as unknown as DownloadRecord;
+  const out = withoutSecrets(r);
+  assert.deepEqual(out.headers, { referer: 'https://a.example/', 'user-agent': 'UA' });
+  assert.equal(out.ytdlp?.cookies, undefined);
+  assert.equal(out.ytdlp?.format, 'best');
+  assert.deepEqual(withoutSecrets({} as DownloadRecord), { headers: undefined, ytdlp: undefined });
+});
+
+test('redactError: no URLs, hosts or paths reach a bug report', () => {
+  assert.equal(redactError('HTTP 403 from https://cdn.example.com/a/b.mp4?sig=abc'), 'HTTP 403 from <url>');
+  assert.equal(redactError(String.raw`EPERM: operation not permitted, open 'C:\Users\me\Downloads\Harbor\x.zip'`),"EPERM: operation not permitted, open '<path>'");
+  assert.equal(redactError('getaddrinfo ENOTFOUND files.example.org'), 'getaddrinfo ENOTFOUND <host>');
+  assert.equal(redactError('ENOENT /home/me/file.bin'), 'ENOENT <path>');
+  assert.equal(redactError('Checksum mismatch'), 'Checksum mismatch');
+});
+
+test('errorSummary: groups redacted messages, most common first', () => {
+  assert.equal(errorSummary([undefined]), 'none');
+  assert.equal(
+    errorSummary(['HTTP 403 from https://a.example/1', 'HTTP 403 from https://b.example/2', 'ECONNRESET', undefined]),
+    'HTTP 403 from <url> ×2 · ECONNRESET ×1',
+  );
 });

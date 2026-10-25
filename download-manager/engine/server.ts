@@ -159,6 +159,25 @@ function setStartup(on: boolean) {
  * counts and settings only — never URLs, file names, folders, keys or the e-mail.
  * The video helper is named neutrally (the tool's name is not shown in the app).
  */
+/** Strips URLs, hosts and paths from an error message so it can go in a bug report. */
+export function redactError(msg: string): string {
+  return msg
+    .replace(/[a-z][a-z0-9+.-]*:\/\/[^\s'"<>]+/gi, '<url>')
+    .replace(/(?:[a-z]:)?(?:[\\/][^\\/\s'"<>]+){2,}[\\/]?/gi, '<path>')
+    .replace(/\b(?:[a-z0-9-]+\.)+[a-z]{2,}\b/gi, '<host>')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, 80);
+}
+
+/** The five most common (redacted) error messages, e.g. "HTTP 403 ×3 · ECONNRESET ×1". */
+export function errorSummary(messages: (string | undefined)[]): string {
+  const n = new Map<string, number>();
+  for (const m of messages) if (m) n.set(redactError(m), (n.get(redactError(m)) ?? 0) + 1);
+  if (!n.size) return 'none';
+  return [...n.entries()].sort((a, b) => b[1] - a[1]).slice(0, 5).map(([m, c]) => `${m} ×${c}`).join(' · ');
+}
+
 async function buildDiagnostics(mgr: Manager): Promise<string> {
   const u = mgr.updater.state;
   const lic = mgr.licensing.status();
@@ -167,6 +186,7 @@ async function buildDiagnostics(mgr: Manager): Promise<string> {
   const byStatus = new Map<string, number>();
   for (const r of mgr.records.values()) byStatus.set(r.status, (byStatus.get(r.status) ?? 0) + 1);
   const counts = [...byStatus.entries()].map(([k, n]) => `${n} ${k}`).join(' · ') || 'none';
+  const errors = errorSummary([...mgr.records.values()].map((r) => (r.status === 'error' ? r.error : undefined)));
 
   const update = u.error
     ? `last check failed (${u.error})`
@@ -191,6 +211,7 @@ async function buildDiagnostics(mgr: Manager): Promise<string> {
     `Update:     ${update}`,
     `License:    ${license}`,
     `Downloads:  ${mgr.records.size} total — ${counts}`,
+    `Errors:     ${errors}`,
     `Settings:   ${s.connections} connections, ${s.maxConcurrent} concurrent, speed limit ${s.globalSpeedLimit ? Math.round(s.globalSpeedLimit / 1024) + ' KB/s' : 'none'}`,
     `Pairing:    ${s.requirePairing ? 'required' : 'off'}${mgr.extensionSeen ? ' · extension connected' : ''}`,
     ``,
