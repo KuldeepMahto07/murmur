@@ -94,6 +94,8 @@ export interface Settings {
   onboarded?: boolean;
   /** When true, cross-site callers (the browser extension) must pair; the app's own UI is exempt. */
   requirePairing?: boolean;
+  /** Daily check of GitHub Releases for a newer version. On by default; no data is sent. */
+  updateCheck?: boolean;
   scheduler: {
     enabled: boolean;
     startAt: string;   // "HH:MM", local time, daily

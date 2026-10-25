@@ -50,6 +50,13 @@
         </div>
       </header>
 
+      <div id="update-banner" class="update-banner hidden" role="status">
+        <span data-icon="arrowDownCircle"></span>
+        <span id="update-text"></span>
+        <a id="update-link" href="#" target="_blank" rel="noopener">Get the update</a>
+        <button type="button" id="update-dismiss" class="round ghost" data-icon="xmark" title="Dismiss" aria-label="Dismiss"></button>
+      </div>
+
       <div class="table-wrap">
         <table id="list">
           <thead>
@@ -175,6 +182,12 @@
         <div class="cell" id="pair-info"><span id="pair-text"></span></div>
       </div>
       <p class="group-foot">The engine already blocks web pages. Turn this on to also stop other local programs. Enter the code below in the Harbor browser extension once.</p>
+
+      <p class="group-title">Updates</p>
+      <div class="group">
+        <label class="cell"><span>Check for updates <small>once a day · nothing is sent</small></span><input type="checkbox" class="switch" name="updateCheck" /></label>
+        <div class="cell"><button type="button" id="btn-check-update">Check Now</button><span id="update-status" class="muted small"></span></div>
+      </div>
 
       <p class="group-title">Scheduler</p>
       <div class="group">

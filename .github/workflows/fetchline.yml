@@ -5,6 +5,7 @@ name: Harbor
 on:
   push:
     paths: ['download-manager/**', '.github/workflows/fetchline.yml']
+    tags: ['v*'] # a version tag cuts a release (see the release job)
   pull_request:
     paths: ['download-manager/**', '.github/workflows/fetchline.yml']
   schedule:
@@ -81,3 +82,37 @@ jobs:
         run: powershell -ExecutionPolicy Bypass -File scripts/verify-installer.ps1
       - uses: actions/upload-artifact@v4
         with: { name: harbor-installer, path: 'download-manager/dist/Harbor-Setup-*.exe' }
+
+  # Cuts a GitHub Release when a version tag (v*) is pushed: builds the installer and the
+  # extension/app zips, then attaches them. Unsigned for now — signing is an owner step.
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [unit-and-engine, installer]
+    runs-on: windows-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 24 }
+      - name: Build zips + checksums
+        run: node --disable-warning=ExperimentalWarning scripts/build.ts
+      - name: Install Inno Setup
+        run: choco install innosetup -y --no-progress
+      - name: Build installer
+        shell: pwsh
+        run: |
+          $env:ISCC = 'C:\Program Files (x86)\Inno Setup 6\ISCC.exe'
+          npm run installer
+      - name: Publish release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $v = "${{ github.ref_name }}".TrimStart('v')
+          $notes = "dist/RELEASE_NOTES-$v.md"
+          if (!(Test-Path $notes)) { "Harbor $v" | Out-File $notes }
+          gh release create "${{ github.ref_name }}" `
+            --title "Harbor $v" --notes-file $notes `
+            (Get-ChildItem dist/Harbor-Setup-*.exe, dist/*.zip, dist/SHA256SUMS.txt | ForEach-Object FullName)

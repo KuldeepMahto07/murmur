@@ -74,6 +74,9 @@ export function createServer(mgr: Manager, port: number) {
         case route === `DELETE /downloads/${id}`:
           await mgr.remove(id, url.searchParams.get('deleteFile') === '1');
           return send(res, 200, { ok: true });
+        case route === 'POST /update/check':
+          await mgr.updater.check(true);
+          return send(res, 200, mgr.updater.state);
         case route === 'GET /license':
           return send(res, 200, mgr.licensing.status());
         case route === 'PUT /license':

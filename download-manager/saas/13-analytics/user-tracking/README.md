@@ -1,6 +1,8 @@
 # User tracking
 
-**Status: Not started.** Part of [13 · Analytics](../README.md) in the [Harbor SaaS plan](../../README.md).
+**Status: In progress.** Part of [13 · Analytics](../README.md) in the [Harbor SaaS plan](../../README.md).
+
+**Built:** the daily update check (`engine/update.ts`) is live — one anonymous GET to the GitHub Releases API, on by default, with a Settings toggle and a "Check Now" button. That request is the "active installs" signal (counted store-side); Harbor sends no identifiers with it. **Still owner-gated:** opt-in product events need a telemetry endpoint (no backend exists yet) and the "Show me what's sent" view.
 
 **Privacy first:** a download manager sees every URL a user fetches, so analytics must never include URLs, file names or cookies.
 

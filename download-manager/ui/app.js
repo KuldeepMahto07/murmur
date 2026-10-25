@@ -300,7 +300,25 @@ function render() {
   renderToolbar();
   renderDetails();
   renderWelcome();
+  renderUpdate();
 }
+
+// --------------------------------------------------------- update banner
+
+let updateDismissed = ''; // the version the user dismissed this session
+function renderUpdate() {
+  const u = state.snap.update;
+  const banner = $('#update-banner');
+  const show = u && u.available && u.latest && u.latest !== updateDismissed;
+  banner.classList.toggle('hidden', !show);
+  if (!show) return;
+  $('#update-text').textContent = `Harbor ${u.latest} is available (you have ${u.current}).`;
+  $('#update-link').href = u.url || '#';
+}
+$('#update-dismiss').onclick = () => {
+  updateDismissed = state.snap?.update?.latest || '';
+  renderUpdate();
+};
 
 // ------------------------------------------------------------ first-run welcome
 
@@ -594,6 +612,8 @@ $('#btn-settings').onclick = () => {
   f.stopAt.value = s.scheduler.stopAt;
   f.onDone.value = s.scheduler.onDone;
   f.requirePairing.checked = !!s.requirePairing;
+  f.updateCheck.checked = s.updateCheck !== false;
+  renderUpdateStatus();
   renderPro(state.snap.license);
   renderPairing();
   $('#cat-list').innerHTML = s.categories
@@ -619,6 +639,7 @@ $('#dlg-settings').addEventListener('close', async () => {
       categories,
       scheduler: { enabled: f.schedEnabled.checked, startAt: f.startAt.value || '02:00', stopAt: f.stopAt.value, onDone: f.onDone.value },
       requirePairing: f.requirePairing.checked,
+      updateCheck: f.updateCheck.checked,
     });
     toast('Settings saved');
   } catch (e) {
@@ -646,6 +667,30 @@ async function renderPairing() {
     box.textContent = 'Unavailable.';
   }
 }
+
+// Update check: show the last result, and let the user check on demand.
+function renderUpdateStatus() {
+  const box = $('#update-status');
+  const u = state.snap?.update;
+  if (!u) return (box.textContent = '');
+  if (u.available) box.innerHTML = `<span class="ok">Harbor ${esc(u.latest)} available.</span>`;
+  else if (u.error) box.textContent = `Couldn't check (${esc(u.error)}).`;
+  else if (u.checkedAt) box.textContent = `Up to date (Harbor ${esc(u.current)}).`;
+  else box.textContent = '';
+}
+$('#btn-check-update').onclick = async () => {
+  const btn = $('#btn-check-update');
+  btn.disabled = true;
+  $('#update-status').textContent = 'Checking…';
+  try {
+    await api('POST', '/update/check');
+  } catch (e) {
+    toast(e.message);
+  } finally {
+    btn.disabled = false;
+    renderUpdateStatus();
+  }
+};
 
 let toastTimer;
 function toast(msg) {

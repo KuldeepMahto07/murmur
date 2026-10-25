@@ -9,6 +9,7 @@ import { HlsDownload } from './hls.ts';
 import { YtdlpDownload, type BrowserCookie } from './ytdlp.ts';
 import { Licensing } from './license.ts';
 import { Pairing } from './pairing.ts';
+import { Updater, appVersion } from './update.ts';
 import { TokenBucket } from './limiter.ts';
 import { fileNameFromUrl, sanitizeFileName } from './net.ts';
 
@@ -72,6 +73,7 @@ export class Manager {
   onExit: () => void = () => {};
   readonly licensing: Licensing;
   readonly pairing: Pairing;
+  readonly updater: Updater;
   /** Last time the browser extension talked to the engine (it sends X-Fetchline-Client). */
   extensionSeen: { at: number; client: string } | null = null;
 
@@ -83,6 +85,7 @@ export class Manager {
     this.defaultBaseDir = opts.defaultBaseDir;
     this.licensing = new Licensing(dataDir);
     this.pairing = new Pairing(dataDir);
+    this.updater = new Updater(appVersion(), () => this.settings?.updateCheck !== false);
   }
 
   private get stateFile() {
@@ -117,6 +120,7 @@ export class Manager {
     }
     this.timers.push(setInterval(() => this.tick(), TICK_MS));
     this.timers.push(setInterval(() => this.save(), SAVE_MS));
+    this.updater.start();
   }
 
   subscribe(fn: () => void) {
@@ -324,7 +328,9 @@ export class Manager {
     if (!pro && patch.scheduler && patch.scheduler.onDone !== 'none' && patch.scheduler.onDone !== this.settings.scheduler.onDone) {
       throw new Error(proMessage('Shutting down or closing Harbor when a scheduled queue finishes'));
     }
+    const wasChecking = this.settings.updateCheck !== false;
     Object.assign(this.settings, patch);
+    if (patch.updateCheck === true && !wasChecking) this.updater.refresh();
     this.settings.connections = clamp(this.settings.connections, 1, this.maxConnections());
     this.settings.maxConcurrent = clamp(this.settings.maxConcurrent, 1, 20);
     this.global.setRate(this.settings.globalSpeedLimit);
@@ -437,6 +443,7 @@ export class Manager {
 
   async shutdown() {
     for (const t of this.timers) clearInterval(t);
+    this.updater.stop();
     const running = [...this.active.values()].filter((d) => d.done);
     await Promise.all(running.map((d) => d.pause()));
     // Paused by exit, not by the user: resume them next launch.
@@ -454,6 +461,7 @@ export class Manager {
       extensionSeen: this.extensionSeen,
       license: this.licensing.status(),
       pairing: this.pairing.status(!!this.settings.requirePairing, false),
+      update: this.updater.state,
       appDir: path.join(path.dirname(fileURLToPath(import.meta.url)), '..'),
       platform: process.platform,
       settings: this.settings,

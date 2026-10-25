@@ -22,21 +22,21 @@ Pages below that say "no YouTube" describe the store build and its marketing, wh
 | 03 | [Planning](03-planning/) | 🟡 In progress | Installer done. **Owner:** code-signing certificate (or Azure Artifact Signing) |
 | 04 | [Design](04-design/) | 🟡 In progress | UI, UX flows and the shared token file done; store screenshots captured. Promo tile + low-fi wireframes remain |
 | 05 | [Development](05-development/) | 🟡 In progress | Engine, UI, API, extension, tray, licensing and browser pairing done. Core build complete |
-| 06 | [Infrastructure](06-infrastructure/) | 🟡 In progress | CI, `npm run build` and the **installer** (`npm run installer`, tested) are done. Next: code signing, push so CI runs |
+| 06 | [Infrastructure](06-infrastructure/) | 🟡 In progress | CI, `npm run build`, the **installer** and a tag-triggered **release job** (`npm run release`) are done. Next: code signing, push so CI runs |
 | 07 | [Testing](07-testing/) | 🟡 In progress | Unit tests (12) and E2E suites pass. Next: a 2-week [beta](07-testing/beta-testing/) with 30–50 waitlist users |
 | 08 | [Launch](08-launch/) | 🟡 In progress | Site built, installer ready. Next: deploy the site; signing + store accounts (owner); work through [public-release](08-launch/public-release/) |
 | 09 | [Acquisition](09-acquisition/) | 🟡 In progress | `/vs/idm` and `/vs/ab-download-manager` pages built. Next: guide pages and the first build-in-public post |
 | 10 | [Distribution](10-distribution/) | 🟡 In progress | Store zip ready (`npm run build`). **Owner:** open Chrome Web Store and Edge Partner Center accounts, then upload; winget PR after signing |
 | 11 | [Conversion](11-conversion/) | 🟡 In progress | Trial and gating are live. **Owner:** set up the merchant of record (Lemon Squeezy or Paddle) and put the checkout URL into `BUY_URL` |
 | 12 | [Revenue](12-revenue/) | 🟡 In progress | Licence keys and the vendor tool are built. Next: purchase webhook → `license-tool issue`; founders' pre-sale at $12 |
-| 13 | [Analytics](13-analytics/) | ⚪ Not started | Anonymous update-check count, plus opt-in events (no URLs, ever) |
+| 13 | [Analytics](13-analytics/) | 🟡 In progress | Update check built (anonymous, on by default, Settings toggle + Check Now). Next: opt-in events — needs a telemetry endpoint (owner) |
 | 14 | [Retention](14-retention/) | 🟡 In progress | First-run onboarding and the public FAQ are done. Next: issue templates and an in-app "Copy diagnostics" button |
 | 15 | [Growth](15-growth/) | ⚪ Not started | Shareable verification report; `fetchline://` "Download with Harbor" button |
-| 16 | [Scaling](16-scaling/) | ⚪ Not started | Release automation (sign, winget, store publish APIs) once revenue starts |
+| 16 | [Scaling](16-scaling/) | 🟡 In progress | Release automation built (`npm run release` + tag-triggered GitHub Release). Next: signing, winget PR, store publish APIs (owner) |
 
 **Statuses:**
 - **Done:** every sub-item is done.
 - **In progress:** at least one sub-item is done, partial or drafted.
 - **Not started:** strategy written, nothing executed yet.
 
-Each stage folder has a README with its sub-items. Last updated 2026-10-24.
+Each stage folder has a README with its sub-items. Last updated 2026-10-25.

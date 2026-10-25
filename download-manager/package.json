@@ -7,10 +7,11 @@
   "engines": { "node": ">=24" },
   "scripts": {
     "start": "node --disable-warning=ExperimentalWarning engine/main.ts",
-    "test": "node --disable-warning=ExperimentalWarning --test tests/engine.test.ts tests/license.test.ts tests/pairing.test.ts",
+    "test": "node --disable-warning=ExperimentalWarning --test tests/engine.test.ts tests/license.test.ts tests/pairing.test.ts tests/update.test.ts",
     "verify": "node --disable-warning=ExperimentalWarning scripts/verify.ts --local",
     "verify:extension": "node --disable-warning=ExperimentalWarning scripts/verify-extension.ts",
     "build": "node --disable-warning=ExperimentalWarning scripts/build.ts",
-    "installer": "node --disable-warning=ExperimentalWarning scripts/build-installer.ts"
+    "installer": "node --disable-warning=ExperimentalWarning scripts/build-installer.ts",
+    "release": "node --disable-warning=ExperimentalWarning scripts/release.ts"
   }
 }
