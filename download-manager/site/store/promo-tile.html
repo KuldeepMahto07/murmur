@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Harbor promo tile</title>
+<style>
+  /* Source for the 440x280 Chrome Web Store / Edge small promo tile.
+     Render: open in a browser at a 440x280 viewport and screenshot (see README).
+     Harbor's own mark and palette — no Apple or third-party assets. */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 440px; height: 280px; overflow: hidden; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', system-ui, sans-serif;
+    background:
+      radial-gradient(120% 90% at 82% 18%, rgba(90, 200, 250, 0.35), transparent 60%),
+      radial-gradient(120% 120% at 12% 110%, rgba(10, 108, 255, 0.22), transparent 55%),
+      linear-gradient(160deg, #ffffff 0%, #eef2f8 100%);
+    display: flex; align-items: center; gap: 24px; padding: 14px 34px 0;
+    -webkit-font-smoothing: antialiased;
+  }
+  .icon {
+    width: 104px; height: 104px; flex: none; border-radius: 24px;
+    background: linear-gradient(180deg, #5ac8fa 0%, #0a6cff 100%);
+    box-shadow: 0 10px 28px rgba(10, 108, 255, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    display: flex; align-items: center; justify-content: center; position: relative;
+  }
+  .icon::after { /* top gloss */
+    content: ''; position: absolute; inset: 0; border-radius: 24px;
+    pointer-events: none;
+    background: linear-gradient(180deg, rgba(255,255,255,0.3), transparent 55%);
+  }
+  .icon svg { width: 68px; height: 68px; position: relative; }
+  .text { display: flex; flex-direction: column; }
+  .word { font-size: 46px; font-weight: 700; letter-spacing: -1.3px; color: #0b1324; line-height: 1; }
+  .tag { margin-top: 11px; font-size: 18px; font-weight: 500; color: #3c3c43; letter-spacing: -0.2px; white-space: nowrap; }
+  .rule { margin-top: 16px; width: 54px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, #5ac8fa, #0a6cff); }
+</style>
+</head>
+<body>
+  <div class="icon">
+    <svg viewBox="0 0 128 128" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M64 24v46M44 52l20 20 20-20" stroke-width="10"/>
+      <path d="M26 88c6.5-6 12.5-6 19 0s12.5 6 19 0 12.5-6 19 0 12.5 6 19 0" stroke-width="7"/>
+      <path d="M38 104c4.4-4 8.6-4 13 0s8.6 4 13 0 8.6-4 13 0" stroke-width="6" stroke-opacity=".7"/>
+    </svg>
+  </div>
+  <div class="text">
+    <div class="word">Harbor</div>
+    <div class="tag">Fast, crash‑proof downloads</div>
+    <div class="rule"></div>
+  </div>
+</body>
+</html>

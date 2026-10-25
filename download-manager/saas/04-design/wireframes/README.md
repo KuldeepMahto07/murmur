@@ -17,4 +17,7 @@ There are no separate wireframe files. The layout was designed directly in code,
   - `01-main-window.png` — the main window with sample downloads (complete / paused / queued), dark.
   - `02-video-download.png` — the video Download menu over a player (qualities + blocked DRM).
 - Captured with headless Edge against the app with sample data (`site/store/README.md`).
-- **Still to do:** a promo tile (440×280) and a light-mode hero; low-fidelity wireframes for the tray menu and extension options page.
+
+## Update (2026-10-25): promo tile
+- The 440×280 small promo tile is built: [`site/store/03-promo-tile-440x280.png`](../../../site/store/03-promo-tile-440x280.png), with a reproducible HTML source (`site/store/promo-tile.html`) that reuses the logo mark and the `ui/tokens.css` palette.
+- **Still to do:** a light-mode hero and low-fidelity wireframes for the tray menu and extension options page.

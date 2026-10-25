@@ -4,7 +4,7 @@
 
 | Sub-item | Status | Summary |
 |---|---|---|
-| [Wireframes](wireframes/) | Partial | Store screenshots captured (site/store/); promo tile + low-fi wireframes remain |
+| [Wireframes](wireframes/) | Partial | Store screenshots + 440×280 promo tile done (site/store/); light-mode hero + low-fi wireframes remain |
 | [UI design](ui-design/) | Done | iOS/macOS-style redesign and the Harbor icon; store screenshots still to do |
 | [UX flows](ux-flows/) | Done | All key flows documented end to end (install, add, video, Pro, pairing, crash) |
 | [Prototype](prototype/) | Done (functional) | The working product is the prototype: |
