@@ -1,5 +1,7 @@
 # 09 Acquisition
 
+**Status:** ⬜ Not started
+
 - `seo-wins/`
 - `content-marketing/`
 - `social-media/`

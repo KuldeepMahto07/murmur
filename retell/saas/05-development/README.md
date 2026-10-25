@@ -1,5 +1,7 @@
 # 05 Development
 
+**Status:** 🟡 In progress — MVP CLI built
+
 - `frontend/`
 - `backend/`
 - `apis/`
@@ -7,4 +9,4 @@
 - `authentication/`
 - `integrations/`
 
-Not started for Retell yet: the code lives in the project root (`retell.py`, `engine/`).
+The MVP CLI is built; the code lives in the project root (`retell.py`, `engine/`). No web frontend, database or auth yet.

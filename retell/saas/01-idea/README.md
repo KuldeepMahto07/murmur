@@ -1,5 +1,7 @@
 # 01 Idea
 
+**Status:** 🟡 In progress — market research still to do
+
 ## Problem discovery
 Faceless "clip commentary" channels (Mirror Thinks and many copycats) retell viral clips: pause on a moment, circle or point at a detail, explain it in a voiceover, add sound effects and captions. Done by hand in Premiere/CapCut this takes about 30 minutes to several hours per short. The time goes into four jobs:
 1. Watching the clip several times to find the moments worth pointing at.

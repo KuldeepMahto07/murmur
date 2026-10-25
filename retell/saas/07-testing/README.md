@@ -1,5 +1,7 @@
 # 07 Testing
 
+**Status:** 🟡 In progress — manual end-to-end run works; no unit tests
+
 - `unit-testing/`
 - `integration-testing/`
 - `bug-fixing/`

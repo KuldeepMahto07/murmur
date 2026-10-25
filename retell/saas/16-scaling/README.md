@@ -1,5 +1,7 @@
 # 16 Scaling
 
+**Status:** ⬜ Not started
+
 - `automation/`
 - `hiring/`
 - `systems/`

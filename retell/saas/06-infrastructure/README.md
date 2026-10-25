@@ -1,5 +1,7 @@
 # 06 Infrastructure
 
+**Status:** ⬜ Not started
+
 - `cloud-hosting/`
 - `devops/`
 - `ci-cd/`

@@ -1,5 +1,7 @@
 # 14 Retention
 
+**Status:** ⬜ Not started
+
 - `user-onboarding/`
 - `email-automation/`
 - `customer-support/`

@@ -1,5 +1,7 @@
 # 10 Distribution
 
+**Status:** ⬜ Not started
+
 - `directories/`
 - `saas-marketplaces/`
 - `communities/`

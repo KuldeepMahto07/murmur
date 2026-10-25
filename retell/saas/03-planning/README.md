@@ -1,5 +1,7 @@
 # 03 Planning
 
+**Status:** 🟡 In progress — development plan for the web UI still to write
+
 ## MVP scope (built)
 A local CLI: `python retell.py make <clip-or-url>`
 1. **Fetch.** Takes a local file, or a URL downloaded with yt-dlp.

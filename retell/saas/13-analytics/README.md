@@ -1,5 +1,7 @@
 # 13 Analytics
 
+**Status:** ⬜ Not started
+
 - `user-tracking/`
 - `funnel-analysis/`
 - `cohort-analysis/`

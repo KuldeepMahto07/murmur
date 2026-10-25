@@ -1,5 +1,7 @@
 # 02 Validation
 
+**Status:** ⬜ Not started
+
 - `customer-interviews/`
 - `landing-page-test/`
 - `waitlist/`

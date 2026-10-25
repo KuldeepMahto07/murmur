@@ -1,5 +1,7 @@
 # 08 Launch
 
+**Status:** ⬜ Not started
+
 - `landing-page/`
 - `product-hunt/`
 - `beta-users/`

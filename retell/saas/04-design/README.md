@@ -1,5 +1,7 @@
 # 04 Design
 
+**Status:** ⬜ Not started
+
 - `wireframes/`
 - `ui-design/`
 - `ux-flows/`
