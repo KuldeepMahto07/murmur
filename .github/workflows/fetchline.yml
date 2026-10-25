@@ -4,8 +4,11 @@ name: Harbor
 
 on:
   push:
+    # With only `tags` listed, GitHub would skip branch pushes entirely, so list both.
+    # Path filters apply to branch pushes only; any v* tag cuts a release (see the release job).
+    branches: ['**']
     paths: ['download-manager/**', '.github/workflows/fetchline.yml']
-    tags: ['v*'] # a version tag cuts a release (see the release job)
+    tags: ['v*']
   pull_request:
     paths: ['download-manager/**', '.github/workflows/fetchline.yml']
   schedule:
