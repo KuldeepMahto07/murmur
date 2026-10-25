@@ -1,5 +1,7 @@
 # APIs → [`backend/app/main.py`](../../../backend/app/main.py)
 
+**Status: Done (MVP).** Part of [05 · Development](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 | Method & path | Purpose |
 |---|---|
 | `GET /api/config` | Languages, modes, diarization method, export formats |

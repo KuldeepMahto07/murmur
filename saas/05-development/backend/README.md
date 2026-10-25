@@ -1,5 +1,7 @@
 # Backend → `backend/app/`
 
+**Status: Done (MVP).** Part of [05 · Development](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 | File | What it does |
 |---|---|
 | [`config.py`](../../../backend/app/config.py) | Paths, env (`HF_TOKEN`, `MURMUR_DEVICE`, `MURMUR_CORS_ORIGINS`, upload cap), modes, language list |

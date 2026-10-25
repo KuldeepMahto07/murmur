@@ -1,5 +1,7 @@
 # Hiring
 
+**Status: Not started (plan written).** Part of [16 · Scaling](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 | Trigger | Role | Type |
 |---|---|---|
 | About $8k MRR or > 15 tickets/week | Support + docs specialist (ideally ex-researcher) | Part-time contractor |

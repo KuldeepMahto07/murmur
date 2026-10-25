@@ -1,5 +1,7 @@
 # UX flows
 
+**Status: Done.** Part of [04 · Design](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 **Built:**
 1. **Transcribe:** Upload → pick options → Transcribe → library with live progress (polls every 1.5 s) → click "Ready" → transcript.
 2. **Fix and export:** Transcript → rename speakers → edit text (saves on blur) / reassign a turn's speaker → Download → pick format + timestamps/speakers.

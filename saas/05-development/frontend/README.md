@@ -1,5 +1,7 @@
 # Frontend → `frontend/`
 
+**Status: Done (MVP).** Part of [05 · Development](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 | File | What it does |
 |---|---|
 | [`frontend/src/App.tsx`](../../../frontend/src/App.tsx) | Hash router (`#/`, `#/library`, `#/t/<id>`), top bar, demo banner |

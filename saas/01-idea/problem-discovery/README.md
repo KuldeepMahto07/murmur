@@ -1,5 +1,7 @@
 # Problem discovery
 
+**Status: Done.** Part of [01 · Idea](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 ## The problem
 People who record interviews, meetings or lectures need accurate, timed, speaker-labelled text. Cloud tools such as TurboScribe, Otter and Rev solve accuracy and price. They do not solve **where the audio goes**:
 

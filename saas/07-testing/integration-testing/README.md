@@ -1,5 +1,7 @@
 # Integration testing
 
+**Status: Done.** Part of [07 · Testing](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 **Built:** [`scripts/e2e.py`](../../../scripts/e2e.py) uploads a file to a running server, waits, prints segments, checks all 7 exports and the bulk ZIP. [`scripts/make_sample.ps1`](../../../scripts/make_sample.ps1) generates a 42 s two-voice TTS clip.
 
 **Verified runs (2026-10-22):**

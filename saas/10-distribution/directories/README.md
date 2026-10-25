@@ -1,5 +1,7 @@
 # Directories
 
+**Status: Not started (plan written).** Part of [10 · Distribution](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 Submit (free unless noted) once the landing page and installer exist:
 - [ ] AlternativeTo (list as an alternative to TurboScribe, Otter, MacWhisper, Rev)
 - [ ] There's An AI For That, Futurepedia, Toolify

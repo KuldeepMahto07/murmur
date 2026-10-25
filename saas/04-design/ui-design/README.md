@@ -1,5 +1,7 @@
 # UI design
 
+**Status: In progress: accessibility pass still to do.** Part of [04 · Design](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 **Built** (`frontend/src/styles.css`):
 - Warm "paper" palette: ink `#1f1d2b`, paper `#f6f3ec`, coral accent `#e8603c`, teal `#2f8f83`.
 - Serif display type (Iowan/Palatino) for headings and transcript text, system sans for controls.

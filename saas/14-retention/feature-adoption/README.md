@@ -1,5 +1,7 @@
 # Feature adoption
 
+**Status: Not started (plan written).** Part of [14 · Retention](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 **Under-discovered features in the current UI:** search, playback speed, speaker reassignment per turn, translated exports, bulk ZIP.
 
 **Tactics:**

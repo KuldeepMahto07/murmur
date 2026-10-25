@@ -1,5 +1,7 @@
 # Public release (v1.0)
 
+**Status: Not started (plan written).** Part of [08 · Launch](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 **Definition of done:**
 - [ ] Signed Windows installer (code-signing certificate, about $200–400/yr) so SmartScreen doesn't block it.
 - [ ] Auto-update channel.

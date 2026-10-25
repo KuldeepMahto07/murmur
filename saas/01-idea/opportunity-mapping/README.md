@@ -1,5 +1,7 @@
 # Opportunity mapping
 
+**Status: Done.** Part of [01 · Idea](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 ## Value proposition
 **"Private transcription that never leaves your PC."** Accuracy on par with the cloud tools (same Whisper family), speakers, editing, Word and subtitle export, for a one-time price.
 

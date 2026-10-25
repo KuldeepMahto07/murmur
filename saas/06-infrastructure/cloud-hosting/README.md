@@ -1,5 +1,7 @@
 # Cloud hosting
 
+**Status: Partial: Vercel demo live, not connected to the repo.** Part of [06 · Infrastructure](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 **Built:**
 - **Vercel** project `murmur` (account `kuldeep1702k-1553`) hosts `frontend/` as a static demo: https://murmur-alpha-three.vercel.app. Deployed with `cd frontend && npx vercel deploy --prod`. It is **not** connected to the GitHub repo.
 - The backend runs on the user's PC only (GTX 1650 Ti, CUDA 12.8 build of torch).

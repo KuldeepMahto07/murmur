@@ -1,5 +1,7 @@
 # Unit testing
 
+**Status: Not started (plan written).** Part of [07 · Testing](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 **Built:** none as files. An ad-hoc smoke test of all exporters (fake transcript → 7 formats, DOCX/PDF magic bytes) was run during development but not saved.
 
 **Write first (pytest, CPU only, no models needed):**

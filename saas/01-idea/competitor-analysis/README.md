@@ -1,5 +1,7 @@
 # Competitor analysis
 
+**Status: Done.** Part of [01 · Idea](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 - **Primary teardown:** [turboscribe-analysis.md](turboscribe-analysis.md). Feature and front-end study of TurboScribe from its public pages. It explains how Murmur reached feature parity.
 
 ## Comparison grid (third-party 2026 pricing, see sources; verify before quoting)

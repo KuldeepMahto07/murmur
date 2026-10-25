@@ -1,5 +1,7 @@
 # DevOps
 
+**Status: Partial: start.bat and pins; no lockfile or installer.** Part of [06 · Infrastructure](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 **Built:** `start.bat` (build the UI if missing, run uvicorn). `requirements.txt` with torch pins. `.env.example`. `.gitignore` excludes the venv, `data/`, `node_modules`, `dist`, `.env`.
 
 **Missing:**

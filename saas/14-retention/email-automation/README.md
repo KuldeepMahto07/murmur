@@ -1,5 +1,7 @@
 # Email automation
 
+**Status: Not started (plan written).** Part of [14 · Retention](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 Only for people who gave an email (waitlist, purchase, trial). Use the merchant-of-record's emails or Buttondown.
 
 | Day | Email | Goal |

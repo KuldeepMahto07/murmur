@@ -1,5 +1,7 @@
 # Security
 
+**Status: Partial: localhost binding; no auth.** Part of [06 · Infrastructure](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 **Built:**
 - Server binds to `127.0.0.1` only. CORS is off unless `MURMUR_CORS_ORIGINS` is set.
 - File names are sanitised for downloads. Uploads go to per-job folders with a size cap (`MURMUR_MAX_UPLOAD_MB`).

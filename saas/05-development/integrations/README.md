@@ -1,5 +1,7 @@
 # Integrations
 
+**Status: In progress: pyannote built but not verified.** Part of [05 · Development](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 | Integration | Code | State |
 |---|---|---|
 | yt-dlp (link import) | [`worker.py`](../../../backend/app/worker.py) `_download_url` | ✅ Verified with a public FLAC |

@@ -1,5 +1,7 @@
 # Development plan (next 8 weeks, solo developer)
 
+**Status: Done.** Part of [03 · Planning](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 | Week | Deliverable | Done when |
 |---|---|---|
 | 1 | Validation kit live: landing page + waitlist + interview recruiting | Page live, first 5 interviews booked |

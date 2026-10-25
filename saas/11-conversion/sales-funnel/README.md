@@ -1,5 +1,7 @@
 # Sales funnel
 
+**Status: Not started (plan written).** Part of [11 · Conversion](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 | Stage | Metric | Target |
 |---|---|---|
 | Visit landing page | visitors | — |

@@ -1,5 +1,7 @@
 # Content marketing
 
+**Status: Not started (plan written).** Part of [09 · Acquisition](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 **Pillar pieces (one a fortnight):**
 1. "How to transcribe research interviews ethically (with an ethics-office template)".
 2. "Whisper models explained: base vs small vs large-v3-turbo on a 4 GB GPU" (use our real benchmark numbers).

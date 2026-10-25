@@ -1,5 +1,7 @@
 # MVP scope (approved and delivered)
 
+**Status: Done.** Part of [03 · Planning](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 The approved scope is in [docs/plan.md](../../../docs/plan.md#mvp-scope). What was delivered against it:
 
 | Scope item | Delivered | Verified |

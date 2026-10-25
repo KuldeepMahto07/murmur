@@ -1,5 +1,7 @@
 # Landing page test
 
+**Status: Not started (plan written).** Part of [02 · Validation](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 **Hypothesis:** privacy-led copy converts visitors to the waitlist at ≥ 8% from targeted traffic.
 
 ## Page (reuse the Vercel project; add a `/` marketing route or a separate `landing/` page)

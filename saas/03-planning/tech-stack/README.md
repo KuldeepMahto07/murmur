@@ -1,5 +1,7 @@
 # Tech stack
 
+**Status: Done.** Part of [03 · Planning](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 | Layer | Choice | Why / notes |
 |---|---|---|
 | ASR | faster-whisper 1.2 (CTranslate2), `base` / `small` / `large-v3-turbo` | Fastest open Whisper. int8_float16 on CUDA fits 4 GB GPUs |

@@ -1,5 +1,7 @@
 # Prototype
 
+**Status: In progress: the app is the prototype; first-run and Pro mocks missing.** Part of [04 · Design](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 **Built:** the working app *is* the prototype.
 - Local: `start.bat` → http://127.0.0.1:8000.
 - Clickable public demo: the Vercel deploy (sample transcript at `/#/t/demo`).

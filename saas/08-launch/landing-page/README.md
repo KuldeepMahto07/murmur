@@ -1,5 +1,7 @@
 # Landing page (launch version)
 
+**Status: Not started (plan written).** Part of [08 · Launch](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 Upgrade the [02-validation landing test](../../02-validation/landing-page-test/) page with the winning headline.
 
 **Sections, in order:**

@@ -1,5 +1,7 @@
 # Design system
 
+**Status: Done (implicit tokens in styles.css).** Part of [04 · Design](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 **Built (implicit, in `frontend/src/styles.css`):**
 | Token | Value |
 |---|---|

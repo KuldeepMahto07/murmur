@@ -1,5 +1,7 @@
 # Beta testing
 
+**Status: Not started (plan written).** Part of [07 · Testing](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 **Built:** none. No external testers yet.
 
 **Plan:**

@@ -1,5 +1,7 @@
 # Pre-sales
 
+**Status: Not started (plan written).** Part of [02 · Validation](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 - **Offer:** "Founding license": Murmur Pro for **$29** (later $49), lifetime updates for v1.x, refundable until release.
 - **Checkout:** Lemon Squeezy or Paddle (they act as merchant of record, so they handle global VAT for a solo seller). Use pre-order or "pay what you want ≥ $29".
 - **Where:** waitlist email number 2, and the end of each interview.

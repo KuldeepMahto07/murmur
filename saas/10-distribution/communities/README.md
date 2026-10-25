@@ -1,5 +1,7 @@
 # Communities
 
+**Status: Not started (plan written).** Part of [10 · Distribution](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 | Community | How to show up (value first) |
 |---|---|
 | r/PhD, r/AskAcademia, r/GradSchool, r/qualitativeresearch | Answer transcription questions; share the ethics template; post the tool only where the rules allow |

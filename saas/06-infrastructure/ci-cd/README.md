@@ -1,5 +1,7 @@
 # CI / CD
 
+**Status: Not started (plan written).** Part of [06 · Infrastructure](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 **Built:** nothing automated. The Vercel deploy is manual.
 
 **Plan (GitHub Actions):**

@@ -1,5 +1,7 @@
 # Systems
 
+**Status: Not started (plan written).** Part of [16 · Scaling](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 **Runbooks to write (in `saas/16-scaling/systems/`):**
 - [ ] `release.md`: version bump, changelog, CI build, smoke test on a clean VM, publish, announce.
 - [ ] `support.md`: triage tags, canned replies, escalation, diagnostics reading guide.

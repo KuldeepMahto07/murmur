@@ -1,5 +1,7 @@
 # Customer support
 
+**Status: Not started (plan written).** Part of [14 · Retention](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 - **Channels:** email (support@), GitHub Discussions (public Q&A), and a docs FAQ. No live chat until revenue supports it.
 - **Diagnostics export:** a Settings → "Copy diagnostics" button (version, GPU, CUDA/torch versions, model cache, last 50 log lines, **no content**). This solves most GPU and setup tickets in one reply.
 - **Top expected issues + canned answers:**

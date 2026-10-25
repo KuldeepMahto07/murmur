@@ -1,5 +1,7 @@
 # KPI dashboard
 
+**Status: Not started (plan written).** Part of [13 · Analytics](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 | KPI | Definition | Target (month 6 after launch) |
 |---|---|---|
 | Weekly active installs | ≥ 1 transcript / week (opt-in sample, scaled) | 1,500 |

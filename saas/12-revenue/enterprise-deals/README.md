@@ -1,5 +1,7 @@
 # Enterprise deals
 
+**Status: Not started (plan written).** Part of [12 · Revenue](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 **Targets:** university faculties or site licences, law firms, HR consultancies, public-sector bodies with data-residency rules.
 
 **What they'll ask for (build checklist):**

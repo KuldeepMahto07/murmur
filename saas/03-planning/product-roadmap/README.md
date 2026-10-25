@@ -1,5 +1,7 @@
 # Product roadmap
 
+**Status: Done.** Part of [03 · Planning](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 | Phase | Theme | Items | Status |
 |---|---|---|---|
 | **v0.1 MVP** | Parity core | Upload/URL import, 3 Whisper modes, speakers (ECAPA/pyannote), editor, 7 exports, offline translation, Vercel demo | ✅ Done (Oct 2026) |

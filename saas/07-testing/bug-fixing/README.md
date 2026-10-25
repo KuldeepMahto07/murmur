@@ -1,5 +1,7 @@
 # Bug fixing (log)
 
+**Status: Ongoing.** Part of [07 · Testing](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 | Date | Bug | Fix |
 |---|---|---|
 | 2026-10-22 | 500 on upload: job fields expired after commit | `s.refresh()` after commit in `create_jobs` |

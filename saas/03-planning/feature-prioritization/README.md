@@ -1,5 +1,7 @@
 # Feature prioritization (RICE)
 
+**Status: Done.** Part of [03 · Planning](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 Reach = target users affected per quarter (beachhead); Impact 0.25–3; Confidence %; Effort = person-weeks.
 
 | Feature | Reach | Impact | Conf. | Effort | RICE |

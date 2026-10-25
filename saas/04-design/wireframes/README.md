@@ -1,5 +1,7 @@
 # Wireframes
 
+**Status: Done (recorded after build).** Part of [04 · Design](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 **Built:** no separate wireframes. The layouts were designed directly in code. These ASCII wireframes record the three shipped screens so changes can be discussed:
 
 ```

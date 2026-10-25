@@ -1,5 +1,7 @@
 # Funnel analysis
 
+**Status: Not started (plan written).** Part of [13 · Analytics](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 Funnel as defined in [11-conversion/sales-funnel](../../11-conversion/sales-funnel/):
 `visit → download → first transcript → Pro gate → upgrade click → licence activated`
 

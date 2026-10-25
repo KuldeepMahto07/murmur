@@ -1,5 +1,7 @@
 # Authentication
 
+**Status: Not started (not needed while localhost-only).** Part of [05 · Development](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 **Built: nothing, on purpose.** Murmur binds to `127.0.0.1` and is single-user, so the local machine is the security boundary. The Vercel demo has no server to authenticate against.
 
 **Needed when:**

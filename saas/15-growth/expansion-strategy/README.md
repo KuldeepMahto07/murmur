@@ -1,5 +1,7 @@
 # Expansion strategy
 
+**Status: Not started (plan written).** Part of [15 · Growth](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 | Order | Expansion | Why / prerequisite |
 |---|---|---|
 | 1 | **Team server** (Docker image for one GPU box, multi-user) | Highest revenue per customer; needs [05/authentication](../../05-development/authentication/) |

@@ -1,5 +1,7 @@
 # Waitlist
 
+**Status: Not started (plan written).** Part of [02 · Validation](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 - **Tool:** a simple form with double opt-in (Buttondown, Tally + Google Sheet, or a tiny endpoint), so no extra hosting bill.
 - **Fields:** email, role (researcher, journalist, legal/HR, other), OS, GPU, "biggest recording you need to transcribe".
 - **Nurture:** one email every 2 weeks with a build update and a short GIF of a new feature. Ask one question per email (for example, "NVivo or ATLAS.ti?").

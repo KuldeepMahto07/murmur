@@ -1,5 +1,7 @@
 # Freemium model
 
+**Status: Not started (plan written).** Part of [11 · Conversion](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 | | Free | Pro ($49 once, 1 yr updates) | Team server |
 |---|---|---|---|
 | Modes | Swift, Steady | + Precise | All |

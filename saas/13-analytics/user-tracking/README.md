@@ -1,5 +1,7 @@
 # User tracking
 
+**Status: Not started (plan written).** Part of [13 · Analytics](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 **Website (Vercel demo / landing):** Vercel Web Analytics or Plausible. Cookie-free, so no consent banner is needed.
 
 **App (opt-in at first run, off by default, with a clear explanation):**

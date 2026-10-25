@@ -1,5 +1,7 @@
 # Product-led growth
 
+**Status: Not started (plan written).** Part of [15 · Growth](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 - **Free tier is the acquisition engine:** unlimited 30-minute files and all exports, so students adopt it freely and bring it into their labs.
 - **In-product expansion paths:**
   1. Length gate → Pro.

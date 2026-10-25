@@ -1,5 +1,7 @@
 # Add-ons
 
+**Status: Not started (plan written).** Part of [12 · Revenue](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 | Add-on | Price | Why someone pays |
 |---|---|---|
 | Premium translation pack (higher-quality local models, e.g. NLLB/Opus-MT bundles) | $15 | Argos quality is basic |

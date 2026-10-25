@@ -1,5 +1,7 @@
 # Performance testing
 
+**Status: Partial: 42 s clip measured; 1 h and 3 h files to do.** Part of [07 · Testing](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 **Measured (GTX 1650 Ti 4 GB, cached models):**
 | Mode | Clip | Wall time | Real-time factor |
 |---|---|---|---|

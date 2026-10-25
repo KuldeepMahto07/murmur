@@ -1,5 +1,7 @@
 # Automation
 
+**Status: Not started (plan written).** Part of [16 · Scaling](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 - **Releases:** tag → GitHub Actions builds and signs the installer → uploads to GitHub Releases + the update feed → posts the changelog. See [06-infrastructure/ci-cd](../../06-infrastructure/ci-cd/).
 - **Licensing:** purchase webhook → the merchant of record generates and emails a signed key. No server of ours in the loop.
 - **Support:** auto-reply with the diagnostics instructions and the top-5 FAQ; tag tickets by keyword.

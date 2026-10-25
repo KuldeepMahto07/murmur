@@ -1,5 +1,7 @@
 # Churn reduction
 
+**Status: Not started (plan written).** Part of [14 · Retention](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 **Churn signals:** no transcript for 30 days after week 1; repeated `error` events; refund requests; Team server not renewed.
 
 **Actions:**

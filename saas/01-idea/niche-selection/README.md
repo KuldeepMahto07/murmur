@@ -1,5 +1,7 @@
 # Niche selection
 
+**Status: Done.** Part of [01 · Idea](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 ## Candidates scored (1–5)
 | Niche | Pain (privacy) | Willingness to pay | Reachability | Fit with Murmur today | Total |
 |---|---|---|---|---|---|

@@ -1,5 +1,7 @@
 # A/B testing
 
+**Status: Not started (plan written).** Part of [13 · Analytics](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 **Backlog (one test at a time, ≥ 1,000 visitors or 2 weeks each):**
 1. Landing headline: privacy-led ("without uploading") vs. speed-led ("in minutes on your PC").
 2. Pricing display: $49 one-time vs. "$49 once vs. $240 a year for cloud" comparison framing.

@@ -1,5 +1,7 @@
 # Customer interviews
 
+**Status: Not started (plan written).** Part of [02 · Validation](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 **Goal:** 15 interviews in 2 weeks (10 qualitative researchers, 3 journalists, 2 legal/HR).
 
 ## Recruit

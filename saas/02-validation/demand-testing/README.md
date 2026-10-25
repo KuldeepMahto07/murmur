@@ -1,5 +1,7 @@
 # Demand testing
 
+**Status: Not started (plan written).** Part of [02 · Validation](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 | Test | Signal | Threshold |
 |---|---|---|
 | Search demand | Monthly volume for "offline transcription windows", "local whisper app windows", "transcribe interviews without uploading" (Google Keyword Planner / Ahrefs free tools) | Combined ≥ 3k/mo |

@@ -1,5 +1,7 @@
 # Integrations as distribution
 
+**Status: Not started (plan written).** Part of [10 · Distribution](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 Each integration is listed where the other product's users look:
 - **NVivo / ATLAS.ti / MAXQDA:** export presets → listed in their docs or forums.
 - **Obsidian plugin:** "Transcribe audio note locally with Murmur" (calls the local API) → Obsidian community plugin directory.

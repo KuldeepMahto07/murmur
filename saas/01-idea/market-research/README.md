@@ -1,5 +1,7 @@
 # Market research
 
+**Status: Done.** Part of [01 · Idea](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 ## Size (secondary sources; definitions vary a lot)
 | Scope | Figure | Source |
 |---|---|---|

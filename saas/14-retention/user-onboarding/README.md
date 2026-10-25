@@ -1,5 +1,7 @@
 # User onboarding
 
+**Status: Not started (plan written).** Part of [14 · Retention](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 **First-run wizard (v0.2):**
 1. **Hardware check:** "NVIDIA GTX 1650 Ti found, 4 GB → Precise mode available". Or for CPU-only: "Steady mode recommended; a 1-hour file takes about X min."
 2. **Model download** with progress and size. Download `small` now; offer `large-v3-turbo` in the background.

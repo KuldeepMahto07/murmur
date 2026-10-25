@@ -1,5 +1,7 @@
 # Referral programs
 
+**Status: Not started (plan written).** Part of [15 · Growth](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 - **Mechanic:** each Pro owner gets a code. A friend gets 20% off, and the owner gets a free add-on (translation pack) or $10 credit toward the updates plan.
 - **Academic twist:** a "lab pack". If 5 people from the same institution domain buy, all get the Team server trial free for 3 months.
 - **Where to prompt:** after the 5th completed transcript ("Saving hours? Share Murmur with your lab") and in the day-30 email.

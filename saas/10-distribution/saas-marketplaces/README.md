@@ -1,5 +1,7 @@
 # SaaS and app marketplaces
 
+**Status: Not started (plan written).** Part of [10 · Distribution](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 | Marketplace | Fit | Action |
 |---|---|---|
 | Microsoft Store (MSIX) | High: trusted install, auto-update, no SmartScreen issue | Package v1.0 as MSIX; Store takes 15% (or 0% with own commerce for non-games) |

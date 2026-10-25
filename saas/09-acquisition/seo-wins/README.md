@@ -1,5 +1,7 @@
 # SEO wins
 
+**Status: Not started (plan written).** Part of [09 · Acquisition](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 **Target keywords (low competition, high intent; check volumes with a keyword tool):**
 | Keyword cluster | Page |
 |---|---|

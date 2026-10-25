@@ -1,5 +1,7 @@
 # Cold email
 
+**Status: Not started (plan written).** Part of [09 · Acquisition](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 **Target:** research-methods instructors, graduate school coordinators, university research IT, and newsroom editors.
 
 **Template (≤ 90 words):**

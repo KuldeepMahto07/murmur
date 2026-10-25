@@ -1,5 +1,7 @@
 # Monitoring
 
+**Status: Partial: logging only.** Part of [06 · Infrastructure](../README.md) in the [Murmur SaaS plan](../../README.md).
+
 **Built:** Python `logging` to stdout (`data/server.log` when started with redirection). Job errors are stored in `Job.error` and shown in the library.
 
 **Missing:**
