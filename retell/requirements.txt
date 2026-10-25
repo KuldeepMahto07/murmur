@@ -1,5 +1,0 @@
-anthropic
-pydantic
-pillow
-numpy
-edge-tts
