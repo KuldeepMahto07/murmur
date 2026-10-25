@@ -1,5 +1,7 @@
 # Referral programs
 
+**Status: Not started (plan written).** Part of [15 · Growth](../README.md) in the [Clarion SaaS plan](../../README.md).
+
 - Give 10 credits, get 10 credits when the referee makes their first paid purchase.
 - Our cost per successful referral: 20 credits, about $0.54 at 4090 cost or $2.60 at L4 cost.
 - A share link in the post-render screen, the waitlist and the account page.

@@ -1,5 +1,7 @@
 # Development plan
 
+**Status: Done.** Part of [03 · Planning](../README.md) in the [Clarion SaaS plan](../../README.md).
+
 Sprints are 1 week each, for a solo developer.
 
 1. **Social presets + deinterlace.** Add a preset map (Reel 4K60, TikTok 1080p60, YouTube 4K30, VHS restore = `bwdif` + Restore model) and UI chips.

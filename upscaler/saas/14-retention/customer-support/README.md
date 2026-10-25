@@ -1,5 +1,7 @@
 # Customer support
 
+**Status: Not started (plan written).** Part of [14 · Retention](../README.md) in the [Clarion SaaS plan](../../README.md).
+
 - **Help centre:**
   - GPU requirements, and why CPU mode is slow
   - Formats (MP4/MOV/MKV/WebM in; H.264/H.265/ProRes out)

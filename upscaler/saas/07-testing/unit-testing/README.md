@@ -1,5 +1,7 @@
 # Unit testing
 
+**Status: Not started (plan written).** Part of [07 · Testing](../README.md) in the [Clarion SaaS plan](../../README.md).
+
 **Today:** none (only the end-to-end script).
 
 **Add pytest for:**

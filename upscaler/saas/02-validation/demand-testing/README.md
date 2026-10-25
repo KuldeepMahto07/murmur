@@ -1,5 +1,7 @@
 # Demand testing
 
+**Status: Not started (plan written).** Part of [02 · Validation](../README.md) in the [Clarion SaaS plan](../../README.md).
+
 | Test | Metric | Pass |
 |---|---|---|
 | Landing-page ads | waitlist conversion | at least 4% |

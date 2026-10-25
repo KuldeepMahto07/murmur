@@ -1,5 +1,7 @@
 # Bug fixing
 
+**Status: Ongoing.** Part of [07 · Testing](../README.md) in the [Clarion SaaS plan](../../README.md).
+
 **Fixed during the build**
 
 | Bug | Fix |

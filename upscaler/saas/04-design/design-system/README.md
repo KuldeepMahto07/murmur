@@ -1,5 +1,7 @@
 # Design system
 
+**Status: Partial: informal tokens; no scale or contrast checks.** Part of [04 · Design](../README.md) in the [Clarion SaaS plan](../../README.md).
+
 **Built (informal):** CSS custom properties in `upscaler/frontend/src/styles.css`:
 - Tokens: `--bg`, `--panel`, `--line`, `--text`, `--dim`, `--accent`, `--ok`, `--bad`
 - Components: `.chip`, `.preset`, `.slider`, `.toggle`, `.primary`, `.ghost`, `.seg`, `.ring` (progress), `.wipe-*`

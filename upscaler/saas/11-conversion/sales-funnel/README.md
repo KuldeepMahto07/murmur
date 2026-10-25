@@ -1,5 +1,7 @@
 # Sales funnel
 
+**Status: Not started (plan written).** Part of [11 · Conversion](../README.md) in the [Clarion SaaS plan](../../README.md).
+
 ```
 SEO / social / directories
   → landing page (wipe demo)

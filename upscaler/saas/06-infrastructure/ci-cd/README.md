@@ -1,5 +1,7 @@
 # CI/CD
 
+**Status: Not started (plan written).** Part of [06 · Infrastructure](../README.md) in the [Clarion SaaS plan](../../README.md).
+
 **Today:** none.
 
 **Plan (GitHub Actions)**

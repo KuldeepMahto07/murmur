@@ -1,5 +1,7 @@
 # Landing page test
 
+**Status: Not started (plan written).** Part of [02 · Validation](../README.md) in the [Clarion SaaS plan](../../README.md).
+
 **Goal:** measure demand before building the cloud. One page, two CTAs: **Download free (Windows)** and **Join the cloud waitlist**.
 
 **Page outline (own copy)**

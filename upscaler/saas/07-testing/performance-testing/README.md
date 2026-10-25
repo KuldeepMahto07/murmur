@@ -1,5 +1,7 @@
 # Performance testing
 
+**Status: Partial: GTX 1650 Ti measured; L4 and 4090 to do.** Part of [07 · Testing](../README.md) in the [Clarion SaaS plan](../../README.md).
+
 **Measured on a GTX 1650 Ti (4 GB, fp16), Balanced preset**
 - About **4.0 GPU-seconds per input megapixel per frame**, including the 4x pass, the resize and the H.264 encode. This held both for 320x240 → 1440x1080 (0.31 s/frame) and for 720x1280 → 2160x3840 (3.72 s/frame).
 - Real job: 15 s 720x1280 30 fps → 4K 60 fps took 899 frames in 3347 s (0.27 fps).

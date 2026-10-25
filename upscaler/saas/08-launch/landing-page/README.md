@@ -1,5 +1,7 @@
 # Launch landing page
 
+**Status: Not started (plan written).** Part of [08 · Launch](../README.md) in the [Clarion SaaS plan](../../README.md).
+
 Builds on the [validation page](../../02-validation/landing-page-test/README.md). The launch version adds:
 
 - [ ] A live before/after wipe on 3 of our own clips: phone 720p → 4K60, old DV → restored, AI clip → 4K

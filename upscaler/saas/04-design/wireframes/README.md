@@ -1,5 +1,7 @@
 # Wireframes
 
+**Status: Done (recorded after build).** Part of [04 · Design](../README.md) in the [Clarion SaaS plan](../../README.md).
+
 **Built (implemented directly in code, no separate wireframes):** a three-column layout.
 
 ```

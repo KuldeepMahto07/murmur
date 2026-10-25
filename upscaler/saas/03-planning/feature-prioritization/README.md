@@ -1,5 +1,7 @@
 # Feature prioritization
 
+**Status: Done.** Part of [03 · Planning](../README.md) in the [Clarion SaaS plan](../../README.md).
+
 RICE scoring: Reach (users per quarter), Impact (1-3), Confidence, Effort (person-weeks). Score = R x I x C / E.
 
 | Feature | R | I | C | E | Score |

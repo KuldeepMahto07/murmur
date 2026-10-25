@@ -1,5 +1,7 @@
 # Monitoring
 
+**Status: Not started (plan written).** Part of [06 · Infrastructure](../README.md) in the [Clarion SaaS plan](../../README.md).
+
 **Today:** job messages only (frame count, fps, ETA), shown in the UI.
 
 **For the cloud:**

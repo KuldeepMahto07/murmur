@@ -1,5 +1,7 @@
 # Funnel analysis
 
+**Status: Not started (plan written).** Part of [13 · Analytics](../README.md) in the [Clarion SaaS plan](../../README.md).
+
 **Funnels to build**
 1. Landing → download → first render → second render within 7 days
 2. Signup → first cloud render → credits exhausted → purchase

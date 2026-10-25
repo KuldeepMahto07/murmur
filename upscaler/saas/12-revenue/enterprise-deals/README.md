@@ -1,5 +1,7 @@
 # Enterprise deals
 
+**Status: Not started (plan written).** Part of [12 · Revenue](../README.md) in the [Clarion SaaS plan](../../README.md).
+
 **Targets:** e-commerce catalogue teams, tape-digitisation businesses, stock-footage sites, newsrooms with archives.
 
 **Offer:**

@@ -1,5 +1,7 @@
 # Frontend
 
+**Status: Done (MVP).** Part of [05 · Development](../README.md) in the [Clarion SaaS plan](../../README.md).
+
 **Code lives in:** `upscaler/frontend/` (React 18 + Vite)
 - `src/App.jsx`: layout, queue, settings panel, upload (button + drag-and-drop), polling every 800 ms while jobs run
 - `src/Compare.jsx`: image wipe/zoom and synced video wipe/side-by-side

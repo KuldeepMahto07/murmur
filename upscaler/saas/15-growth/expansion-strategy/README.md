@@ -1,5 +1,7 @@
 # Expansion strategy
 
+**Status: Not started (plan written).** Part of [15 · Growth](../README.md) in the [Clarion SaaS plan](../../README.md).
+
 1. **Adjacent features:** deinterlace/VHS restore, stabilisation, SDR→HDR (inverse tone mapping), colourise.
 2. **Adjacent users:** e-commerce image batches through the API; archives through enterprise deals.
 3. **Platforms:** macOS (MPS/CoreML), a mobile upload page that renders in the cloud.

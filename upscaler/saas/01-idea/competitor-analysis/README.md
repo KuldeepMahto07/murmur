@@ -1,5 +1,7 @@
 # Competitor analysis
 
+**Status: Done.** Part of [01 · Idea](../README.md) in the [Clarion SaaS plan](../../README.md).
+
 - **Primary competitor (full study):** [topaz-analysis.md](topaz-analysis.md). It covers Topaz Labs' video and image upscalers: features, models, limits, pricing, front-end stack and API shape, all observed from public pages and the visitor-visible web app.
 
 **Landscape.** Figures other than Topaz's are approximate, from general knowledge as of 2026; verify them before quoting.

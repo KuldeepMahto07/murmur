@@ -1,5 +1,7 @@
 # Database
 
+**Status: Not started (job.json files; Postgres planned for the cloud).** Part of [05 · Development](../README.md) in the [Clarion SaaS plan](../../README.md).
+
 **Today:** no database. Each job is `upscaler/data/jobs/<id>/job.json`, plus its media files, loaded at startup by `jobs.load_existing()`.
 
 **Needed for the cloud (Postgres):**

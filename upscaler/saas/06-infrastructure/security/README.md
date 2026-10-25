@@ -1,5 +1,7 @@
 # Security
 
+**Status: Partial: local basics done; cloud hardening planned.** Part of [06 · Infrastructure](../README.md) in the [Clarion SaaS plan](../../README.md).
+
 **Today:**
 - The server binds to localhost.
 - Uploads are restricted by extension.

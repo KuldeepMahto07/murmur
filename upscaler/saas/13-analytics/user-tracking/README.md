@@ -1,5 +1,7 @@
 # User tracking
 
+**Status: Not started (plan written).** Part of [13 · Analytics](../README.md) in the [Clarion SaaS plan](../../README.md).
+
 **Events.** Local app: opt-in and anonymous. Cloud: always on.
 - `app_open`
 - `file_added` (kind, input_res, duration)

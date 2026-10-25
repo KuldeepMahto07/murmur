@@ -1,5 +1,7 @@
 # Tech stack
 
+**Status: Done.** Part of [03 · Planning](../README.md) in the [Clarion SaaS plan](../../README.md).
+
 | Layer | Choice | Why |
 |---|---|---|
 | Inference | PyTorch 2.8 CUDA + spandrel | Loads Real-ESRGAN/GFPGAN weights without basicsr; fp16 with automatic fp32 fallback |

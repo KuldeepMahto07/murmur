@@ -1,5 +1,7 @@
 # SEO wins
 
+**Status: Not started (plan written).** Part of [09 · Acquisition](../README.md) in the [Clarion SaaS plan](../../README.md).
+
 Programmatic pages and how-tos with clear intent. Each page gets its own copy and real before/after media from our own samples.
 
 | Page | Intent |

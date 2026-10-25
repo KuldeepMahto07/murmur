@@ -1,5 +1,7 @@
 # Backend
 
+**Status: Done (MVP, local).** Part of [05 · Development](../README.md) in the [Clarion SaaS plan](../../README.md).
+
 **Code lives in:** `upscaler/backend/app/`
 - `engine.py`: spandrel model loading, denoise weight blending, tiled fp16 inference with OOM back-off and automatic fp32 fallback, multi-pass scaling, unsharp mask
 - `faces.py`: YuNet detection, 5-point alignment to a 512 template, GFPGAN in [-1, 1], oval feathered paste-back

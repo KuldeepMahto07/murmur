@@ -1,5 +1,7 @@
 # Email automation
 
+**Status: Not started (plan written).** Part of [14 · Retention](../README.md) in the [Clarion SaaS plan](../../README.md).
+
 | Trigger | Email |
 |---|---|
 | Signup | Welcome + 3 best presets for your use case |

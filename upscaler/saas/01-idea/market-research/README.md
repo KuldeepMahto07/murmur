@@ -1,5 +1,7 @@
 # Market research
 
+**Status: Done.** Part of [01 · Idea](../README.md) in the [Clarion SaaS plan](../../README.md).
+
 **Segments and why they pay**
 
 | Segment | Typical input | Willingness to pay | Notes |

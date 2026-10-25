@@ -1,5 +1,7 @@
 # Integration testing
 
+**Status: Done.** Part of [07 · Testing](../README.md) in the [Clarion SaaS plan](../../README.md).
+
 **Built:** `upscaler/scripts/e2e.py` (with `scripts/make_samples.py`) drives the real HTTP API and checks output dimensions, codec, pixel format, frame count, fps and audio. It covers:
 - an image at 4x with faces, and all four presets at 2x
 - a 1080p H.264 video preview

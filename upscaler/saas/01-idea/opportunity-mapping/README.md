@@ -1,5 +1,7 @@
 # Opportunity mapping
 
+**Status: Done.** Part of [01 · Idea](../README.md) in the [Clarion SaaS plan](../../README.md).
+
 | Opportunity | Value to users | Effort | Priority |
 |---|---|---|---|
 | Hosted cloud rendering (pay per minute) for users without a GPU | High | High (infra + billing) | **P1** |

@@ -1,5 +1,7 @@
 # Add-ons
 
+**Status: Not started (plan written).** Part of [12 · Revenue](../README.md) in the [Clarion SaaS plan](../../README.md).
+
 | Add-on | Price idea | Cost basis |
 |---|---|---|
 | Extra credit packs | $5 / 20, $20 / 100 | see pricing |

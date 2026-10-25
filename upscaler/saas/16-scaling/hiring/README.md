@@ -1,5 +1,7 @@
 # Hiring
 
+**Status: Not started (plan written).** Part of [16 · Scaling](../README.md) in the [Clarion SaaS plan](../../README.md).
+
 | Order | Role | Trigger |
 |---|---|---|
 | 1 | Part-time support / community | above 300 paying users |

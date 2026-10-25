@@ -1,5 +1,7 @@
 # UX flows
 
+**Status: Done (local flows).** Part of [04 · Design](../README.md) in the [Clarion SaaS plan](../../README.md).
+
 **Built flows**
 1. **Drop → auto-run:** drop files, each is queued with the current settings, and the viewer selects the new job.
 2. **Preview → approve → full:** tick "Preview only the first N s", compare, then click **Render full video** (re-runs the same source with `preview: false`).

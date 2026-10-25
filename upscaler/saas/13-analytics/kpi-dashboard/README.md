@@ -1,5 +1,7 @@
 # KPI dashboard
 
+**Status: Not started (plan written).** Part of [13 · Analytics](../README.md) in the [Clarion SaaS plan](../../README.md).
+
 | KPI | Definition | Target (month 6) |
 |---|---|---|
 | Activation | % of new users with at least 1 successful render in 24 h | 60% |

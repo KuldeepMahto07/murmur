@@ -1,5 +1,7 @@
 # Niche selection
 
+**Status: Done.** Part of [01 · Idea](../README.md) in the [Clarion SaaS plan](../../README.md).
+
 Candidates scored 1-5 (higher is better):
 
 | Niche | Pain | Can pay | Reachable | We can win | Total |

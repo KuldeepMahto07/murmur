@@ -1,6 +1,8 @@
 # Customer interviews
 
-**Status: not started.** We have one real data point: a user wanted a 720x1280 gym clip at "16K 60 fps". After an explanation they accepted 4K60, and the render took 56 min on a GTX 1650 Ti.
+**Status: Not started (plan written).** Part of [02 · Validation](../README.md) in the [Clarion SaaS plan](../../README.md).
+
+We have one real data point: a user wanted a 720x1280 gym clip at "16K 60 fps". After an explanation they accepted 4K60, and the render took 56 min on a GTX 1650 Ti.
 
 **Target:** 15 interviews (8 short-form creators, 4 GenAI video creators, 3 people restoring family video).
 

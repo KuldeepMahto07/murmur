@@ -1,5 +1,7 @@
 # APIs
 
+**Status: Done (MVP, local).** Part of [05 · Development](../README.md) in the [Clarion SaaS plan](../../README.md).
+
 **Code lives in:** `upscaler/backend/app/main.py`
 
 | Method | Path | Purpose |

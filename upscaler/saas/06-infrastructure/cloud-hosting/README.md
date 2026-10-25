@@ -1,5 +1,7 @@
 # Cloud hosting
 
+**Status: Not started (plan written).** Part of [06 · Infrastructure](../README.md) in the [Clarion SaaS plan](../../README.md).
+
 **Today:** local only (`start.bat` → 127.0.0.1:8001).
 
 **Cloud plan**

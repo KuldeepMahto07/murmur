@@ -1,5 +1,7 @@
 # Cold email
 
+**Status: Not started (plan written).** Part of [09 · Acquisition](../README.md) in the [Clarion SaaS plan](../../README.md).
+
 **Targets:** small video agencies, real-estate video shooters, wedding videographers (old archive footage), and e-commerce brands with low-res catalogues.
 
 - [ ] Lists of 50 per vertical; personalise with a free 10 s enhanced sample of *their* public footage, sent only as a private link

@@ -1,5 +1,7 @@
 # Pricing strategy and GPU cost per minute
 
+**Status: Draft: modelled from measured GPU cost; not validated.** Part of [11 · Conversion](../README.md) in the [Clarion SaaS plan](../../README.md).
+
 ### 1. Measured cost basis
 On our GTX 1650 Ti (fp16, Balanced preset) the full pipeline (4x pass + resize + H.264 encode) costs about **4.0 GPU-seconds per input megapixel per output frame**. It was measured twice:
 - 320x240 → 1440x1080: 0.31 s/frame

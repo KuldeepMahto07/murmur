@@ -1,5 +1,7 @@
 # Problem discovery
 
+**Status: Done.** Part of [01 · Idea](../README.md) in the [Clarion SaaS plan](../../README.md).
+
 **Core problem:** people have low-resolution, noisy or compressed photos and clips (old phone footage, social-media re-downloads, AI-generated video at 720p, scanned family photos) and want them to look sharp on today's 4K screens and 1080p+ social feeds.
 
 Pain points we observed or experienced while building Clarion:

@@ -1,5 +1,7 @@
 # Product roadmap
 
+**Status: Done.** Part of [03 · Planning](../README.md) in the [Clarion SaaS plan](../../README.md).
+
 | Phase | Target | Contents |
 |---|---|---|
 | **v0.1 (done)** | Local MVP | Image + video upscale, 4 presets, faces, preview, wipe compare, 60 fps / slow-mo, H.264/H.265/ProRes |

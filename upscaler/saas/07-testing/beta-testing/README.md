@@ -1,6 +1,6 @@
 # Beta testing
 
-**Status: not started.**
+**Status: Not started (plan written).** Part of [07 · Testing](../README.md) in the [Clarion SaaS plan](../../README.md).
 
 **Plan:**
 1. Recruit 20 testers from the waitlist (mix: no-GPU vs GPU, creator vs restorer).
